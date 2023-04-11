@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "@types/material-ui": "^0.21.12"
+    "@types/material-ui": "^0.21.12",
+    "sonarqube-scanner": "^3.0.1"
   }
 }
