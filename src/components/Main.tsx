@@ -7,6 +7,7 @@ const Main = () => {
       style={{
         textAlign: "center",
         marginTop: '64px',
+        marginLeft: '182px',
         padding: '20px'
       }}
     >

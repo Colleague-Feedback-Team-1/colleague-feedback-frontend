@@ -1,7 +1,7 @@
 import "./styles/index.css";
 import { Route, Routes } from "react-router-dom";
-import UserDashboard from "./components/UserDashboard";
-import AdminDashboard from "./components/AdminDashboard";
+import UserDashboard from "./views/UserDashboard";
+import AdminDashboard from "./views/AdminDashboard";
 import Login from "./components/Login";
 import Layout from "./views/Layout";
 

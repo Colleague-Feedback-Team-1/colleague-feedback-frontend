@@ -75,7 +75,7 @@ const Layout = () => {
         </AppBar>
       </Box>
       <Drawer
-        variant="persistent"
+        variant="permanent"
         open={openDrawer}
         anchor="left"
       >
