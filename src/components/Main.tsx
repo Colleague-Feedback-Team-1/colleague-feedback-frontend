@@ -6,6 +6,8 @@ const Main = () => {
     <main
       style={{
         textAlign: "center",
+        marginTop: '64px',
+        padding: '20px'
       }}
     >
       <Outlet />
