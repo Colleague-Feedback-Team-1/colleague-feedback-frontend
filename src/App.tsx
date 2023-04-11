@@ -1,5 +1,22 @@
-import React from "react";
+import "./styles/index.css";
+import { Route, Routes } from "react-router-dom";
+import UserDashboard from "./components/UserDashboard";
+import AdminDashboard from "./components/AdminDashboard";
+import Login from "./components/Login";
+import Layout from "./views/Layout";
 
-export const App = () => {
-  return <div>App</div>;
+const App = () => {
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Login />}></Route>
+          <Route path="/user" element={<UserDashboard />}></Route>
+          <Route path="/admin" element={<AdminDashboard />}></Route>
+        </Route>
+      </Routes>
+    </div>
+  );
 };
+
+export default App;
