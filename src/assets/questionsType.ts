@@ -12,3 +12,5 @@ type Section = {
 type FeedBackQuestions = {
   sections: Section[];
 };
+
+export {}
