@@ -3,7 +3,7 @@ export interface Employee {
   employeeName: string;
   employeeEmail?: string;
   hashedPassword?: string;
-  companyRole: string;
+  companyRole?: string;
   image?: string;
   privileges?: "Admin" | "User" | "Manager";
 }
@@ -12,16 +12,16 @@ export interface Request {
   employeeId: string;
   employeeName: string;
   employeeEmail: string;
-  assignedManagerId: string;
-  assignedManagerName: string;
+  assignedManagerId: string | undefined;
+  assignedManagerName: string | undefined;
   isConfirmed: boolean;
   selfReview: boolean;
-  dueDate: Date;
+  dueDate?: Date;
   reviewers: Reviewer[];
 }
 
 export interface Reviewer {
-  reviewerId: number;
+  reviewerId: string;
   reviewerName: string;
   reviewerEmail: string;
   companyRole: string;
