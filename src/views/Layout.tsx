@@ -33,7 +33,7 @@ const Layout = () => {
     {
       text: "User",
       icon: <AccountCircleIcon />,
-      link: "/user",
+      link: "/dashboard",
     },
   ];
 

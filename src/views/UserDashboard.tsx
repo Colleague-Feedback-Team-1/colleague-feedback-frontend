@@ -2,81 +2,32 @@ import { Button, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import AddIcon from "@mui/icons-material/Add";
 import { Employee, Request } from "../types/types";
-import { useEffect, useState } from "react";
+import { useEffect, useState , useContext} from "react";
 import Loading from "../components/Loading";
 import RequestCard from "../components/RequestCard";
+import axios from "axios";
+import UserContext from "../context/UserContext";
+import { UserContextProps } from "../types/types";
 
 const UserDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<Employee | null>();
   const [userList, setUserList] = useState<Employee[] | null>();
   const [requestList, setRequestList] = useState<Request[] | null>();
+  const { user, setUser } = useContext<UserContextProps>(UserContext);
 
-  const ExampleRequestList: Request[] = [
-    {
-      employeeId: "6426a97f07be719943685504",
-      employeeName: "Anton",
-      assignedManagerId: undefined,
-      assignedManagerName: undefined,
-      employeeEmail: "anton989@gmail.com",
-      isConfirmed: true,
-      selfReview: true,
-      reviewers: [
-        {
-          reviewerId: "123",
-          reviewerName: "John Doe",
-          reviewerEmail: "john.doe@example.com",
-          companyRole: "Manager",
-          feedbackSubmitted: true,
-        },
-        {
-          reviewerId: "456",
-          reviewerName: "Jane Smith",
-          reviewerEmail: "jane.smith@example.com",
-          companyRole: "Supervisor",
-          feedbackSubmitted: true,
-        },
-        {
-          reviewerId: "6426a97f07be719943685604",
-          reviewerName: "Jane Smith",
-          reviewerEmail: "jane.smith@example.com",
-          companyRole: "Supervisor",
-          feedbackSubmitted: true,
-        },
-      ],
-    },
-  ];
-
-  const ExampleUserList: Employee[] = [
-    {
-      employeeId: "1",
-      employeeName: "Essi",
-      privileges: "Admin",
-    },
-    {
-      employeeId: "2",
-      employeeName: "Dang",
-      privileges: "User",
-    },
-    {
-      employeeId: "3",
-      employeeName: "Ilya",
-      privileges: "User",
-    },
-  ];
-
-  const ExampleEmployee: Employee = {
-    employeeId: "1",
-    employeeName: "Dang",
-    companyRole: "Developer",
-  };
-
+  console.log("Logged in User: ", user);
   useEffect(() => {
     setTimeout(() => {
-      setCurrentUser(ExampleEmployee);
-      setUserList(ExampleUserList);
-      setRequestList(ExampleRequestList);
-      setIsLoading(false);
+          axios
+            .get("http://localhost:4500/api/review-requests/")
+            .then((res) => {
+              console.log(res.data);
+              setRequestList(res.data);
+              setIsLoading(false);
+            })
+            .catch((err) => console.log(err));
+
     }, 3000);
   }, []);
 
@@ -89,7 +40,7 @@ const UserDashboard = () => {
           <Typography variant="h3">USER DASH BOARD</Typography>
           <Stack textAlign="left">
             <Typography variant="h3">
-              Welcome, {currentUser?.employeeName}
+              Welcome, {user.employeeName}
             </Typography>
             <Typography variant="h4">Your feedback requests:</Typography>
             <Stack direction={"row"} spacing={2}>

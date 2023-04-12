@@ -5,7 +5,12 @@ export interface Employee {
   hashedPassword?: string;
   companyRole?: string;
   image?: string;
-  privileges?: "Admin" | "User" | "Manager";
+  privileges: "Admin" | "User" | "Manager";
+}
+
+export interface UserContextProps {
+  user: Employee;
+  setUser: (user: Employee) => void;
 }
 
 export interface Request {

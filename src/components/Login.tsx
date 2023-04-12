@@ -7,11 +7,47 @@ import {
   Avatar,
   Grid,
   FormControlLabel,
-  Checkbox, Link
+  Checkbox,
+  Link,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import axios from "axios";
+import { useContext, useEffect } from "react";
+import UserContext from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  let navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+  console.log("Logged in User: ", user);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    let loginData = {
+      employeeEmail: data.get("employeeEmail"),
+      password: data.get("password"),
+    };
+    axios
+      .post("http://localhost:4500/api/employees/login", loginData)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data);
+      });
+
+    if (user.employeeId !== "") {
+      console.log("User has logged in");
+    } else {
+      console.log("Please log in to continue");
+    }
+  };
+
+  useEffect(() => {
+    if (user.employeeId !== "") {
+      return navigate("/dashboard");
+    }
+  }, []);
+
   return (
     <>
       <Box
@@ -28,14 +64,14 @@ const Login = () => {
         <Typography component="h1" variant="h5">
           Sign in to use the app
         </Typography>
-        <Box component="form" noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
+            name="employeeEmail"
             autoComplete="email"
             autoFocus
           />
@@ -63,19 +99,14 @@ const Login = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link  variant="body2">
-                Forgot password?
-              </Link>
+              <Link variant="body2">Forgot password?</Link>
             </Grid>
             <Grid item>
-              <Link  variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+              <Link variant="body2">{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
- 
     </>
   );
 };
