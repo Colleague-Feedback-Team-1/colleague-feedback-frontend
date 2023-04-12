@@ -9,6 +9,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import BlockIcon from "@mui/icons-material/Block";
 import { Stack } from "@mui/system";
 import { Request } from "../types/types";
+import { Link } from "react-router-dom";
 import React from "react";
 
 
@@ -19,7 +20,7 @@ const RequestCard:React.FC<Request> = (prop) => {
   return (
     <Card sx={{ backgroundColor: "#4CA85A", color: "white" }}>
       <CardContent>
-        {prop.isConfirmed ? (
+        {prop.confirmedByHR ? (
           <Stack>
             <Stack direction={"row"}>
               <CheckCircleIcon color="success" />
@@ -37,14 +38,12 @@ const RequestCard:React.FC<Request> = (prop) => {
         )}
       </CardContent>
 
-      {prop.isConfirmed ? (
+      {prop.confirmedByHR ? (
         <CardActions>
-          {/* <Link to={`/request/${prop.id}`} style={{ textDecoration: "none" }}>
+          <Link to={`/requests/${prop._id}`} style={{ textDecoration: "none" }}>
             <Button variant="contained">View</Button>
-          </Link> */}
-          <Button variant="contained" >
-            View
-          </Button>
+          </Link> 
+        
           <Button variant="contained">Quick remind</Button>
         </CardActions>
       ) : (
