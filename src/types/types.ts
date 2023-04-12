@@ -9,12 +9,13 @@ export interface Employee {
 }
 
 export interface Request {
+  _id: string;
   employeeId: string;
   employeeName: string;
   employeeEmail: string;
   assignedManagerId: string | undefined;
   assignedManagerName: string | undefined;
-  isConfirmed: boolean;
+  confirmedByHR: boolean;
   selfReview: boolean;
   dueDate?: Date;
   reviewers: Reviewer[];
