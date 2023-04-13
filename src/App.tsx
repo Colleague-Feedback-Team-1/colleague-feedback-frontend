@@ -8,10 +8,12 @@ import RequestSingle from "./views/RequestSingle";
 import { useState } from "react";
 import { Employee } from "./types/types";
 import UserContext from "./context/UserContext";
+import UserCard from "./components/UserCard";
+import EmployeeSingle from "./views/EmployeeSingle";
 
 const App = () => {
   const [user, setUser] = useState<Employee>({
-    employeeId: "",
+    _id: "",
     employeeName: "",
     privileges: "User",
   });
@@ -24,6 +26,7 @@ const App = () => {
             <Route path="/" element={<Login />}></Route>
             <Route path="/dashboard" element={<UserDashboard />}></Route>
             <Route path="/admin" element={<AdminDashboard />}></Route>
+            <Route path="/employees/:employeeId" element={<EmployeeSingle />}></Route>
             <Route
               path="/requests/:requestId"
               element={<RequestSingle />}
