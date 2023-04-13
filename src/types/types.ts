@@ -1,8 +1,8 @@
 export interface Employee {
-  employeeId: string;
+  _id: string;
   employeeName: string;
   employeeEmail?: string;
-  hashedPassword?: string;
+//  hashedPassword?: string;
   companyRole?: string;
   image?: string;
   privileges: "Admin" | "User" | "Manager";
