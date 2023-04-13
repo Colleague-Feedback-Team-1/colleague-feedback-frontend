@@ -27,22 +27,22 @@ const UserDashboard = () => {
         })
         .catch((err) => console.log(err));
       setIsLoading(false);
-    }, 3000);
+    }, 2500);
   }, []);
 
   return (
-    <Stack paddingTop={"50px"}>
+    <Stack textAlign="left">
       {isLoading ? (
         <Loading />
       ) : (
         <div>
-          <Typography variant="h3">USER DASH BOARD</Typography>
-          <Stack textAlign="left">
+          <Typography variant="h3" paddingBottom={'50px'}>USER DASHBOARD</Typography>
+          <Stack>
             <Typography variant="h3">Welcome, {user.employeeName}</Typography>
             <Typography variant="h4">Your feedback requests:</Typography>
             <Stack direction={"row"} spacing={2}>
               {requestList?.map((request) => {
-                return <RequestCard {...request}  key={request._id}/>;
+                return <RequestCard {...request} key={request._id} />;
               })}
             </Stack>
 
