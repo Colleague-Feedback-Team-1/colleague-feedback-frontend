@@ -31,6 +31,8 @@ const SearchBar = () => {
       alignItems={"center"}
       justifyContent={"center"}
       width={"350px"}
+      height={'100%'}
+      borderRadius={'10px'}
     >
       <Autocomplete
         options={employees!}
@@ -40,6 +42,7 @@ const SearchBar = () => {
             {...params}
             variant="outlined"
             placeholder="Search for an employee"
+            size="small"
           />
         )}
         sx={{ width: "100%" }}
