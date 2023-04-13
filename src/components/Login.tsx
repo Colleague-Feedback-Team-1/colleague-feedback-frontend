@@ -21,6 +21,18 @@ const Login = () => {
   const { user, setUser } = useContext(UserContext);
   console.log("Logged in User: ", user);
 
+  const handleLogOut = () => {
+    axios.post("http://localhost:4500/api/employees/logout").then((res)=> {
+      console.log(res.data);
+      console.log("Log out successfully.")
+      setUser({
+        _id: "",
+        employeeName: "",
+        privileges: "User",
+      });
+    });
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -33,24 +45,19 @@ const Login = () => {
       .then((res) => {
         console.log(res.data);
         setUser(res.data);
+        if (user._id !== "") {
+          console.log("User has logged in");
+          return navigate("/dashboard");
+        } else {
+          console.log("Please log in to continue");
+        }
       });
-
-    if (user.employeeId !== "") {
-      console.log("User has logged in");
-    } else {
-      console.log("Please log in to continue");
-    }
   };
-
-  useEffect(() => {
-    if (user.employeeId !== "") {
-      return navigate("/dashboard");
-    }
-  }, []);
 
   return (
     <>
-      <Box
+    { user.employeeName == "" 
+    ? (      <Box
         sx={{
           marginTop: 8,
           display: "flex",
@@ -107,6 +114,9 @@ const Login = () => {
           </Grid>
         </Box>
       </Box>
+) 
+    : <button onClick={handleLogOut}>Log out</button>
+    }
     </>
   );
 };

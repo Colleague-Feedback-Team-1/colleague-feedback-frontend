@@ -7,7 +7,7 @@ interface UserContextProps {
 }
 
 const UserContext = createContext<UserContextProps>({
-  user: { employeeId: "", employeeName: "", privileges: "User" },
+  user: { _id: "", employeeName: "", privileges: "User" },
   setUser: () => {},
 });
 
