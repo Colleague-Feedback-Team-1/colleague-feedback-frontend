@@ -19,6 +19,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Main from "../components/Main";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import SearchBar from "../components/SearchBar";
 
 const Layout = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -32,7 +33,7 @@ const Layout = () => {
     {
       text: "User",
       icon: <AccountCircleIcon />,
-      link: "/user",
+      link: "/dashboard",
     },
   ];
 
@@ -62,6 +63,7 @@ const Layout = () => {
             <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
               <Link to={"/"}>Home</Link>
             </Typography>
+            <SearchBar/>
             <IconButton size="large" color="inherit">
               <Badge badgeContent={5} color="error">
                 <NotificationsIcon />
@@ -84,7 +86,7 @@ const Layout = () => {
             {drawerList.map((item) => {
               const { text, icon, link } = item;
               return (
-                <Link to={link}>
+                <Link to={link} key={text}>
                   <ListItem key={text} divider>
                     {icon && <ListItemIcon> {icon}</ListItemIcon>}
                     <ListItemText>{text}</ListItemText>
