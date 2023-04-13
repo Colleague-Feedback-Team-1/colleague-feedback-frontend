@@ -86,7 +86,7 @@ const Layout = () => {
             {drawerList.map((item) => {
               const { text, icon, link } = item;
               return (
-                <Link to={link}>
+                <Link to={link} key={text}>
                   <ListItem key={text} divider>
                     {icon && <ListItemIcon> {icon}</ListItemIcon>}
                     <ListItemText>{text}</ListItemText>
