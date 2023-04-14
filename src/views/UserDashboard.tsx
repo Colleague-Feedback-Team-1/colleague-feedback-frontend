@@ -11,16 +11,13 @@ import { UserContextProps } from "../types/types";
 
 const UserDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState<Employee | null>();
-  const [userList, setUserList] = useState<Employee[] | null>();
   const [requestList, setRequestList] = useState<Request[] | null>();
   const { user, setUser } = useContext<UserContextProps>(UserContext);
 
-  console.log("Logged in User: ", user);
   useEffect(() => {
     setTimeout(() => {
       axios
-        .get("http://localhost:4500/api/review-requests/")
+        .get(`http://localhost:4500/api/review-requests/${user._id}`)
         .then((res) => {
           console.log(res.data);
           setRequestList(res.data);
@@ -36,14 +33,20 @@ const UserDashboard = () => {
         <Loading />
       ) : (
         <div>
-          <Typography variant="h3" paddingBottom={'50px'}>USER DASHBOARD</Typography>
+          <Typography variant="h3" paddingBottom={"50px"}>
+            USER DASHBOARD
+          </Typography>
           <Stack>
             <Typography variant="h3">Welcome, {user.employeeName}</Typography>
             <Typography variant="h4">Your feedback requests:</Typography>
             <Stack direction={"row"} spacing={2}>
-              {requestList?.map((request) => {
-                return <RequestCard {...request} key={request._id} />;
-              })}
+              {requestList ? (
+                requestList!.map((request) => {
+                  return <RequestCard {...request} key={request._id} />;
+                })
+              ) : (
+                <p>You have no requests</p>
+              )}
             </Stack>
 
             <Typography variant="h4">

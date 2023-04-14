@@ -5,7 +5,7 @@ export interface Employee {
 //  hashedPassword?: string;
   companyRole?: string;
   image?: string;
-  privileges: "Admin" | "User" | "Manager";
+  privileges?: "Admin" | "User" | "Manager";
 }
 
 export interface UserContextProps {
