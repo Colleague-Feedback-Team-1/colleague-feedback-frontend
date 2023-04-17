@@ -8,7 +8,7 @@ const Main = () => {
         textAlign: "center",
         marginTop: "64px",
         marginLeft: "182px",
-        padding: "50px",
+        padding: "20px 20px 0 40px",
         minHeight:'82.2vh',
         fontWeight:'bold'
       }}

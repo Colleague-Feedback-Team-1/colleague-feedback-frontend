@@ -12,8 +12,7 @@ import { Request } from "../types/types";
 import { Link } from "react-router-dom";
 import React from "react";
 
-
-const RequestCard:React.FC<Request> = (prop) => {
+const RequestCard: React.FC<Request> = (prop) => {
   const givenFeedback = prop.reviewers.filter(
     (reviewer) => reviewer.feedbackSubmitted
   ).length;
@@ -37,23 +36,13 @@ const RequestCard:React.FC<Request> = (prop) => {
           </Stack>
         )}
       </CardContent>
+      <CardActions sx={{ width: '100%', bottom: 0, position: "relative"}}>
+        <Link to={`/requests/${prop._id}`} style={{ textDecoration: "none" , paddingRight:'13px'}}>
+          <Button variant="contained">View</Button>
+        </Link>
 
-      {prop.confirmedByHR ? (
-        <CardActions>
-          <Link to={`/requests/${prop._id}`} style={{ textDecoration: "none" }}>
-            <Button variant="contained">View</Button>
-          </Link> 
-        
-          <Button variant="contained">Quick remind</Button>
-        </CardActions>
-      ) : (
-        <CardActions>
-          <Button variant="outlined" disabled>
-            View
-          </Button>
-          <Button variant="contained">Quick remind</Button>
-        </CardActions>
-      )}
+        <Button variant="contained">Quick remind</Button>
+      </CardActions>
     </Card>
   );
 };

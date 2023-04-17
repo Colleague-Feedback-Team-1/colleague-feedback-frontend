@@ -1,16 +1,12 @@
 import {
   Stack,
-  InputBase,
-  IconButton,
   Autocomplete,
   TextField,
   Box,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import { Employee } from "../types/types";
 import axios from "axios";
-import UserCard from "./UserCard";
 import { Link } from "react-router-dom";
 
 const SearchBar = () => {
@@ -20,7 +16,6 @@ const SearchBar = () => {
     axios
       .get("http://localhost:4500/api/employees/all-employees")
       .then((res) => {
-        console.log(res.data);
         setEmployees(res.data);
       });
   }, []);

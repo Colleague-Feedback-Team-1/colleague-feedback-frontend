@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import AddIcon from "@mui/icons-material/Add";
 import { Employee, Request } from "../types/types";
@@ -8,27 +8,50 @@ import RequestCard from "../components/RequestCard";
 import axios from "axios";
 import UserContext from "../context/UserContext";
 import { UserContextProps } from "../types/types";
+import UnconfirmedRequestCard from "../components/UnconfirmedRequestCard";
 
 const UserDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState<Employee | null>();
-  const [userList, setUserList] = useState<Employee[] | null>();
   const [requestList, setRequestList] = useState<Request[] | null>();
+  const [unconfirmedRequest, setUnconfirmedRequest] = useState<
+    Request[] | null
+  >();
   const { user, setUser } = useContext<UserContextProps>(UserContext);
 
-  console.log("Logged in User: ", user);
+  // Date display
+  const date = new Date().toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   useEffect(() => {
+    const fetchingAdminData = async () => {
+      axios
+        .get(`http://localhost:4500/api/review-requests/to-confirm`)
+        .then((res) => {
+          console.log(res.data)
+          setUnconfirmedRequest(res.data);
+        });
+    };
     setTimeout(() => {
       axios
-        .get("http://localhost:4500/api/review-requests/")
+        .get(
+          `http://localhost:4500/api/review-requests/by-employeeid/${user!._id}`
+        )
         .then((res) => {
-          console.log(res.data);
           setRequestList(res.data);
         })
         .catch((err) => console.log(err));
       setIsLoading(false);
-    }, 2500);
+
+      if (user?.privileges == "Admin") {
+        fetchingAdminData();
+      }
+    }, 2000);
   }, []);
+
+  /* Fetch data if admin is logged in */
 
   return (
     <Stack textAlign="left">
@@ -36,20 +59,47 @@ const UserDashboard = () => {
         <Loading />
       ) : (
         <div>
-          <Typography variant="h3" paddingBottom={'50px'}>USER DASHBOARD</Typography>
-          <Stack>
-            <Typography variant="h3">Welcome, {user.employeeName}</Typography>
+          <Box paddingBottom={"50px"}>
+            <Typography variant="h3">Hello, {user!.employeeName}</Typography>
+            <Typography variant="h6">Today is {date}</Typography>
+          </Box>
+
+          {user?.privileges == "Admin" ? (
+            <Box paddingBottom={"50px"}>
+              <Typography variant="h4">
+                [Admin] Unconfirmed requests:
+              </Typography>
+              <Stack direction={"row"} spacing={2}>
+                {unconfirmedRequest ? (
+                  unconfirmedRequest!.map((request) => {
+                    return (
+                      <UnconfirmedRequestCard {...request} key={request._id} />
+                    );
+                  })
+                ) : (
+                  <p>You have no requests</p>
+                )}
+              </Stack>
+            </Box>
+          ) : (
+            <></>
+          )}
+
+          <Box paddingBottom={"50px"}>
             <Typography variant="h4">Your feedback requests:</Typography>
             <Stack direction={"row"} spacing={2}>
-              {requestList?.map((request) => {
-                return <RequestCard {...request} key={request._id} />;
-              })}
+              {requestList ? (
+                requestList!.map((request) => {
+                  return <RequestCard {...request} key={request._id} />;
+                })
+              ) : (
+                <p>You have no requests</p>
+              )}
             </Stack>
-
-            <Typography variant="h4">
-              Your co-worker needs your feedback:{" "}
-            </Typography>
-          </Stack>
+          </Box>
+          <Typography variant="h4">
+            Your co-worker needs your feedback:{" "}
+          </Typography>
         </div>
       )}
     </Stack>

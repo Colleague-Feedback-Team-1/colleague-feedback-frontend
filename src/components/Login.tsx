@@ -13,11 +13,10 @@ import {
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import UserContext from "../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import ExoveLogo from "../assets/ExoveLogo.png";
 
 const Login = () => {
-  let navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
   console.log("Logged in User: ", user);
 
@@ -25,11 +24,8 @@ const Login = () => {
     axios.post("http://localhost:4500/api/employees/logout").then((res) => {
       console.log(res.data);
       console.log("Log out successfully.");
-      setUser({
-        _id: "",
-        employeeName: "",
-        privileges: "User",
-      });
+      setUser(null);
+      return <Navigate to={"/"} replace />;
     });
   };
 
@@ -45,9 +41,8 @@ const Login = () => {
       .then((res) => {
         console.log(res.data);
         setUser(res.data);
-        if (user._id !== "") {
+        if (!user) {
           console.log("User has logged in");
-          return navigate("/dashboard");
         } else {
           console.log("Please log in to continue");
         }
@@ -56,7 +51,7 @@ const Login = () => {
 
   return (
     <>
-      {user.employeeName == "" ? (
+      {user===null ? (
         <Box
           sx={{
             marginTop: 8,
@@ -126,7 +121,7 @@ const Login = () => {
           </Box>
         </Box>
       ) : (
-        <button onClick={handleLogOut}>Log out</button>
+           <Navigate to={"/dashboard"} replace />
       )}
     </>
   );
