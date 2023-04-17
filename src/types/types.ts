@@ -9,28 +9,30 @@ export interface Employee {
 }
 
 export interface UserContextProps {
-  user: Employee;
-  setUser: (user: Employee) => void;
+  user: Employee | null;
+  setUser: (user: Employee | null) => void;
 }
 
 export interface Request {
   _id: string;
-  employeeId: string;
+  employeeid: string;
   employeeName: string;
   employeeEmail: string;
-  assignedManagerId: string | undefined;
+  assignedManagerid: string | undefined;
   assignedManagerName: string | undefined;
   confirmedByHR: boolean;
   selfReview: boolean;
-  dueDate?: Date;
+  dueDate?: string;
   reviewers: Reviewer[];
+  createdAt?: string;
+  updatedAt?: string; 
 }
 
 export interface Reviewer {
-  reviewerId: string;
+  reviewerid: string;
   reviewerName: string;
   reviewerEmail: string;
-  companyRole: string;
+  role: string;
   feedbackSubmitted: boolean;
 }
 
