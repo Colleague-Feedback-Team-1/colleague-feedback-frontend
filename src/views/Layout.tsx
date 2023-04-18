@@ -6,7 +6,6 @@ import {
   Typography,
   Badge,
   Drawer,
-  Button,
   List,
   ListItem,
   ListItemIcon,
@@ -20,19 +19,17 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Main from "../components/Main";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SearchBar from "../components/SearchBar";
-import ExoveEmployee from "../assets/Exove-employee.png";
 import ExoveLogoWhite from "../assets/ExoveLogoWhite.png";
 import UserContext from "../context/UserContext";
 import axios from "axios";
-import { useNavigate, Navigate } from "react-router-dom";
+import GedionBlack from '../assets/fonts/GedionBlack.ttf'
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
-  const [openDrawer, setOpenDrawer] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
+
 
   const drawerList = [
     {
@@ -57,7 +54,6 @@ const Layout = () => {
         console.log(res.data);
         console.log("Log out successfully.");
         setUser(null);
-        return <Navigate to={"/login"} replace />;
       });
     }, 1000);
   };
@@ -146,7 +142,7 @@ const Layout = () => {
       </Stack>
 
       {/* Drawer in the left side of the screen */}
-      <Drawer variant="permanent" open={openDrawer} anchor="left">
+      <Drawer variant="permanent" anchor="left">
         <Box
           p={2}
           width={"170px"}

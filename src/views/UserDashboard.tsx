@@ -1,7 +1,6 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import AddIcon from "@mui/icons-material/Add";
-import { Employee, Request } from "../types/types";
+import {  Request } from "../types/types";
 import { useEffect, useState, useContext } from "react";
 import Loading from "../components/Loading";
 import RequestCard from "../components/RequestCard";
@@ -16,7 +15,7 @@ const UserDashboard = () => {
   const [unconfirmedRequest, setUnconfirmedRequest] = useState<
     Request[] | null
   >();
-  const { user, setUser } = useContext<UserContextProps>(UserContext);
+  const { user } = useContext<UserContextProps>(UserContext);
 
   // Date display
   const date = new Date().toLocaleString("en-US", {
@@ -45,11 +44,11 @@ const UserDashboard = () => {
         .catch((err) => console.log(err));
       setIsLoading(false);
 
-      if (user?.privileges == "Admin") {
+      if (user?.privileges === "Admin") {
         fetchingAdminData();
       }
-    }, 2000);
-  }, []);
+    }, 1500);
+  }, [user]);
 
   /* Fetch data if admin is logged in */
 
@@ -64,7 +63,7 @@ const UserDashboard = () => {
             <Typography variant="h6">Today is {date}</Typography>
           </Box>
 
-          {user?.privileges == "Admin" ? (
+          {user?.privileges === "Admin" ? (
             <Box paddingBottom={"50px"}>
               <Typography variant="h4">
                 [Admin] Unconfirmed requests:
