@@ -5,8 +5,6 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import BlockIcon from "@mui/icons-material/Block";
 import { Stack } from "@mui/system";
 import { Request } from "../types/types";
 import { Link } from "react-router-dom";
@@ -30,6 +28,7 @@ const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
           <Button variant="contained">View</Button>
         </Link>
 
+        
         <Button variant="contained">Quick remind</Button>
       </CardActions>
     </Card>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 interface EmployeeCardProp {
   _id: string;
-  employeeid: string;
+  employeeid?: string;
   employeeName: string;
   employeeEmail: string;
 }

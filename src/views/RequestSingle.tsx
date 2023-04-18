@@ -1,6 +1,4 @@
 import {
-  AppBar,
-  Toolbar,
   Box,
   Typography,
   Stack,
@@ -8,7 +6,7 @@ import {
   Card,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
@@ -21,7 +19,7 @@ const RequestSingle = () => {
   const params = useParams();
   const [requestData, setRequestData] = useState<Request | null>();
   const [isLoading, setIsLoading] = useState(true);
-  const { user, setUser } = useContext<UserContextProps>(UserContext);
+  const { user } = useContext<UserContextProps>(UserContext);
 
   const formatDate = (date: string) => {
     let outputDate = new Date(date).toLocaleString();
@@ -39,24 +37,50 @@ const RequestSingle = () => {
         setRequestData(res.data);
         setIsLoading(false);
       });
-  }, []);
+  }, [params.requestId]);
 
-  /* handle ConfirmByHR */
-  /* const handleConfirm = () => {
-    axios
-      .put(`http://localhost:3001/requests/${requestData.id}`, {
-        ...requestData,
-        isConfirmed: true,
-      })
-      .then((res) => {
-        console.log(res.data);
-        setRequestData(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    window.location.reload();
-  }; */
+  // check the confirm status and user priviledge to render the action buttons 
+  const renderCardAction = () => {
+    if (requestData?.confirmedByHR === false) {
+      if (user?.privileges === "Admin") {
+        return (
+          <>
+            <Typography variant="body1">
+              Admin can click the "Confirm this request" to assign an manager
+              and then confirm this request.
+            </Typography>
+            <Stack direction={"row"} justifyContent={"space-between"}>
+              <Stack spacing={2} direction={"row"}>
+                <Button variant="contained" color="error">
+                  Reject this request
+                </Button>
+                <Link to={`/requests/${params.requestId}/confirm`}>
+                  <Button
+                    variant="contained"
+                    color="success" /* onClick={handleConfirm} */
+                  >
+                    Confirm this request
+                  </Button>
+                </Link>
+              </Stack>
+
+              <Link to={"/dashboard"}>
+                <Button variant="contained" color="info">
+                  Back to dashboard
+                </Button>
+              </Link>
+            </Stack>
+          </>
+        );
+      }
+    } else {
+      return (
+        <Link to={"/dashboard"}>
+          <Button variant="outlined">Back to dashboard</Button>
+        </Link>
+      );
+    }
+  };
 
   return (
     <Stack sx={{ textAlign: "left" }}>
@@ -113,26 +137,7 @@ const RequestSingle = () => {
               })}
             </Stack>
           </Box>
-          {user?.privileges == "Admin" ? (
-            <>
-              <Typography variant="body1">
-                Admin can click the "Confirm this request" to assign an manager
-                and then confirm this request.
-              </Typography>
-              <Button variant="contained" /* onClick={handleConfirm} */>
-                Confirm this request
-              </Button>
-              <Link to={"/dashboard"}>
-                <Button variant="outlined">Back to dashboard</Button>
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to={"/dashboard"}>
-                <Button variant="outlined">Back to dashboard</Button>
-              </Link>
-            </>
-          )}
+          {renderCardAction()}
         </Card>
       ) : (
         <Loading />

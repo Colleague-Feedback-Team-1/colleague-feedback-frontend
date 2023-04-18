@@ -1,33 +1,23 @@
 import {
   Button,
-  Stack,
   Typography,
   TextField,
   Box,
-  Avatar,
   Grid,
   FormControlLabel,
   Checkbox,
   Link,
 } from "@mui/material";
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import UserContext from "../context/UserContext";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import ExoveLogo from "../assets/ExoveLogo.png";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
   console.log("Logged in User: ", user);
 
-  const handleLogOut = () => {
-    axios.post("http://localhost:4500/api/employees/logout").then((res) => {
-      console.log(res.data);
-      console.log("Log out successfully.");
-      setUser(null);
-      return <Navigate to={"/"} replace />;
-    });
-  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
