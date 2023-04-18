@@ -7,9 +7,9 @@ import RequestSingle from "./views/RequestSingle";
 import { useState } from "react";
 import { Employee } from "./types/types";
 import UserContext from "./context/UserContext";
-import UserCard from "./components/EmployeeCard";
 import EmployeeSingle from "./views/EmployeeSingle";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import ConfirmRequest from "./views/ConfirmRequest";
 
 const App = () => {
   const [user, setUser] = useState<Employee|null>(null);
@@ -30,6 +30,10 @@ const App = () => {
               <Route
                 path="/requests/:requestId"
                 element={<RequestSingle />}
+              ></Route>
+              <Route
+                path="/requests/:requestId/confirm"
+                element={<ConfirmRequest />}
               ></Route>
             </Route>
           </Route>
