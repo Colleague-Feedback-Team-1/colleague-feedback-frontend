@@ -31,7 +31,7 @@ const SearchBar = () => {
     >
       <Autocomplete
         options={employees!}
-        getOptionLabel={(employees) => `${employees.employeeName}`}
+        getOptionLabel={(employees) => `${employees.displayName}`}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -45,7 +45,7 @@ const SearchBar = () => {
         renderOption={(props, employees) => (
           <Link to={`/employees/${employees._id}`} {...employees}>
             <Box component={"li"} {...props} key={employees._id}>
-              {employees.employeeName} ({employees.employeeEmail})
+              {employees.displayName} ({employees.mail})
             </Box>
           </Link>
         )}
