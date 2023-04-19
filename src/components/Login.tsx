@@ -32,12 +32,13 @@ const Login = () => {
         console.log(res.data);
         // Fetch user data from the getSession cookie function
         try {
-          const userDataResponse = await axios.get("http://localhost:4500/api/employees/", {
+          const userDataResponse = await axios.get("http://localhost:4500/api/employees/verify", {
             withCredentials: true,
           });
           setUser(userDataResponse.data);
           if (!user) {
             console.log("User has logged in");
+            localStorage.setItem("loggedIn", "true");
           } else {
             console.log("Please log in to continue");
           }
