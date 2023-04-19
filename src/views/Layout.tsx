@@ -23,7 +23,6 @@ import SearchBar from "../components/SearchBar";
 import ExoveLogoWhite from "../assets/ExoveLogoWhite.png";
 import UserContext from "../context/UserContext";
 import axios from "axios";
-import GedionBlack from '../assets/fonts/GedionBlack.ttf'
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -121,7 +120,7 @@ const Layout = () => {
                     /> */}
                     <Avatar sx={{ bgcolor: "green", width: "30px",
                         height: "30px" }}>
-                      {user?.employeeName.slice(0, 1)}
+                      {user?.givenName.slice(0, 1)}
                     </Avatar>
                   </IconButton>
                 </Stack>
