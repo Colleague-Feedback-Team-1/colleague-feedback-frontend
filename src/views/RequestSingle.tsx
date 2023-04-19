@@ -42,11 +42,11 @@ const RequestSingle = () => {
   // check the confirm status and user priviledge to render the action buttons 
   const renderCardAction = () => {
     if (requestData?.confirmedByHR === false) {
-      if (user?.privileges === "Admin") {
+      if (user?.description === "HR") {
         return (
           <>
             <Typography variant="body1">
-              Admin can click the "Confirm this request" to assign an manager
+              HR can click the "Confirm this request" to assign an manager
               and then confirm this request.
             </Typography>
             <Stack direction={"row"} justifyContent={"space-between"}>
