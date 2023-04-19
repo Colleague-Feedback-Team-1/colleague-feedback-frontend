@@ -44,7 +44,7 @@ const UserDashboard = () => {
         .catch((err) => console.log(err));
       setIsLoading(false);
 
-      if (user?.privileges === "Admin") {
+      if (user?.description === "HR") {
         fetchingAdminData();
       }
     }, 1500);
@@ -59,11 +59,11 @@ const UserDashboard = () => {
       ) : (
         <div>
           <Box paddingBottom={"50px"}>
-            <Typography variant="h3">Hello, {user!.employeeName}</Typography>
+            <Typography variant="h3">Hello, {user!.displayName}</Typography>
             <Typography variant="h6">Today is {date}</Typography>
           </Box>
 
-          {user?.privileges === "Admin" ? (
+          {user?.description === "HR" ? (
             <Box paddingBottom={"50px"}>
               <Typography variant="h4">
                 [Admin] Unconfirmed requests:
