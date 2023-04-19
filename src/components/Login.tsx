@@ -23,21 +23,32 @@ const Login = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     let loginData = {
-      employeeEmail: data.get("employeeEmail"),
+      username: data.get("username"),
       password: data.get("password"),
     };
     axios
-      .post("http://localhost:4500/api/employees/login", loginData)
-      .then((res) => {
+      .post("http://localhost:5600/auth", loginData, { withCredentials: true })
+      .then(async (res) => {
         console.log(res.data);
-        setUser(res.data);
-        if (!user) {
-          console.log("User has logged in");
-        } else {
-          console.log("Please log in to continue");
+        // Fetch user data from the getSession cookie function
+        try {
+          const userDataResponse = await axios.get("http://localhost:4500/api/employees/", {
+            withCredentials: true,
+          });
+          setUser(userDataResponse.data);
+          if (!user) {
+            console.log("User has logged in");
+          } else {
+            console.log("Please log in to continue");
+          }
+        } catch (error) {
+          console.error("Failed to fetch user data:", error);
         }
+      })
+      .catch((error) => {
+        console.error("Authentication failed:", error);
       });
-  };
+  };  
 
   return (
     <>
@@ -75,10 +86,10 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="employeeEmail"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
