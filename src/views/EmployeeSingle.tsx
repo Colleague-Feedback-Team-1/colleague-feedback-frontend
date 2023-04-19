@@ -25,7 +25,7 @@ const EmployeeSingle = () => {
     setIsLoading(true)
     setTimeout(() => {
       axios
-        .get(`http://localhost:4500/api/employees/${params.employeeId}`)
+        .get(`http://localhost:4500/api/employees/get-one/${params.employeeId}`)
         .then((res) => {
           setEmployee(res.data);
         });
@@ -45,10 +45,10 @@ const EmployeeSingle = () => {
               sx={{ width: "200px", height: "200px", objectFit: "fill" }}
             />
             <Box component={"div"} textAlign={"left"}>
-              <Typography variant="h3">{employee?.employeeName}</Typography>
-              <Typography variant="h4">{employee?.employeeEmail}</Typography>
+              <Typography variant="h3">{employee?.displayName}</Typography>
+              <Typography variant="h4">{employee?.mail}</Typography>
               <Typography variant="h5">
-                {employee?.companyRole} | {employee?.privileges}{" "}
+               {employee?.description}{" "}
               </Typography>
             </Box>
           </Stack>
