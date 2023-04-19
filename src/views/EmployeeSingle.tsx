@@ -25,7 +25,7 @@ const EmployeeSingle = () => {
     setIsLoading(true)
     setTimeout(() => {
       axios
-        .get(`http://localhost:4500/api/employees/get-one/${params.employeeId}`)
+        .get(`http://localhost:4500/api/employees/${params.employeeId}`)
         .then((res) => {
           setEmployee(res.data);
         });
