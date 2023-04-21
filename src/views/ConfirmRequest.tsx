@@ -47,6 +47,7 @@ const ConfirmRequest = () => {
   const { user } = useContext<UserContextProps>(UserContext);
   const navigate = useNavigate();
 
+  
   useEffect(() => {
     axios
       .get("http://localhost:4500/api/employees/all-employees")
@@ -72,7 +73,7 @@ const ConfirmRequest = () => {
   const handleConfirm = () => {
     const confirmBody = {
       assignedManagerid: managerList[0]._id,
-      assignedManagerName: managerList[0].employeeName,
+      assignedManagerName: managerList[0].displayName,
       confirmedByHR: "true",
     };
 
@@ -121,7 +122,7 @@ const ConfirmRequest = () => {
       return employeeList!
         .filter((employee: Employee) => employee._id !== user?._id)
         .filter((employee: Employee) => {
-          return employee.employeeName
+          return employee.displayName
             .toLowerCase()
             .includes(filterUser.toLowerCase());
         })
@@ -158,15 +159,15 @@ const ConfirmRequest = () => {
 
   const renderUserCard = (prop: Employee) => {
     return (
-      <Card sx={{ width: "250px", height: "70px", margin: "5px" }}>
+      <Card sx={{ width: "300px", height: "70px", margin: "5px" }}>
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "green" }}>
-              {prop.employeeName.slice(0, 1)}
+              {prop.displayName.slice(0, 1)}
             </Avatar>
           }
-          title={prop.employeeName}
-          subheader={`${prop.employeeEmail}`}
+          title={prop.displayName}
+          subheader={`${prop.mail.slice(0,15)}...`}
           action={renderCardAction({ ...prop })}
         />
       </Card>

@@ -1,17 +1,11 @@
-import {
-  Box,
-  Typography,
-  Stack,
-  Button,
-  Card,
-} from "@mui/material";
+import { Box, Typography, Stack, Button, Card } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Request, UserContextProps } from "../types/types";
+import { Employee, Request, UserContextProps } from "../types/types";
 import Loading from "../components/Loading";
 import UserContext from "../context/UserContext";
 
@@ -19,35 +13,68 @@ const RequestSingle = () => {
   const params = useParams();
   const [requestData, setRequestData] = useState<Request | null>();
   const [isLoading, setIsLoading] = useState(true);
+  const [managerData, setManagerData] = useState<Employee | null>();
   const { user } = useContext<UserContextProps>(UserContext);
 
   const formatDate = (date: string) => {
     let outputDate = new Date(date).toLocaleString();
     return outputDate;
   };
+  console.log(requestData);
 
-  /* Fetch data of that single request */
+  // fetch data for the manager from requestData.assignedManagerid
+  const fetchManager = () => {
+    if (requestData?.assignedManagerid) {
+      console.log("This request has managerId", requestData.assignedManagerid);
+      axios
+        .get(
+          `http://localhost:4500/api/employees/${
+            requestData!.assignedManagerid
+          }`
+        )
+        .then((res) => {
+          console.log(res.data);
+          setManagerData(res.data);
+        });
+    }
+  };
+  
+useEffect(()=> {
+  console.log('requestData changed, check for managerId');
+  if (requestData?.assignedManagerid) {
+    console.log(requestData.assignedManagerid);
+    fetchManager()
+  } else {
+    console.log('no managerid yet')
+  }
+
+},[requestData])
+  /* Fetch data of the request */
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:4500/api/review-requests/by-requestid/${params.requestId}`
-      )
-      .then((res) => {
-        console.log(res.data);
-        setRequestData(res.data);
-        setIsLoading(false);
-      });
+    setTimeout(() => {
+      axios
+        .get(
+          `http://localhost:4500/api/review-requests/by-requestid/${params.requestId}`
+        )
+        .then((res) => {
+          setRequestData(res.data);
+          if (requestData?.assignedManagerid) {
+            fetchManager();
+          }
+          setIsLoading(false);
+        });
+    }, 2000);
   }, [params.requestId]);
 
-  // check the confirm status and user priviledge to render the action buttons 
+  // check the confirm status and user priviledge to render the action buttons
   const renderCardAction = () => {
     if (requestData?.confirmedByHR === false) {
-      if (user?.privileges === "Admin") {
+      if (user?.description === "HR") {
         return (
           <>
             <Typography variant="body1">
-              Admin can click the "Confirm this request" to assign an manager
-              and then confirm this request.
+              HR can click the "Confirm this request" to assign an manager and
+              then confirm this request.
             </Typography>
             <Stack direction={"row"} justifyContent={"space-between"}>
               <Stack spacing={2} direction={"row"}>
@@ -125,6 +152,15 @@ const RequestSingle = () => {
           </Box>
           <Box paddingBottom={"50px"} component={"div"}>
             <Typography variant="h4">Project Manager:</Typography>
+            {managerData ? (
+              <EmployeeCard
+                employeeid={managerData?._id}
+                employeeEmail={managerData!.mail}
+                employeeName={managerData!.displayName}
+              />
+            ) : (
+              <Typography>No manager assigned yet.</Typography>
+            )}
           </Box>
 
           <Box paddingBottom={"50px"} component={"div"}>
