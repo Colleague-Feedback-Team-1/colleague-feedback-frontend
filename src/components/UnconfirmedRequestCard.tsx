@@ -4,6 +4,7 @@ import {
   CardActions,
   CardContent,
   Typography,
+  CardHeader
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { Request } from "../types/types";
@@ -13,6 +14,9 @@ import React from "react";
 const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
   return (
     <Card sx={{ backgroundColor: "#ff6900", color: "white" }}>
+      <CardHeader
+        title={`ID ${prop?._id.slice(0, 5)}...${prop?._id.slice(-3)}`}
+      ></CardHeader>
       <CardContent>
         <Stack>
           <Typography>Reviewee: {prop.employeeName}</Typography>
@@ -28,7 +32,6 @@ const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
           <Button variant="contained">View</Button>
         </Link>
 
-        
         <Button variant="contained">Quick remind</Button>
       </CardActions>
     </Card>
