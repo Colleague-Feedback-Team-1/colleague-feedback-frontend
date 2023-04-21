@@ -11,6 +11,7 @@ import EmployeeSingle from "./views/EmployeeSingle";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ConfirmRequest from "./views/ConfirmRequest";
 import axios from "axios";
+import CreateNewRequest from "./views/CreateNewRequest";
 
 const App = () => {
   const [user, setUser] = useState<Employee|null>(null);
@@ -53,6 +54,10 @@ const App = () => {
               <Route
                 path="/requests/:requestId/confirm"
                 element={<ConfirmRequest />}
+              ></Route>
+              <Route
+                path="/requests/createNewRequest"
+                element={<CreateNewRequest/>}
               ></Route>
             </Route>
           </Route>
