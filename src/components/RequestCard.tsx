@@ -3,7 +3,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Typography,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -19,8 +18,6 @@ const RequestCard: React.FC<Request> = (prop) => {
   ).length;
   return (
     <Card sx={{ backgroundColor: "#4CA85A", color: "white" }}>
-      <CardHeader title={`ID ${prop?._id.slice(0, 5)}...${prop?._id.slice(-3)}`}>
-      </CardHeader>
       <CardContent>
         {prop.confirmedByHR ? (
           <Stack>
@@ -39,11 +36,8 @@ const RequestCard: React.FC<Request> = (prop) => {
           </Stack>
         )}
       </CardContent>
-      <CardActions sx={{ width: "100%", bottom: 0, position: "relative" }}>
-        <Link
-          to={`/requests/${prop._id}`}
-          style={{ textDecoration: "none", paddingRight: "13px" }}
-        >
+      <CardActions sx={{ width: '100%', bottom: 0, position: "relative"}}>
+        <Link to={`/requests/${prop._id}`} style={{ textDecoration: "none" , paddingRight:'13px'}}>
           <Button variant="contained">View</Button>
         </Link>
 
