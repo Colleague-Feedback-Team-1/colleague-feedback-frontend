@@ -28,6 +28,7 @@ const EmployeeSingle = () => {
         .get(`http://localhost:4500/api/employees/${params.employeeId}`)
         .then((res) => {
           setEmployee(res.data);
+          console.log(res.data)
         });
       setIsLoading(false);
     }, 1000);
@@ -37,20 +38,20 @@ const EmployeeSingle = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <Card sx={{ width: "600px", height: "200px", margin: "10px" }}>
+        <Card sx={{ width: "auto", height: "200px", margin: "10px" }}>
           <Stack direction={"row"} spacing={5}>
             <CardMedia
               component={"img"}
               image={ExoveEmployee}
               sx={{ width: "200px", height: "200px", objectFit: "fill" }}
             />
-            <Box component={"div"} textAlign={"left"}>
+            <Stack justifyContent={'center'} textAlign={"left"}>
               <Typography variant="h3">{employee?.displayName}</Typography>
               <Typography variant="h4">{employee?.mail}</Typography>
               <Typography variant="h5">
                {employee?.description}{" "}
               </Typography>
-            </Box>
+            </Stack>
           </Stack>
         </Card>
       )}

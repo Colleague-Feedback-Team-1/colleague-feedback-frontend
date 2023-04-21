@@ -2,16 +2,15 @@ import { Avatar, Card, CardHeader } from "@mui/material";
 import { Link } from "react-router-dom";
 
 interface EmployeeCardProp {
-  _id: string;
+  _id?: string;
   employeeid?: string;
   employeeName: string;
   employeeEmail: string;
 }
 
 const EmployeeCard = (prop: EmployeeCardProp) => {
-  console.log(prop.employeeid);
   return (
-    <Card sx={{ width: "250px", height: "70px", margin: "10px" }}>
+    <Card sx={{ width: "300px", height: "70px", margin: "10px" }}>
       <Link to={`/employees/${prop.employeeid}`}>
         <CardHeader
           avatar={
@@ -20,7 +19,7 @@ const EmployeeCard = (prop: EmployeeCardProp) => {
             </Avatar>
           }
           title={prop.employeeName}
-          subheader={`${prop.employeeEmail}`}
+          subheader={`${prop.employeeEmail.slice(0,15)}...`}
         />
       </Link>
     </Card>

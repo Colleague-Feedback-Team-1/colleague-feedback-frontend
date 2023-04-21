@@ -47,6 +47,7 @@ const ConfirmRequest = () => {
   const { user } = useContext<UserContextProps>(UserContext);
   const navigate = useNavigate();
 
+  
   useEffect(() => {
     axios
       .get("http://localhost:4500/api/employees/all-employees")
@@ -158,7 +159,7 @@ const ConfirmRequest = () => {
 
   const renderUserCard = (prop: Employee) => {
     return (
-      <Card sx={{ width: "250px", height: "70px", margin: "5px" }}>
+      <Card sx={{ width: "300px", height: "70px", margin: "5px" }}>
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "green" }}>
@@ -166,7 +167,7 @@ const ConfirmRequest = () => {
             </Avatar>
           }
           title={prop.displayName}
-          subheader={`${prop.mail}`}
+          subheader={`${prop.mail.slice(0,15)}...`}
           action={renderCardAction({ ...prop })}
         />
       </Card>

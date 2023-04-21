@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const ReviewerCard = (prop: Reviewer) => {
   return (
-    <Card sx={{ width: "250px", height: "70px", margin: "10px" }}>
+    <Card sx={{ width: "300px", height: "70px", margin: "10px" }}>
       <Link to={`/employees/${prop.reviewerid}`}>
         <CardHeader
           avatar={
@@ -13,7 +13,7 @@ const ReviewerCard = (prop: Reviewer) => {
             </Avatar>
           }
           title={`${prop.reviewerName} (${prop.role}) `}
-          subheader={`${prop.reviewerEmail} `}
+          subheader={`${prop.reviewerEmail.slice(0,15)}...`}
         />
       </Link>
     </Card>
