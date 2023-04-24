@@ -167,7 +167,7 @@ useEffect(()=> {
             <Typography variant="h4">Reviewee:</Typography>
             <EmployeeCard {...requestData!} />
             <Typography variant="h4">Reviewers:</Typography>
-            <Stack direction={"row"}>
+            <Stack direction={"row"} flexWrap={'wrap'}>
               {requestData!.reviewers.map((reviewer) => {
                 return <ReviewerCard {...reviewer} />;
               })}
