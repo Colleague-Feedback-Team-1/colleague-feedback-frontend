@@ -1,38 +1,39 @@
-import "./styles/index.css";
-import { Route, Routes } from "react-router-dom";
-import UserDashboard from "./views/UserDashboard";
-import Login from "./components/Login";
-import Layout from "./views/Layout";
-import RequestSingle from "./views/RequestSingle";
-import { useEffect, useState } from "react";
-import { Employee } from "./types/types";
-import UserContext from "./context/UserContext";
-import EmployeeSingle from "./views/EmployeeSingle";
-import ProtectedRoute from "./auth/ProtectedRoute";
-import ConfirmRequest from "./views/ConfirmRequest";
-import axios from "axios";
-import CreateNewRequest from "./views/CreateNewRequest";
+import './styles/index.css'
+import { Route, Routes } from 'react-router-dom'
+import UserDashboard from './views/UserDashboard'
+import Login from './components/Login'
+import Layout from './views/Layout'
+import RequestSingle from './views/RequestSingle'
+import { useEffect, useState } from 'react'
+import { Employee } from './types/types'
+import UserContext from './context/UserContext'
+import EmployeeSingle from './views/EmployeeSingle'
+import ProtectedRoute from './auth/ProtectedRoute'
+import ConfirmRequest from './views/ConfirmRequest'
+import axios from 'axios'
+import FeedbackSubmission from './views/FeedbackSubmission'
 
 const App = () => {
-  const [user, setUser] = useState<Employee|null>(null);
+  const [user, setUser] = useState<Employee | null>(null)
   useEffect(() => {
     const verifyUser = async () => {
       // Check if the loggedIn flag is set in the local storage
-      const loggedIn = localStorage.getItem("loggedIn");
-  
+      const loggedIn = localStorage.getItem('loggedIn')
+
       if (loggedIn) {
         try {
-          const res = await axios.get("http://localhost:4500/api/employees/verify", { withCredentials: true });
-          setUser(res.data);
+          const res = await axios.get('http://localhost:4500/api/employees/verify', {
+            withCredentials: true,
+          })
+          setUser(res.data)
         } catch (error) {
-          console.error("Failed to verify user:", error);
+          console.error('Failed to verify user:', error)
         }
       }
-    };
-  
-    verifyUser();
-  }, []);
-  
+    }
+
+    verifyUser()
+  }, [])
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -43,28 +44,17 @@ const App = () => {
             <Route path="/login" element={<Login />}></Route>
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<UserDashboard />}></Route>
-              <Route
-                path="/employees/:employeeId"
-                element={<EmployeeSingle />}
-              ></Route>
-              <Route
-                path="/requests/:requestId"
-                element={<RequestSingle />}
-              ></Route>
-              <Route
-                path="/requests/:requestId/confirm"
-                element={<ConfirmRequest />}
-              ></Route>
-              <Route
-                path="/requests/createNewRequest"
-                element={<CreateNewRequest/>}
-              ></Route>
+              <Route path="/employees/:employeeId" element={<EmployeeSingle />}></Route>
+              <Route path="/requests/:requestId" element={<RequestSingle />}></Route>
+              <Route path="/requests/:requestId/confirm" element={<ConfirmRequest />}></Route>
+              
             </Route>
+            <Route path="/feedback-form" element={<FeedbackSubmission />}></Route>
           </Route>
         </Routes>
       </div>
     </UserContext.Provider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
