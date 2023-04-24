@@ -186,7 +186,7 @@ const ConfirmRequest = () => {
         >
           <Typography variant="h3" pb={"50px"}>
             CONFIRMING REQUEST #
-            {`${requestData?._id.slice(0, 5)}...${requestData?._id.slice(-3)}`}
+            {`${requestData!._id.slice(0, 5)}...${requestData!._id.slice(-3)}`}
           </Typography>
           <Stack direction={"row"} paddingBottom={"50px"}>
             <Stack flexGrow={1}>
@@ -234,7 +234,7 @@ const ConfirmRequest = () => {
                 alignItems={"center"}
                 justifyContent={"flex-start"}
                 height={"200px"}
-                overflow={"scroll"}
+                sx={{ overflowY: "scroll" }}
               >
                 {renderAllEmployees()}
               </Stack>
