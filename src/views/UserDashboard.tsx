@@ -1,6 +1,6 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { Stack } from "@mui/system";
-import {  Request } from "../types/types";
+import { Request } from "../types/types";
 import { useEffect, useState, useContext } from "react";
 import Loading from "../components/Loading";
 import RequestCard from "../components/RequestCard";
@@ -8,6 +8,7 @@ import axios from "axios";
 import UserContext from "../context/UserContext";
 import { UserContextProps } from "../types/types";
 import UnconfirmedRequestCard from "../components/UnconfirmedRequestCard";
+import { Link } from "react-router-dom";
 
 const UserDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +30,7 @@ const UserDashboard = () => {
       axios
         .get(`http://localhost:4500/api/review-requests/to-confirm`)
         .then((res) => {
-          console.log(res.data)
+          console.log(res.data);
           setUnconfirmedRequest(res.data);
         });
     };
@@ -99,6 +100,11 @@ const UserDashboard = () => {
           <Typography variant="h4">
             Your co-worker needs your feedback:{" "}
           </Typography>
+          <Link to={"/requests/createNewRequest"}>
+            <Button variant="contained" size="large">
+              Create New Request
+            </Button>
+          </Link>
         </div>
       )}
     </Stack>
