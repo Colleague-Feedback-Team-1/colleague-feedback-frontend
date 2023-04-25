@@ -14,6 +14,7 @@ import axios from "axios";
 import CreateNewRequest from "./views/CreateNewRequest";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import FeedbackSubmission from "./views/FeedbackSubmission";
 
 
 const App = () => {
@@ -64,6 +65,10 @@ const App = () => {
                   path="/requests/createNewRequest"
                   element={<CreateNewRequest />}
                 ></Route>
+                <Route 
+                  path="/submission-form/:requestId"
+                  element={<FeedbackSubmission/>}>
+                </Route>
               </Route>
             </Route>
           </Routes>
