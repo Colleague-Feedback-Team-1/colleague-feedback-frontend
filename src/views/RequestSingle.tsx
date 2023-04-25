@@ -20,7 +20,6 @@ const RequestSingle = () => {
     let outputDate = new Date(date).toLocaleString();
     return outputDate;
   };
-  console.log(requestData);
 
   // fetch data for the manager from requestData.assignedManagerid
   const fetchManager = () => {
@@ -140,6 +139,10 @@ useEffect(()=> {
             <Typography variant="body1">
               <b>Created At: </b>
               {formatDate(requestData?.createdAt!)}
+            </Typography>
+            <Typography variant="body1">
+              <b>Due date: </b>
+              {formatDate(requestData?.dateRequested!)}
             </Typography>
             <Typography variant="body1">
               <b>Status: </b>
