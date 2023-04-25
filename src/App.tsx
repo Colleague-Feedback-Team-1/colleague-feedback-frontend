@@ -15,26 +15,28 @@ import CreateNewRequest from "./views/CreateNewRequest";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
+
 const App = () => {
-  const [user, setUser] = useState<Employee|null>(null);
+  const [user, setUser] = useState<Employee | null>(null)
   useEffect(() => {
     const verifyUser = async () => {
       // Check if the loggedIn flag is set in the local storage
-      const loggedIn = localStorage.getItem("loggedIn");
-  
+      const loggedIn = localStorage.getItem('loggedIn')
+
       if (loggedIn) {
         try {
-          const res = await axios.get("http://localhost:4500/api/employees/verify", { withCredentials: true });
-          setUser(res.data);
+          const res = await axios.get('http://localhost:4500/api/employees/verify', {
+            withCredentials: true,
+          })
+          setUser(res.data)
         } catch (error) {
-          console.error("Failed to verify user:", error);
+          console.error('Failed to verify user:', error)
         }
       }
-    };
-  
-    verifyUser();
-  }, []);
-  
+    }
+
+    verifyUser()
+  }, [])
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -68,7 +70,7 @@ const App = () => {
         </div>
       </LocalizationProvider>
     </UserContext.Provider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
