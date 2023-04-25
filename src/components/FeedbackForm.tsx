@@ -25,7 +25,9 @@ interface Section {
   __v: number;
 }
 
-interface FormData {
+export interface CustomFormData {
+  requestid: string;
+  employeeid: string;
   answers: {
     [sectionId: string]: {
       [questionId: string]: string | number;
@@ -35,11 +37,12 @@ interface FormData {
 
 interface CustomFormProps {
   data: Section[];
-  onSubmit: (data: FormData) => void;
+  onSubmit: (data: CustomFormData) => void;
 }
 
+
 const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
-  const { handleSubmit, control } = useForm<FormData>();
+  const { handleSubmit, control } = useForm<CustomFormData>();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,7 +94,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
       ))}
       <Grid item>
         <Button type="submit" variant="contained" color="primary">
-          Submit
+          Submit Feedback
         </Button>
       </Grid>
     </form>
