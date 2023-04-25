@@ -1,45 +1,78 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import FeedbackForm from '../components/FeedbackForm';
-import Loading from '../components/Loading';
-import FormIntro from '../assets/FormIntro';
-import { Container, Box, CssBaseline } from '@mui/material';
+import { useState, useEffect, useContext } from 'react'
+import axios from 'axios'
+import FeedbackForm, { CustomFormData } from '../components/FeedbackForm'
+import Loading from '../components/Loading'
+import FormIntro from '../assets/FormIntro'
+import UserContext from '../context/UserContext'
+import { UserContextProps } from '../types/types'
+import { Container, Box, CssBaseline } from '@mui/material'
+import { useParams } from 'react-router-dom'
 
 interface Section {
-  _id: string;
-  sectionName: string;
-  questions: Question[];
-  __v: number;
+  _id: string
+  sectionName: string
+  questions: Question[]
+  __v: number
 }
 
 interface Question {
-  question: string;
-  isFreeForm: boolean;
-  _id: string;
+  question: string
+  isFreeForm: boolean
+  _id: string
 }
 
 function App() {
-  const [data, setData] = useState<Section[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const params = useParams()
+  const [data, setData] = useState<Section[]>([])
+  const { user } = useContext<UserContextProps>(UserContext)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:4500/api/questions/');
-        setData(response.data);
-        setIsLoading(false);
+        const response = await axios.get('http://localhost:4500/api/questions/')
+        setData(response.data)
+        setIsLoading(false)
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setIsLoading(false);
+        console.error('Error fetching data:', error)
+        setIsLoading(false)
       }
+    }
+
+    fetchData()
+  }, [])
+
+  const handleSubmit = async (formData: CustomFormData) => {
+    const sections = Object.entries(formData.answers).map(([sectionId, sectionData]) => {
+      const sectionName = data.find((section) => section._id === sectionId)?.sectionName;
+      const questions = Object.entries(sectionData).map(([questionId, answer]) => {
+        const question = data
+          .flatMap((section) => section.questions)
+          .find((question) => question._id === questionId);
+  
+        return question?.isFreeForm
+          ? { openFeedback: answer }
+          : { score: Number(answer) };
+      });
+  
+      return { sectionName, questions };
+    });
+  
+    const requestData = {
+      requestid: params.requestId, 
+      employeeid: user?._id, 
+      sections,
     };
-
-    fetchData();
-  }, []);
-
-  const handleSubmit = (formData: any) => {
-    console.log(formData);
+    console.log(requestData);
+  
+    try {
+      await axios.post('http://localhost:4500/api/feedback-data/insert-feedback', requestData);
+      console.log('Form submitted successfully');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
+  
 
   return (
     <>
@@ -57,7 +90,7 @@ function App() {
         </Box>
       </Container>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
