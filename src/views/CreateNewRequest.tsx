@@ -18,9 +18,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Employee,
-  Request,
   UserContextProps,
-  Reviewer,
   RequestWithoutId,
 } from "../types/types";
 import EmployeeCard from "../components/EmployeeCard";
@@ -93,9 +91,6 @@ const CreateNewRequest = () => {
   const handleModalOpen = () => setOpenModal(true);
   const handleModalClose = () => setOpenModal(false);
 
-  // handle send
-  const handleConfirm = () => {};
-
   // handle search bar
   const onChangeHandler = (value: string) => {
     setFilterUser(value);
@@ -124,6 +119,7 @@ const CreateNewRequest = () => {
   //render the list of all employees with filter from searchbar
   const renderAllEmployees = () => {
     if (filterUser === "") {
+      return 
     } else {
       return employeeList!
         .filter((employee: Employee) => employee._id !== user?._id)
