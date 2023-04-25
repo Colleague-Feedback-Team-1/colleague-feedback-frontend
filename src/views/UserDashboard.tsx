@@ -9,7 +9,6 @@ import UserContext from "../context/UserContext";
 import { UserContextProps } from "../types/types";
 import UnconfirmedRequestCard from "../components/UnconfirmedRequestCard";
 import { Link } from "react-router-dom";
-import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import SplitscreenOutlinedIcon from "@mui/icons-material/SplitscreenOutlined";
 import ViewListOutlinedIcon from "@mui/icons-material/ViewListOutlined";
 

@@ -9,7 +9,6 @@ import {
 import { Stack } from "@mui/system";
 import { Request } from "../types/types";
 import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
 
 const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
   // convert the time from the time converter to the format that MongoDB accept
