@@ -204,7 +204,7 @@ const UserDashboard = () => {
               <TableBody>
                 {adminRequestList?.map((request) => (
                   <TableRow key={request._id}>
-                    <TableCell>{request._id}</TableCell>
+                    <TableCell>{`...${request._id.slice(-6)}`}</TableCell>
                     <TableCell>{request.confirmedByHR.toString()}</TableCell>
                     <TableCell>{request.employeeName}</TableCell>
                     <TableCell>{request.selfReview.toString()}</TableCell>
@@ -214,8 +214,9 @@ const UserDashboard = () => {
               </TableBody>
             </Table>
           </TableContainer>
-{/*           <DataGrid rows={adminRequestList!} columns={columns} />
- */}        </>
+          {/*           <DataGrid rows={adminRequestList!} columns={columns} />
+           */}{" "}
+        </>
       );
     }
   };
