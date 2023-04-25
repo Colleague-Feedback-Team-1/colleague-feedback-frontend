@@ -20,7 +20,6 @@ const RequestSingle = () => {
     let outputDate = new Date(date).toLocaleString();
     return outputDate;
   };
-  console.log(requestData);
 
   // fetch data for the manager from requestData.assignedManagerid
   const fetchManager = () => {
@@ -142,6 +141,10 @@ useEffect(()=> {
               {formatDate(requestData?.createdAt!)}
             </Typography>
             <Typography variant="body1">
+              <b>Due date: </b>
+              {formatDate(requestData?.dateRequested!)}
+            </Typography>
+            <Typography variant="body1">
               <b>Status: </b>
               {requestData!.confirmedByHR ? (
                 <span style={{ color: "green" }}>Confirmed by HR</span>
@@ -167,7 +170,7 @@ useEffect(()=> {
             <Typography variant="h4">Reviewee:</Typography>
             <EmployeeCard {...requestData!} />
             <Typography variant="h4">Reviewers:</Typography>
-            <Stack direction={"row"}>
+            <Stack direction={"row"} flexWrap={'wrap'}>
               {requestData!.reviewers.map((reviewer) => {
                 return <ReviewerCard {...reviewer} />;
               })}
