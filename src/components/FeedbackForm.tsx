@@ -1,6 +1,6 @@
 // imports
-import React from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
 import {
   Typography,
   RadioGroup,
@@ -9,36 +9,37 @@ import {
   TextField,
   Grid,
   Button,
-} from '@mui/material'
+  Stack,
+} from "@mui/material";
 
 interface Question {
-  question: string
-  isFreeForm: boolean
-  _id: string
+  question: string;
+  isFreeForm: boolean;
+  _id: string;
 }
 
 interface Section {
-  _id: string
-  sectionName: string
-  questions: Question[]
-  __v: number
+  _id: string;
+  sectionName: string;
+  questions: Question[];
+  __v: number;
 }
 
 interface FormData {
   answers: {
     [sectionId: string]: {
-      [questionId: string]: string | number
-    }
-  }
+      [questionId: string]: string | number;
+    };
+  };
 }
 
 interface CustomFormProps {
-  data: Section[]
-  onSubmit: (data: FormData) => void
+  data: Section[];
+  onSubmit: (data: FormData) => void;
 }
 
 const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
-  const { handleSubmit, control } = useForm<FormData>()
+  const { handleSubmit, control } = useForm<FormData>();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -54,23 +55,33 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                 <Controller
                   name={`answers.${section._id}.${question._id}`}
                   control={control}
-                  render={({ field }) => <TextField {...field} variant="outlined" fullWidth />}
+                  render={({ field }) => (
+                    <TextField {...field} variant="outlined" fullWidth />
+                  )}
                 />
               ) : (
                 <Controller
                   name={`answers.${section._id}.${question._id}`}
                   control={control}
                   render={({ field }) => (
-                    <RadioGroup {...field} row>
-                      {[1, 2, 3, 4, 5].map((value) => (
-                        <FormControlLabel
-                          key={value}
-                          value={value.toString()} // Convert the value to a string, as the answer could be a string or number
-                          control={<Radio />}
-                          label={value}
-                        />
-                      ))}
-                    </RadioGroup>
+                    <Stack
+                      direction={"row"}
+                      spacing={2}
+                      sx={{ alignItems: "center", justifyContent: "center" }}
+                    >
+                      <Typography>Very bad</Typography>
+                      <RadioGroup {...field} row>
+                        {[1, 2, 3, 4, 5].map((value) => (
+                          <FormControlLabel
+                            key={value}
+                            value={value.toString()} // Convert the value to a string, as the answer could be a string or number
+                            control={<Radio />}
+                            label={value}
+                          />
+                        ))}
+                      </RadioGroup>
+                      <Typography>Very Good</Typography>
+                    </Stack>
                   )}
                 />
               )}
@@ -84,7 +95,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
         </Button>
       </Grid>
     </form>
-  )
-}
+  );
+};
 
-export default FeedbackForm
+export default FeedbackForm;
