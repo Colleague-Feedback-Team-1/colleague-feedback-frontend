@@ -1,4 +1,16 @@
-import { Box, Typography, Button, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import { Stack } from "@mui/system";
 import { Request } from "../types/types";
 import { useEffect, useState, useContext } from "react";
@@ -11,16 +23,18 @@ import UnconfirmedRequestCard from "../components/UnconfirmedRequestCard";
 import { Link } from "react-router-dom";
 import SplitscreenOutlinedIcon from "@mui/icons-material/SplitscreenOutlined";
 import ViewListOutlinedIcon from "@mui/icons-material/ViewListOutlined";
-
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import type {} from "@mui/x-data-grid/themeAugmentation";
 const UserDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [requestList, setRequestList] = useState<Request[] | null>();
+  const [adminRequestList, setAdminRequestList] = useState<Request[] | null>();
   const [asReviewerList, setAsReviewerList] = useState<Request[] | null>();
   const [unconfirmedRequest, setUnconfirmedRequest] = useState<
     Request[] | null
   >();
   const { user } = useContext<UserContextProps>(UserContext);
-  const [view, setView] = useState<"row" | "grid">("row");
+  const [view, setView] = useState<"basic" | "table">("table");
 
   // Date display
   const date = new Date().toLocaleString("en-US", {
@@ -31,13 +45,21 @@ const UserDashboard = () => {
 
   useEffect(() => {
     const fetchingAdminData = async () => {
+      // Admin can fetch unconfirmed requests
       axios
         .get(`http://localhost:4500/api/review-requests/to-confirm`)
         .then((res) => {
           console.log(res.data);
           setUnconfirmedRequest(res.data);
         });
+
+      // Admin can fetch all requests in db
+      axios.get(`http://localhost:4500/api/review-requests/`).then((res) => {
+        setAdminRequestList(res.data);
+      });
     };
+
+    // Create a quick loading duration
     setTimeout(() => {
       axios
         .get(
@@ -63,81 +85,11 @@ const UserDashboard = () => {
     }, 1500);
   }, [user]);
 
-  /* Fetch data if admin is logged in */
-
-  return (
-    <Stack textAlign="left">
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div>
-          <Stack
-            direction={"row"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            paddingBottom={"50px"}
-          >
-            <Box>
-              <Typography variant="h3">Hello, {user!.displayName}</Typography>
-              <Typography variant="h6">Today is {date}</Typography>
-            </Box>
-            <Link to={"/requests/createNewRequest"}>
-              <Button variant="contained" size="large" color="success">
-                Create New Request
-              </Button>
-            </Link>
-          </Stack>
-
-          <Stack
-            direction={"row"}
-            spacing={1}
-            alignItems={"center"}
-            justifyContent={"flex-end"}
-            marginBottom={"30px"}
-          >
-            <Typography>View</Typography>
-            {view === "row" ? (
-              <>
-                <IconButton
-                  sx={{
-                    border: "0.5px solid black",
-                    borderRadius: 2,
-                    backgroundColor: "blue",
-                    color: "white",
-                  }}
-                >
-                  <SplitscreenOutlinedIcon />
-                </IconButton>
-                <IconButton
-                  sx={{ border: "0.5px solid black", borderRadius: 2 }}
-                  onClick={() => setView("grid")}
-                >
-                  <ViewListOutlinedIcon />
-                </IconButton>
-              </>
-            ) : (
-              <>
-                <IconButton
-                  sx={{ border: "0.5px solid black", borderRadius: 2 }}
-                  onClick={() => setView("row")}
-                >
-                  <SplitscreenOutlinedIcon />
-                </IconButton>
-                <IconButton
-                  color="primary"
-                  sx={{
-                    border: "0.5px solid black",
-                    borderRadius: 2,
-                    backgroundColor: "blue",
-                    color: "white",
-                  }}
-                >
-                  <ViewListOutlinedIcon />
-                </IconButton>
-              </>
-            )}
-          </Stack>
-
+  // render the page depends on the view choosen
+  const renderDashboard = () => {
+    if (view === "basic") {
+      return (
+        <>
           {user?.description === "HR" ? (
             <Box paddingBottom={"50px"}>
               <Typography variant="h4">
@@ -189,6 +141,7 @@ const UserDashboard = () => {
               See all
             </Button>
           </Box>
+
           <Box paddingBottom={"50px"}>
             <Typography variant="h4">
               Your co-worker needs your feedback:{" "}
@@ -214,6 +167,132 @@ const UserDashboard = () => {
               See all
             </Button>
           </Box>
+        </>
+      );
+    } else if (view === "table") {
+
+     /*  const columns = [
+        { field: "_id", headerName: "ID", width: 200 },
+        { field: "employeeName", headerName: "Employee Name", width: 200 },
+        { field: "selfReview", headerName: "Self Review", width: 150 },
+        { field: "confirmedByHR", headerName: "Confirmed By HR", width: 200 },
+        {
+          field: "feedbackReceived",
+          headerName: "Feedback Received",
+          width: 200,
+          valueGetter: (params:any) => {
+            const feedbackSubmitted = params.row.reviewers.filter(
+              (reviewer:any) => reviewer.feedbackSubmitted
+            );
+            return `${feedbackSubmitted.length}/${params.row.reviewers.length}`;
+          },
+        },
+      ]; */
+      return (
+        <>
+          <TableContainer component={Paper}>
+            <Table sx={{ marginBottom: "50px" }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>RequestID</TableCell>
+                  <TableCell>Confirmed</TableCell>
+                  <TableCell>Reviewee</TableCell>
+                  <TableCell>Self Review</TableCell>
+                  <TableCell>Reviewers</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {adminRequestList?.map((request) => (
+                  <TableRow key={request._id}>
+                    <TableCell>{request._id}</TableCell>
+                    <TableCell>{request.confirmedByHR.toString()}</TableCell>
+                    <TableCell>{request.employeeName}</TableCell>
+                    <TableCell>{request.selfReview.toString()}</TableCell>
+                    <TableCell>{request.reviewers.length}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+{/*           <DataGrid rows={adminRequestList!} columns={columns} />
+ */}        </>
+      );
+    }
+  };
+
+  return (
+    <Stack textAlign="left">
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div>
+          <Stack
+            direction={"row"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            paddingBottom={"50px"}
+          >
+            <Box>
+              <Typography variant="h3">Hello, {user!.displayName}</Typography>
+              <Typography variant="h6">Today is {date}</Typography>
+            </Box>
+            <Link to={"/requests/createNewRequest"}>
+              <Button variant="contained" size="large" color="success">
+                Create New Request
+              </Button>
+            </Link>
+          </Stack>
+
+          <Stack
+            direction={"row"}
+            spacing={1}
+            alignItems={"center"}
+            justifyContent={"flex-end"}
+            marginBottom={"30px"}
+          >
+            <Typography>View</Typography>
+            {view === "basic" ? (
+              <>
+                <IconButton
+                  sx={{
+                    border: "0.5px solid black",
+                    borderRadius: 2,
+                    backgroundColor: "blue",
+                    color: "white",
+                  }}
+                >
+                  <SplitscreenOutlinedIcon />
+                </IconButton>
+                <IconButton
+                  sx={{ border: "0.5px solid black", borderRadius: 2 }}
+                  onClick={() => setView("table")}
+                >
+                  <ViewListOutlinedIcon />
+                </IconButton>
+              </>
+            ) : (
+              <>
+                <IconButton
+                  sx={{ border: "0.5px solid black", borderRadius: 2 }}
+                  onClick={() => setView("basic")}
+                >
+                  <SplitscreenOutlinedIcon />
+                </IconButton>
+                <IconButton
+                  color="primary"
+                  sx={{
+                    border: "0.5px solid black",
+                    borderRadius: 2,
+                    backgroundColor: "blue",
+                    color: "white",
+                  }}
+                >
+                  <ViewListOutlinedIcon />
+                </IconButton>
+              </>
+            )}
+          </Stack>
+          <Box>{renderDashboard()}</Box>
         </div>
       )}
     </Stack>
@@ -221,3 +300,8 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+
+/* 
+// Use basic table from MUI
+        
+          /*  */
