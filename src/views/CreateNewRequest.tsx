@@ -8,15 +8,14 @@ import {
   IconButton,
   Button,
   Modal,
+  Box,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Loading from "../components/Loading";
-import { Dayjs } from "dayjs";
-
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Employee,
   Request,
@@ -46,11 +45,9 @@ const modalStyle = {
 
 const CreateNewRequest = () => {
   const [filterUser, setFilterUser] = useState("");
-  const [requestData, setRequestData] = useState<Request | null>();
   const [employeeList, setEmployeeList] = useState<Employee[] | null>([]);
   const [revieweeList, setRevieweeList] = useState<Employee | null>();
   const [reviewerList, setReviewerList] = useState<Employee[] | null>([]);
-  const [managerList, setManagerList] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const { user } = useContext<UserContextProps>(UserContext);
@@ -205,6 +202,35 @@ const CreateNewRequest = () => {
     );
   };
 
+  // render the action at below, depend on the form details
+  const renderFormAction = () => {
+    if (reviewerList?.length === 5 && dueDate) {
+      return (
+        <>
+          <Typography>
+            After you create this request, it needs to be confirmed by HR before
+            everyone can give feedbacks
+          </Typography>
+          <Button variant="contained" onClick={handleModalOpen}>
+            Create this request
+          </Button>
+        </>
+      );
+    }
+    else {
+      return (
+        <>
+          <Typography>
+            Please choose a due date and 5 reviewers for this request!
+          </Typography>
+          <Button variant="outlined" disabled>
+            Create this request
+          </Button>
+        </>
+      );
+    }
+  };
+
   // create new request
   const updatedReviewerList = reviewerList?.map((reviewer) => {
     return {
@@ -234,7 +260,7 @@ const CreateNewRequest = () => {
       .then((res) => {
         console.log(res);
         handleModalClose();
-        navigate('/');
+        navigate("/");
       })
       .catch((err) => console.log(err));
   };
@@ -315,9 +341,9 @@ const CreateNewRequest = () => {
               {renderAllEmployees()}
             </Stack>
           </Stack>
-          <Button variant="contained" onClick={handleModalOpen}>
-            Confirm this request
-          </Button>
+          <Box paddingY={"30px"}>
+            {renderFormAction()}
+          </Box>
 
           <Modal
             open={openModal}
@@ -345,7 +371,7 @@ const CreateNewRequest = () => {
                   color="success"
                   onClick={createRequest}
                 >
-                  Yes, confirm this request
+                  Yes, create this request
                 </Button>
               </Stack>
             </>
