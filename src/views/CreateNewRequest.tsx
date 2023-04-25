@@ -138,14 +138,14 @@ const CreateNewRequest = () => {
     }
   };
 
-  function isInArray(targetObject: any, objectArray: any) {
-    for (let i = 0; i < objectArray.length; i++) {
-      if (JSON.stringify(targetObject) === JSON.stringify(objectArray[i])) {
-        return true;
-      }
+function isInArray(targetObject: any, objectArray: any) {
+  for (const object of objectArray) {
+    if (JSON.stringify(targetObject) === JSON.stringify(object)) {
+      return true;
     }
-    return false;
   }
+  return false;
+}
 
   const renderCardAction = (prop: Employee) => {
     if (isInArray(prop, reviewerList)) {
