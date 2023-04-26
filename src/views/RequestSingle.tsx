@@ -109,9 +109,9 @@ useEffect(()=> {
   };
 
   return (
-    <Stack sx={{ textAlign: "left" }}>
+    <Stack sx={{ textAlign: "left", paddingBottom: '30px' }}>
       {isLoading === false ? (
-        <Card sx={{ padding: "20px", backgroundColor: "#00d084" }}>
+        <Card sx={{ padding: "20px", backgroundColor: "#ffdbeb" }}>
           <Box paddingBottom={"50px"} component={"div"}>
             <Typography variant="h3">
               REQUEST #
@@ -170,7 +170,7 @@ useEffect(()=> {
             <Typography variant="h4">Reviewee:</Typography>
             <EmployeeCard {...requestData!} />
             <Typography variant="h4">Reviewers:</Typography>
-            <Stack direction={"row"} flexWrap={'wrap'}>
+            <Stack direction={"row"} flexWrap={"wrap"}>
               {requestData!.reviewers.map((reviewer) => {
                 return <ReviewerCard {...reviewer} />;
               })}
