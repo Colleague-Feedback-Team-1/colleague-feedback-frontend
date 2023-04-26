@@ -12,10 +12,12 @@ import {
   ListItemText,
   Stack,
   Menu,
-  MenuItem, Avatar
+  MenuItem,
+  Avatar,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Main from "../components/Main";
@@ -29,14 +31,65 @@ const Layout = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
 
-
   const drawerList = [
     {
       text: "Dashboard",
-      icon: <AccountCircleIcon />,
+      icon: <BarChartIcon />,
       link: "/dashboard",
     },
   ];
+  const adminDrawerList = [
+    {
+      text: "Dashboard",
+      icon: <BarChartIcon />,
+      link: "/dashboard",
+    },
+    {
+      text: "Users",
+      icon: <AccountCircleIcon />,
+      link: "/request-dashboard",
+    },
+  ];
+
+  const renderDrawer = () => {
+    if (user?.description === "HR") {
+      return (
+        <>
+          {adminDrawerList.map((item) => {
+            const { text, icon, link } = item;
+            return (
+              <Link to={link} key={text}>
+                <ListItem key={text} divider>
+                  {icon && (
+                    <ListItemIcon sx={{ color: "white" }}>{icon}</ListItemIcon>
+                  )}
+                  <ListItemText>{text}</ListItemText>
+                </ListItem>
+              </Link>
+            );
+          })}
+        </>
+      );
+    } else {
+      return (
+        <>
+          {drawerList.map((item) => {
+            const { text, icon, link } = item;
+            return (
+              <Link to={link} key={text}>
+                <ListItem key={text} divider>
+                  {icon && (
+                    <ListItemIcon sx={{ color: "white" }}>{icon}</ListItemIcon>
+                  )}
+                  <ListItemText>{text}</ListItemText>
+                </ListItem>
+              </Link>
+            );
+          })}
+        </>
+      );
+    }
+  };
 
   /* Open and Close function for menu under profile avatar */
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -108,18 +161,9 @@ const Layout = () => {
                     color="inherit"
                     onClick={handleClick}
                   >
-                    {/* <img
-                      src={ExoveEmployee}
-                      alt="Employee"
-                      style={{
-                        width: "25px",
-                        height: "25px",
-                        borderRadius: "50%",
-                        border: "1px solid white",
-                      }}
-                    /> */}
-                    <Avatar sx={{ bgcolor: "green", width: "30px",
-                        height: "30px" }}>
+                    <Avatar
+                      sx={{ bgcolor: "green", width: "30px", height: "30px" }}
+                    >
                       {user?.givenName.slice(0, 1)}
                     </Avatar>
                   </IconButton>
@@ -149,21 +193,7 @@ const Layout = () => {
           sx={{ marginTop: "64px", backgroundColor: "#9b51e0", color: "white" }}
         >
           <List>
-            {drawerList.map((item) => {
-              const { text, icon, link } = item;
-              return (
-                <Link to={link} key={text}>
-                  <ListItem key={text} divider>
-                    {icon && (
-                      <ListItemIcon sx={{ color: "white" }}>
-                        {icon}
-                      </ListItemIcon>
-                    )}
-                    <ListItemText>{text}</ListItemText>
-                  </ListItem>
-                </Link>
-              );
-            })}
+            {renderDrawer()}
           </List>
         </Box>
       </Drawer>
