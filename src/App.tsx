@@ -13,6 +13,8 @@ import ConfirmRequest from "./views/ConfirmRequest";
 import axios from "axios";
 import i18next from "../src/i18next/config";
 import { I18nextProvider } from "react-i18next";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const App = () => {
   const [user, setUser] = useState<Employee|null>(null);
@@ -37,7 +39,6 @@ const App = () => {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <I18nextProvider i18n={i18next}>
       <div className="App">
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -57,11 +58,14 @@ const App = () => {
                 path="/requests/:requestId/confirm"
                 element={<ConfirmRequest />}
               ></Route>
+              <Route
+                path="/requests/createNewRequest"
+                element={<CreateNewRequest/>}
+              ></Route>
             </Route>
           </Route>
         </Routes>
       </div>
-      </I18nextProvider>
     </UserContext.Provider>
   );
 };

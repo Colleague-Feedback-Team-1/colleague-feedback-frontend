@@ -24,7 +24,7 @@ export interface UserContextProps {
 }
 
 export interface Request {
-  _id: string
+  _id: string 
   employeeid: string
   employeeName: string
   employeeEmail: string
@@ -32,11 +32,13 @@ export interface Request {
   assignedManagerName: string | undefined
   confirmedByHR: boolean
   selfReview: boolean
-  dueDate?: string
+  dateRequested?: string
   reviewers: Reviewer[]
   createdAt?: string
   updatedAt?: string
 }
+
+export interface RequestWithoutId extends Omit<Request, "_id"> {}
 
 export interface Reviewer {
   reviewerid: string
