@@ -1,25 +1,13 @@
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
-import FeedbackForm, { CustomFormData } from '../components/FeedbackForm'
+import FeedbackForm from '../components/FeedbackForm'
+import { Section, CustomFormData} from '../types/types'
 import Loading from '../components/Loading'
 import FormIntro from '../assets/FormIntro'
 import UserContext from '../context/UserContext'
 import { UserContextProps } from '../types/types'
 import { Container, Box, CssBaseline } from '@mui/material'
 import { useParams } from 'react-router-dom'
-
-interface Section {
-  _id: string
-  sectionName: string
-  questions: Question[]
-  __v: number
-}
-
-interface Question {
-  question: string
-  isFreeForm: boolean
-  _id: string
-}
 
 function App() {
   const params = useParams()
