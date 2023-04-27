@@ -82,21 +82,30 @@ const RequestSingle = () => {
     console.log("Slider value: ", value);
     if (value < 80) {
       return (
-        <LinearProgress
-          variant="determinate"
-          value={value}
-          sx={{ width: "70%", height: "20px", borderRadius: '10px' }}
-          color="error"
-        />
+        <>
+          <LinearProgress
+            variant="determinate"
+            value={value}
+            sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+            color="error"
+          />
+            <Button variant="outlined" disabled>Not enough feedbacks to generate chart</Button>
+        </>
       );
     } else {
       return (
-        <LinearProgress
-          variant="determinate"
-          value={value}
-          sx={{ width: "70%", height: "20px", borderRadius: '10px' }}
-          color="success"
-        />)
+        <>
+          <LinearProgress
+            variant="determinate"
+            value={value}
+            sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+            color="success"
+          />
+          <Link to={`/chart/${params.requestId}`}>
+            <Button variant="contained">Generate chart</Button>
+          </Link>
+        </>
+      );
     }
   };
 
