@@ -1,5 +1,5 @@
 export interface Employee {
-  _id: string;
+  _id: string
   uid: string
   displayName: string
   givenName: string
@@ -15,7 +15,7 @@ export interface UserContextProps {
 }
 
 export interface Request {
-  _id: string 
+  _id: string
   employeeid: string
   employeeName: string
   employeeEmail: string
@@ -29,7 +29,7 @@ export interface Request {
   updatedAt?: string
 }
 
-export interface RequestWithoutId extends Omit<Request, "_id"> {}
+export interface RequestWithoutId extends Omit<Request, '_id'> {}
 
 export interface Reviewer {
   reviewerid: string
