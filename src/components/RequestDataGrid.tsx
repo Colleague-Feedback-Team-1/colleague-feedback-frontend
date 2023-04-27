@@ -9,7 +9,6 @@ import { Check } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 
-
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -22,9 +21,7 @@ const modalStyle = {
   p: 4,
   color: "white",
   textAlign: "center",
-  
 };
-
 
 const RequestDataGrid = () => {
   const [adminRequestList, setAdminRequestList] = useState<Request[] | null>();
@@ -33,26 +30,12 @@ const RequestDataGrid = () => {
   const [deletingRequestId, setDeletingRequestId] = useState<string>("");
   const navigate = useNavigate();
 
-  console.log("deleting request ", deletingRequestId);
-
-  
   useEffect(() => {
     axios.get(`http://localhost:4500/api/review-requests/`).then((res) => {
       setAdminRequestList(res.data);
       setIsLoading(false);
     });
   }, []);
-
-   const timeFormatter = (date: any) => {
-     const formattedDate = date
-       .toLocaleDateString("en-US", {
-         month: "2-digit",
-         day: "2-digit",
-         year: "numeric",
-       })
-       .replace(/\//g, ".");
-     return formattedDate;
-   };
 
   // handle the modal
   const handleModalClose = () => setOpenModal(false);
@@ -74,7 +57,6 @@ const RequestDataGrid = () => {
           console.log(res);
           handleModalClose();
           navigate("/");
-          
         });
     }, 1000);
   };
@@ -117,8 +99,16 @@ const RequestDataGrid = () => {
       headerName: "Due Date",
       width: 120,
       renderCell: (params) => {
-        const date = new Date(params.row.dateRequested) 
+        const date = new Date(params.row.dateRequested);
         return date.toLocaleDateString();
+      },
+    },
+    {
+      field: "assignedManagerName",
+      headerName: "Manager",
+      width: 100,
+      renderCell: (params) => {
+        return params.row.assignedManagerName.split(" ")[0]
       }
     },
     {
@@ -188,8 +178,13 @@ const RequestDataGrid = () => {
         sx={modalStyle}
       >
         <>
-          <Typography variant="h3">Are you sure to delete request "{`...${deletingRequestId.slice(-7)}`}"?</Typography>
-          <Typography variant="body1">This item will be deleted immediately. You can't undo this action. </Typography>
+          <Typography variant="h3">
+            Are you sure to delete request "
+            {`...${deletingRequestId.slice(-7)}`}"?
+          </Typography>
+          <Typography variant="body1">
+            This item will be deleted immediately. You can't undo this action.{" "}
+          </Typography>
           <Stack
             direction={"row"}
             mt={3}
