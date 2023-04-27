@@ -98,6 +98,9 @@ const RequestSingle = () => {
           <Link to={`/submission-form/${params.requestId}`}>
             <Button variant="outlined">Fill Feedback Form</Button>
           </Link>
+          <Link to={`/chart/${params.requestId}`}>
+            <Button variant="outlined">See chart</Button>
+          </Link>
         </>
       )
     }
