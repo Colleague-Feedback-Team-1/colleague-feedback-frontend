@@ -102,7 +102,7 @@ const RequestSingle = () => {
             color="success"
           />
           <Link to={`/chart/${params.requestId}`}>
-            <Button variant="outlined">Generate chart</Button>
+            <Button variant="contained">Generate chart</Button>
           </Link>
         </>
       );
