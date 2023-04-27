@@ -164,7 +164,7 @@ const Layout = () => {
                     <Avatar
                       sx={{ bgcolor: "green", width: "30px", height: "30px" }}
                     >
-                      {user?.givenName.slice(0, 1)}
+                      {user?.displayName.slice(0, 1)}
                     </Avatar>
                   </IconButton>
                 </Stack>
