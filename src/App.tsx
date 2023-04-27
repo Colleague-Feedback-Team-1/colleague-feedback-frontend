@@ -16,6 +16,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import FeedbackSubmission from "./views/FeedbackSubmission";
 import RequestDashboard from "./components/RequestDataGrid";
+import RadarChartDisplay from "./views/RadarChartDisplay";
 
 
 const App = () => {
@@ -77,6 +78,10 @@ const App = () => {
                   element={<RequestDashboard />}
                 ></Route>
 
+                <Route
+                  path="/chart/:requestId"
+                  element={<RadarChartDisplay />}
+                ></Route>
               </Route>
             </Route>
           </Routes>
