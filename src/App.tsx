@@ -14,28 +14,31 @@ import axios from "axios";
 import CreateNewRequest from "./views/CreateNewRequest";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import FeedbackSubmission from "./views/FeedbackSubmission";
 import RequestDashboard from "./components/RequestDataGrid";
 
+
 const App = () => {
-  const [user, setUser] = useState<Employee|null>(null);
+  const [user, setUser] = useState<Employee | null>(null)
   useEffect(() => {
     const verifyUser = async () => {
       // Check if the loggedIn flag is set in the local storage
-      const loggedIn = localStorage.getItem("loggedIn");
-  
+      const loggedIn = localStorage.getItem('loggedIn')
+
       if (loggedIn) {
         try {
-          const res = await axios.get("http://localhost:4500/api/employees/verify", { withCredentials: true });
-          setUser(res.data);
+          const res = await axios.get('http://localhost:4500/api/employees/verify', {
+            withCredentials: true,
+          })
+          setUser(res.data)
         } catch (error) {
-          console.error("Failed to verify user:", error);
+          console.error('Failed to verify user:', error)
         }
       }
-    };
-  
-    verifyUser();
-  }, []);
-  
+    }
+
+    verifyUser()
+  }, [])
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -63,17 +66,24 @@ const App = () => {
                   path="/requests/createNewRequest"
                   element={<CreateNewRequest />}
                 ></Route>
+
+                <Route 
+                  path="/submission-form/:requestId"
+                  element={<FeedbackSubmission/>}>
+                </Route>
+
                 <Route
                   path="/request-dashboard"
                   element={<RequestDashboard />}
                 ></Route>
+
               </Route>
             </Route>
           </Routes>
         </div>
       </LocalizationProvider>
     </UserContext.Provider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
