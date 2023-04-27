@@ -10,11 +10,11 @@ import { Container, Box, CssBaseline } from '@mui/material'
 import { useParams } from 'react-router-dom'
 
 type RouteParams = {
-  requestId: string;
-};
+  requestId: string
+}
 
 function App() {
-  const params = useParams<RouteParams>();
+  const params = useParams<RouteParams>()
   const [data, setData] = useState<Section[]>([])
   const { user } = useContext<UserContextProps>(UserContext)
   const [isLoading, setIsLoading] = useState(true)
