@@ -73,7 +73,7 @@ const UserDashboard = () => {
         fetchUserData();
       }
       setIsLoading(false);
-    }, 1500);
+    }, 1000);
   }, [user]);
 
   // render the page depends on the view choosen

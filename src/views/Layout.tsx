@@ -162,9 +162,9 @@ const Layout = () => {
                     onClick={handleClick}
                   >
                     <Avatar
-                      sx={{ bgcolor: "green", width: "30px", height: "30px" }}
+                      sx={{ bgcolor: "#fcb900", width: "30px", height: "30px" }}
                     >
-                      {user?.givenName.slice(0, 1)}
+                      {user?.displayName.slice(0, 1)}
                     </Avatar>
                   </IconButton>
                 </Stack>
@@ -192,9 +192,7 @@ const Layout = () => {
           minHeight={"89.6vh"}
           sx={{ marginTop: "64px", backgroundColor: "#9b51e0", color: "white" }}
         >
-          <List>
-            {renderDrawer()}
-          </List>
+          <List>{renderDrawer()}</List>
         </Box>
       </Drawer>
 
