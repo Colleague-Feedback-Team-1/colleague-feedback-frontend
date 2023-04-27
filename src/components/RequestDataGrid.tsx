@@ -35,17 +35,9 @@ const RequestDataGrid = () => {
 
   console.log("deleting request ", deletingRequestId);
 
-  const mapDate = (data: Request[]) => {
-    data.map((item)=> {
-      return {
-        ...item,
-        dateRequested: new Date(item.dateRequested as string) || null,
-      };
-    }) 
-  }
+  
   useEffect(() => {
     axios.get(`http://localhost:4500/api/review-requests/`).then((res) => {
-      mapDate(res.data)
       setAdminRequestList(res.data);
       setIsLoading(false);
     });
