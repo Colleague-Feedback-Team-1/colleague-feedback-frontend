@@ -21,8 +21,10 @@ const RequestCard: React.FC<Request> = (prop) => {
     <Card sx={{ backgroundColor: "#4CA85A", color: "white" }}>
       <CardHeader
         title={`ID ${prop._id.slice(0, 5)}...${prop._id.slice(-5)}`}
-      />
+      >
+      </CardHeader>
       <CardContent>
+        <Typography fontWeight={'bold'}>Reviewee: {prop.employeeName}</Typography>
         {prop.confirmedByHR ? (
           <Stack>
             <Stack direction={"row"}>

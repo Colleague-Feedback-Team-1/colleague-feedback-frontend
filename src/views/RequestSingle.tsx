@@ -104,10 +104,12 @@ const RequestSingle = () => {
   }
 
   return (
-    <Stack sx={{ textAlign: 'left' }}>
+
+    <Stack sx={{ textAlign: "left", paddingBottom: '30px' }}>
       {isLoading === false ? (
-        <Card sx={{ padding: '20px', backgroundColor: '#00d084' }}>
-          <Box paddingBottom={'50px'} component={'div'}>
+        <Card sx={{ padding: "20px", backgroundColor: "#ffdbeb" }}>
+          <Box paddingBottom={"50px"} component={"div"}>
+
             <Typography variant="h3">
               REQUEST #{`${requestData?._id.slice(0, 5)}...${requestData?._id.slice(-3)}`}
             </Typography>
@@ -157,8 +159,9 @@ const RequestSingle = () => {
             <Typography variant="h4">Reviewee:</Typography>
             <EmployeeCard {...requestData!} />
             <Typography variant="h4">Reviewers:</Typography>
-            <Stack direction={'row'} flexWrap={'wrap'}>
-              {requestData!.reviewers.map((reviewer) => {
+
+            <Stack direction={"row"} flexWrap={"wrap"}>
+ {requestData!.reviewers.map((reviewer) => {
                 return <ReviewerCard {...reviewer} />
               })}
             </Stack>

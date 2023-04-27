@@ -15,6 +15,7 @@ import CreateNewRequest from "./views/CreateNewRequest";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import FeedbackSubmission from "./views/FeedbackSubmission";
+import RequestDashboard from "./components/RequestDataGrid";
 
 
 const App = () => {
@@ -65,10 +66,17 @@ const App = () => {
                   path="/requests/createNewRequest"
                   element={<CreateNewRequest />}
                 ></Route>
+
                 <Route 
                   path="/submission-form/:requestId"
                   element={<FeedbackSubmission/>}>
                 </Route>
+
+                <Route
+                  path="/request-dashboard"
+                  element={<RequestDashboard />}
+                ></Route>
+
               </Route>
             </Route>
           </Routes>
