@@ -14,6 +14,7 @@ import axios from "axios";
 import CreateNewRequest from "./views/CreateNewRequest";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import RequestDashboard from "./components/RequestDataGrid";
 
 const App = () => {
   const [user, setUser] = useState<Employee|null>(null);
@@ -61,6 +62,10 @@ const App = () => {
                 <Route
                   path="/requests/createNewRequest"
                   element={<CreateNewRequest />}
+                ></Route>
+                <Route
+                  path="/request-dashboard"
+                  element={<RequestDashboard />}
                 ></Route>
               </Route>
             </Route>
