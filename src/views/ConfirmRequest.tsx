@@ -234,7 +234,7 @@ const ConfirmRequest = () => {
                 alignItems={"center"}
                 justifyContent={"flex-start"}
                 height={"200px"}
-                sx={{ overflowY: "scroll" }}
+                sx={{ overflowY: "auto" }}
               >
                 {renderAllEmployees()}
               </Stack>

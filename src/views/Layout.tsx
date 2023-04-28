@@ -189,8 +189,8 @@ const Layout = () => {
         <Box
           p={2}
           width={"170px"}
-          minHeight={"89.6vh"}
-          sx={{ marginTop: "64px", backgroundColor: "#9b51e0", color: "white" }}
+          minHeight={"87.1vh"}
+          sx={{ marginTop: "64px", backgroundColor: "#9b51e0", color: "white", overflow: 'hidden'}}
         >
           <List>{renderDrawer()}</List>
         </Box>
