@@ -53,12 +53,8 @@ const RequestSingle = () => {
   // check role
   const checkRole = () => {
     if (user?._id == requestData?.employeeid) {
-      console.log("You are the reviewee of this request! You can self review.");
       setUserRoleOnRequest("reviewee");
     } else if (user?._id == requestData?.assignedManagerid) {
-      console.log(
-        "You are the manager of this request! You can give review and see the result"
-      );
       setUserRoleOnRequest("manager");
     } else {
       requestData?.reviewers.map((reviewer) => {
@@ -66,9 +62,6 @@ const RequestSingle = () => {
           user?._id === reviewer.reviewerid &&
           reviewer.feedbackSubmitted === false
         ) {
-          console.log(
-            "You are one the reviewer of this request! You can give review."
-          );
           setUserRoleOnRequest("reviewer");
         }
       });
@@ -79,7 +72,6 @@ const RequestSingle = () => {
   const renderSlider = () => {
     const value =
       (feedbackSubmitted?.length! / requestData?.reviewers.length!) * 100;
-    console.log("Slider value: ", value);
     if (value < 80) {
       return (
         <>
@@ -89,7 +81,9 @@ const RequestSingle = () => {
             sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
             color="error"
           />
-            <Button variant="outlined" disabled>Not enough feedbacks to generate chart</Button>
+          <Button variant="outlined" disabled>
+            Not enough feedbacks to generate chart
+          </Button>
         </>
       );
     } else {
@@ -213,11 +207,17 @@ const RequestSingle = () => {
   return (
     <Stack sx={{ textAlign: "left", paddingBottom: "30px" }}>
       {isLoading === false ? (
-        <Card sx={{ padding: "20px", backgroundColor: "#ffdbeb" }}>
+        <Card
+          sx={{
+            padding: "20px",
+            backgroundColor: "#ffdbeb",
+            overflowX: "auto",
+          }}
+        >
           <Stack direction={"row"} spacing={10}>
             <Box paddingBottom={"50px"} component={"div"}>
               <Typography variant="h3">
-                REQUEST ID #{`...${requestData?._id.slice(-7)}`}
+                
               </Typography>
 
               {requestData?.confirmedByHR ? (
@@ -262,9 +262,16 @@ const RequestSingle = () => {
               </Typography>
               <Typography>
                 <b>
-                  {" "}
-                  Feedbacks received:{" "}
-                  {`${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}
+                  Feedbacks received:
+                  {feedbackSubmitted!.length < 4 ? (
+                    <span
+                      style={{ color: "red" }}
+                    >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
+                  ) : (
+                    <span
+                      style={{ color: "green" }}
+                    >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
+                  )}
                 </b>
               </Typography>
               {renderSlider()}
