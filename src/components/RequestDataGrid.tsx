@@ -31,10 +31,12 @@ const RequestDataGrid = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:4500/api/review-requests/`).then((res) => {
-      setAdminRequestList(res.data);
-      setIsLoading(false);
-    });
+    setTimeout(() => {
+      axios.get(`http://localhost:4500/api/review-requests/`).then((res) => {
+        setAdminRequestList(res.data);
+        setIsLoading(false);
+      });
+    }, 700);
   }, []);
 
   // handle the modal
@@ -108,8 +110,8 @@ const RequestDataGrid = () => {
       headerName: "Manager",
       width: 100,
       renderCell: (params) => {
-        return params.row.assignedManagerName.split(" ")[0]
-      }
+        return params.row.assignedManagerName.split(" ")[0];
+      },
     },
     {
       field: "reviewers",
