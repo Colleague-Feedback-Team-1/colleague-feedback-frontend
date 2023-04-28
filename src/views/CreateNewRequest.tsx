@@ -52,8 +52,6 @@ const CreateNewRequest = () => {
   const navigate = useNavigate();
   const [dueDate, setDueDate] = useState<string | undefined>("");
 
-  console.log("Due date: ", dueDate);
-
   useEffect(() => {
     axios
       .get("http://localhost:4500/api/employees/all-employees")
@@ -86,7 +84,6 @@ const CreateNewRequest = () => {
       .replace(/\//g, ".");
     return formattedDate;
   };
-
   // open and close the modal
   const handleModalOpen = () => setOpenModal(true);
   const handleModalClose = () => setOpenModal(false);
@@ -337,9 +334,7 @@ function isInArray(targetObject: any, objectArray: any) {
               {renderAllEmployees()}
             </Stack>
           </Stack>
-          <Box paddingY={"30px"}>
-            {renderFormAction()}
-          </Box>
+          <Box paddingY={"30px"}>{renderFormAction()}</Box>
 
           <Modal
             open={openModal}

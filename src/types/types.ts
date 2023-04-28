@@ -1,14 +1,5 @@
-// export interface Employee {
-//   _id: string;
-//   employeeName: string;
-//   employeeEmail?: string;
-// //  hashedPassword?: string;
-//   companyRole?: string;
-//   image?: string;
-//   privileges?: "Admin" | "User" | "Manager";
-// }
 export interface Employee {
-  _id: string;
+  _id: string
   uid: string
   displayName: string
   givenName: string
@@ -24,7 +15,7 @@ export interface UserContextProps {
 }
 
 export interface Request {
-  _id: string 
+  _id: string
   employeeid: string
   employeeName: string
   employeeEmail: string
@@ -38,7 +29,7 @@ export interface Request {
   updatedAt?: string
 }
 
-export interface RequestWithoutId extends Omit<Request, "_id"> {}
+export interface RequestWithoutId extends Omit<Request, '_id'> {}
 
 export interface Reviewer {
   reviewerid: string
@@ -48,27 +39,24 @@ export interface Reviewer {
   feedbackSubmitted: boolean
 }
 
-type SectionNameOption =
-  | 'Quality focus'
-  | 'People skills'
-  | 'Self guidance'
-  | 'Leadership'
-  | 'Readiness for change'
-  | 'Creativity'
-  | 'General Evaluation'
-
-export interface FeedbackData {
-  requestId: string
-  employeeId: string
-  sections: Section[]
+export interface Question {
+  _id: string
+  question: string
+  isFreeForm: boolean
 }
 
 export interface Section {
-  sectionName: SectionNameOption
-  score: Score[]
+  _id: string
+  sectionName: string
+  questions: Question[]
 }
 
-export interface Score {
-  average: number
-  openFeedback: string[]
+export interface CustomFormData {
+  requestid: string
+  employeeid: string
+  answers: {
+    [sectionId: string]: {
+      [questionId: string]: string | number
+    }
+  }
 }

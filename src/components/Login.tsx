@@ -14,7 +14,6 @@ import UserContext from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import ExoveLogo from "../assets/ExoveLogo.png";
 import { useTranslation } from "react-i18next";
-
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
   console.log("Logged in User: ", user);
