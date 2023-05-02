@@ -11,6 +11,8 @@ import { useContext } from "react";
 import UserContext from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import ExoveLogo from "../assets/ExoveLogo.png";
+import { ToastContainer, toast } from "react-toastify";
+
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
   console.log("Logged in User: ", user);
@@ -38,6 +40,7 @@ const Login = () => {
           if (!user) {
             console.log("User has logged in");
             localStorage.setItem("loggedIn", "true");
+            toast.success("Login successfully");
           } else {
             console.log("Please log in to continue");
           }
@@ -47,6 +50,7 @@ const Login = () => {
       })
       .catch((error) => {
         console.error("Authentication failed:", error);
+        toast.error("Your email or password is incorrect. Please try again.");
       });
   };
 
@@ -102,11 +106,8 @@ const Login = () => {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
+              disableFocusRipple
               type="submit"
               fullWidth
               variant="contained"

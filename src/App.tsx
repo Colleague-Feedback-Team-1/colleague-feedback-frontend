@@ -12,34 +12,38 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import ConfirmRequest from "./views/ConfirmRequest";
 import axios from "axios";
 import CreateNewRequest from "./views/CreateNewRequest";
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import FeedbackSubmission from "./views/FeedbackSubmission";
 import RequestDashboard from "./components/RequestDataGrid";
 import RadarChartDisplay from "./views/RadarChartDisplay";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
-  const [user, setUser] = useState<Employee | null>(null)
+  const [user, setUser] = useState<Employee | null>(null);
   useEffect(() => {
     const verifyUser = async () => {
       // Check if the loggedIn flag is set in the local storage
-      const loggedIn = localStorage.getItem('loggedIn')
+      const loggedIn = localStorage.getItem("loggedIn");
 
       if (loggedIn) {
         try {
-          const res = await axios.get('http://localhost:4500/api/employees/verify', {
-            withCredentials: true,
-          })
-          setUser(res.data)
+          const res = await axios.get(
+            "http://localhost:4500/api/employees/verify",
+            {
+              withCredentials: true,
+            }
+          );
+          setUser(res.data);
         } catch (error) {
-          console.error('Failed to verify user:', error)
+          console.error("Failed to verify user:", error);
         }
       }
-    }
+    };
 
-    verifyUser()
-  }, [])
+    verifyUser();
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -68,10 +72,10 @@ const App = () => {
                   element={<CreateNewRequest />}
                 ></Route>
 
-                <Route 
+                <Route
                   path="/submission-form/:requestId"
-                  element={<FeedbackSubmission/>}>
-                </Route>
+                  element={<FeedbackSubmission />}
+                ></Route>
 
                 <Route
                   path="/request-dashboard"
@@ -86,9 +90,11 @@ const App = () => {
             </Route>
           </Routes>
         </div>
+        {/* Toast container, autoclose after 2secs */}
+        <ToastContainer autoClose={2000} />
       </LocalizationProvider>
     </UserContext.Provider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

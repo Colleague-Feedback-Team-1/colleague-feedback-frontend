@@ -20,6 +20,8 @@ import { Employee, Request, UserContextProps } from "../types/types";
 import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
 import UserContext from "../context/UserContext";
+import { toast } from "react-toastify";
+import { error } from "console";
 
 const modalStyle = {
   position: "absolute",
@@ -47,7 +49,6 @@ const ConfirmRequest = () => {
   const { user } = useContext<UserContextProps>(UserContext);
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     axios
       .get("http://localhost:4500/api/employees/all-employees")
@@ -86,8 +87,10 @@ const ConfirmRequest = () => {
         .then((res) => {
           console.log(res);
           setOpenModal(false);
+          toast.success("Confirm request successfully");
           navigate("/");
-        });
+        })
+        .catch((error) => toast.error(error));
     }, 1000);
   };
 
@@ -167,7 +170,7 @@ const ConfirmRequest = () => {
             </Avatar>
           }
           title={prop.displayName}
-          subheader={`${prop.mail.slice(0,15)}...`}
+          subheader={`${prop.mail.slice(0, 15)}...`}
           action={renderCardAction({ ...prop })}
         />
       </Card>

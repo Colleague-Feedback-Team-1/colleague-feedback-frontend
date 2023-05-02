@@ -25,6 +25,7 @@ import SearchBar from "../components/SearchBar";
 import ExoveLogoWhite from "../assets/ExoveLogoWhite.png";
 import UserContext from "../context/UserContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -106,6 +107,7 @@ const Layout = () => {
         console.log(res.data);
         console.log("Log out successfully.");
         setUser(null);
+        toast.success("Log out successfully");
       });
     }, 1000);
   };
