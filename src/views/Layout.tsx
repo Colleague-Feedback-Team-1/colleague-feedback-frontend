@@ -185,16 +185,25 @@ const Layout = () => {
       </Stack>
 
       {/* Drawer in the left side of the screen */}
-      <Drawer variant="permanent" anchor="left">
-        <Box
-          p={2}
-          width={"170px"}
-          minHeight={"87.1vh"}
-          sx={{ marginTop: "64px", backgroundColor: "#9b51e0", color: "white", overflow: 'hidden'}}
-        >
-          <List>{renderDrawer()}</List>
-        </Box>
-      </Drawer>
+      {user !== null ? (
+        <Drawer variant="permanent" anchor="left">
+          <Box
+            p={2}
+            width={"170px"}
+            minHeight={"87.1vh"}
+            sx={{
+              marginTop: "64px",
+              backgroundColor: "#9b51e0",
+              color: "white",
+              overflow: "hidden",
+            }}
+          >
+            <List>{renderDrawer()}</List>
+          </Box>
+        </Drawer>
+      ) : (
+        <></>
+      )}
 
       <Main />
     </>

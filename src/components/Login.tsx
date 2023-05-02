@@ -17,7 +17,6 @@ const Login = () => {
   const { user, setUser } = useContext(UserContext);
   console.log("Logged in User: ", user);
 
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -31,9 +30,12 @@ const Login = () => {
         console.log(res.data);
         // Fetch user data from the getSession cookie function
         try {
-          const userDataResponse = await axios.get("http://localhost:4500/api/employees/verify", {
-            withCredentials: true,
-          });
+          const userDataResponse = await axios.get(
+            "http://localhost:4500/api/employees/verify",
+            {
+              withCredentials: true,
+            }
+          );
           setUser(userDataResponse.data);
           if (!user) {
             console.log("User has logged in");
@@ -48,11 +50,11 @@ const Login = () => {
       .catch((error) => {
         console.error("Authentication failed:", error);
       });
-  };  
+  };
 
   return (
     <>
-      {user===null ? (
+      {user === null ? (
         <Box
           sx={{
             marginTop: 8,
@@ -114,15 +116,14 @@ const Login = () => {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item>
-                <Link variant="body2">{"Don't have an account? Sign Up"}</Link>
-              </Grid>
-            </Grid>
+            <Typography variant="body2">
+              Contact the HR to get your account registed, if you do not have
+              one.
+            </Typography>
           </Box>
         </Box>
       ) : (
-           <Navigate to={"/dashboard"} replace />
+        <Navigate to={"/dashboard"} replace />
       )}
     </>
   );
