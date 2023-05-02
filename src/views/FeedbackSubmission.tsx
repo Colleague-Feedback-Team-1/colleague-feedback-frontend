@@ -42,7 +42,7 @@ function FeedbackSubmission() {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataAndCheckRole = async () => {
       try {
         const response = await axios.get('http://localhost:4500/api/questions/')
         setData(response.data)
@@ -51,11 +51,12 @@ function FeedbackSubmission() {
         console.error('Error fetching data:', error)
         setIsLoading(false)
       }
+
+      await fetchRequestByRequestId(params.requestId!)
+      checkRole()
     }
 
-    fetchData()
-    fetchRequestByRequestId(params.requestId!)
-    checkRole()
+    fetchDataAndCheckRole()
   }, [])
 
   const fetchRequestByRequestId = async (requestId: string) => {
