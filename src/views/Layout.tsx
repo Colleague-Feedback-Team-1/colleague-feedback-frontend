@@ -191,8 +191,7 @@ const Layout = () => {
         <Drawer variant="permanent" anchor="left">
           <Box
             p={2}
-            width={"170px"}
-            minHeight={"87.1vh"}
+            minHeight={"87.3vh"}
             sx={{
               marginTop: "64px",
               backgroundColor: "#9b51e0",
