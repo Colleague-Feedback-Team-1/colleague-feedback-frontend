@@ -73,14 +73,19 @@ const UserDashboard = () => {
             </Button>
           </Link>
         </Stack>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch checked={simpleView} onChange={handleChangeView} />
-            }
-            label="Simple view"
-          />
-        </FormGroup>
+        {user?.description === "HR" ? (
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch checked={simpleView} onChange={handleChangeView} />
+              }
+              label="Simple view"
+            />
+          </FormGroup>
+        ) : (
+          <></>
+        )}
+
         <Box>{renderDashboard()}</Box>
       </div>
     </Stack>
