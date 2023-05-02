@@ -69,37 +69,39 @@ const RequestSingle = () => {
   };
 
   // render feedback received slider
-  const renderSlider = () => {
+  const renderSliderAndChart = () => {
     const value =
       (feedbackSubmitted?.length! / requestData?.reviewers.length!) * 100;
-    if (value < 80) {
-      return (
-        <>
-          <LinearProgress
-            variant="determinate"
-            value={value}
-            sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
-            color="error"
-          />
-          <Button variant="outlined" disabled>
-            Not enough feedbacks to generate chart
-          </Button>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <LinearProgress
-            variant="determinate"
-            value={value}
-            sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
-            color="success"
-          />
-          <Link to={`/chart/${params.requestId}`}>
-            <Button variant="contained">Generate chart</Button>
-          </Link>
-        </>
-      );
+    if (user?.description === "HR") {
+      if (value < 80) {
+        return (
+          <>
+            <LinearProgress
+              variant="determinate"
+              value={value}
+              sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+              color="error"
+            />
+            <Button variant="outlined" disabled>
+              Not enough feedbacks to generate chart
+            </Button>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <LinearProgress
+              variant="determinate"
+              value={value}
+              sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+              color="success"
+            />
+            <Link to={`/chart/${params.requestId}`}>
+              <Button variant="contained">Generate chart</Button>
+            </Link>
+          </>
+        );
+      }
     }
   };
 
@@ -216,9 +218,7 @@ const RequestSingle = () => {
         >
           <Stack direction={"row"} spacing={10}>
             <Box paddingBottom={"50px"} component={"div"}>
-              <Typography variant="h3">
-                
-              </Typography>
+              <Typography variant="h3"></Typography>
 
               {requestData?.confirmedByHR ? (
                 <Stack
@@ -274,7 +274,7 @@ const RequestSingle = () => {
                   )}
                 </b>
               </Typography>
-              {renderSlider()}
+              {renderSliderAndChart()}
             </Box>
 
             <Box paddingBottom={"50px"} component={"div"}>
