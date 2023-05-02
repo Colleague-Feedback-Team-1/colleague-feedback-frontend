@@ -54,6 +54,7 @@ export interface Section {
 export interface CustomFormData {
   requestid: string;
   employeeid: string;
+  submittedBy: "manager" | "reviewee" | "reviewer";
   answers: {
     [sectionId: string]: {
       [questionId: string]: string | number;
