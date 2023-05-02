@@ -182,7 +182,10 @@ const RequestSingle = () => {
             </Stack>
           </>
         );
-      } else if (userRoleOnRequest !== null) {
+      } else if (
+        userRoleOnRequest === "reviewer" ||
+        userRoleOnRequest === "manager"
+      ) {
         return (
           <Stack direction={"row"} spacing={2}>
             <Link to={"/dashboard"}>
