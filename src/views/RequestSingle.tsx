@@ -52,9 +52,9 @@ const RequestSingle = () => {
 
   // check role
   const checkRole = () => {
-    if (user?._id == requestData?.employeeid) {
+    if (user?._id === requestData?.employeeid) {
       setUserRoleOnRequest("reviewee");
-    } else if (user?._id == requestData?.assignedManagerid) {
+    } else if (user?._id === requestData?.assignedManagerid) {
       setUserRoleOnRequest("manager");
     } else {
       requestData?.reviewers.map((reviewer) => {
@@ -64,6 +64,7 @@ const RequestSingle = () => {
         ) {
           setUserRoleOnRequest("reviewer");
         }
+        return;
       });
     }
   };

@@ -7,11 +7,7 @@ import {
   FormControlLabel,
   Switch,
 } from "@mui/material";
-import { Request } from "../types/types";
-import { useEffect, useState, useContext } from "react";
-import Loading from "../components/Loading";
-import RequestCard from "../components/RequestCard";
-import axios from "axios";
+import { useState, useContext } from "react";
 import UserContext from "../context/UserContext";
 import { UserContextProps } from "../types/types";
 import { Link } from "react-router-dom";
@@ -20,8 +16,6 @@ import RequestDataGrid from "../components/RequestDataGrid";
 import RequestSimpleView from "../components/RequestSimpleView";
 
 const UserDashboard = () => {
-  const [requestList, setRequestList] = useState<Request[] | null>();
-  const [asReviewerList, setAsReviewerList] = useState<Request[] | null>();
   const { user } = useContext<UserContextProps>(UserContext);
   const [simpleView, setSimpleView] = useState<boolean>(false);
 
