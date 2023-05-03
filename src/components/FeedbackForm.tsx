@@ -1,7 +1,7 @@
 // imports
-import React from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { Section, CustomFormData } from '../types/types'
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { Section, CustomFormData } from "../types/types";
 import {
   Typography,
   RadioGroup,
@@ -11,11 +11,11 @@ import {
   Grid,
   Button,
   Stack,
-} from '@mui/material'
+} from "@mui/material";
 
 interface CustomFormProps {
-  data: Section[]
-  onSubmit: (data: CustomFormData) => void
+  data: Section[];
+  onSubmit: (data: CustomFormData) => void;
 }
 
 const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
@@ -23,7 +23,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
     handleSubmit,
     control,
     formState: { isValid },
-  } = useForm<CustomFormData>()
+  } = useForm<CustomFormData>();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -40,18 +40,21 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                   name={`answers.${section._id}.${question._id}`}
                   rules={{ required: true }}
                   control={control}
-                  render={({ field }) => <TextField {...field} variant="outlined" fullWidth />}
+                  render={({ field }) => (
+                    <TextField {...field} variant="outlined" fullWidth />
+                  )}
                 />
               ) : (
                 <Controller
                   name={`answers.${section._id}.${question._id}`}
                   rules={{ required: true }}
                   control={control}
+                  defaultValue={"3"}
                   render={({ field }) => (
                     <Stack
-                      direction={'row'}
+                      direction={"row"}
                       spacing={2}
-                      sx={{ alignItems: 'center', justifyContent: 'center' }}
+                      sx={{ alignItems: "center", justifyContent: "center" }}
                     >
                       <Typography>Very bad</Typography>
                       <RadioGroup {...field} row>
@@ -74,12 +77,17 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
         </Grid>
       ))}
       <Grid item>
-        <Button type="submit" variant="contained" color="primary" disabled={!isValid}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={!isValid}
+        >
           Submit Feedback
         </Button>
       </Grid>
     </form>
-  )
-}
+  );
+};
 
-export default FeedbackForm
+export default FeedbackForm;
