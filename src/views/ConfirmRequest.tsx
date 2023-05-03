@@ -21,14 +21,12 @@ import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
 import UserContext from "../context/UserContext";
 import { toast } from "react-toastify";
-import { error } from "console";
 
 const modalStyle = {
   position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "25%",
+  top: "50vh",
+  left: "30vw",
+  width: "30%",
   height: "25%",
   backgroundColor: "#9b51e0",
   boxShadow: 24,
@@ -123,7 +121,6 @@ const ConfirmRequest = () => {
     if (filterUser === "") {
     } else {
       return employeeList!
-        .filter((employee: Employee) => employee._id !== user?._id)
         .filter((employee: Employee) => {
           return employee.displayName
             .toLowerCase()
@@ -183,7 +180,7 @@ const ConfirmRequest = () => {
         <Card
           sx={{
             padding: "20px",
-            backgroundColor: "#00d084",
+            backgroundColor: "#ffdbeb",
             minHeight: "75vh",
           }}
         >
@@ -191,14 +188,14 @@ const ConfirmRequest = () => {
             CONFIRMING REQUEST #
             {`${requestData!._id.slice(0, 5)}...${requestData!._id.slice(-3)}`}
           </Typography>
-          <Stack direction={"row"} paddingBottom={"50px"}>
+          <Stack direction={"row"} paddingBottom={"50px"} spacing={10}>
             <Stack flexGrow={1}>
               <Typography variant="h4">Reviewee:</Typography>
               <EmployeeCard {...requestData!} />
             </Stack>
             <Stack flexGrow={4}>
               <Typography variant="h4">Reviewers:</Typography>
-              <Stack direction={"row"}>
+              <Stack direction={"row"} flexWrap={"wrap"}>
                 {requestData!.reviewers.map((reviewer) => {
                   return <ReviewerCard {...reviewer} />;
                 })}

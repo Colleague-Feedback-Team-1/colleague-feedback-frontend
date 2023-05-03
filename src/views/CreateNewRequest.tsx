@@ -25,10 +25,9 @@ import { toast } from "react-toastify";
 
 const modalStyle = {
   position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "25%",
+  top: "50vh",
+  left: "30vw",
+  width: "30%",
   height: "25%",
   backgroundColor: "#9b51e0",
   boxShadow: 24,
