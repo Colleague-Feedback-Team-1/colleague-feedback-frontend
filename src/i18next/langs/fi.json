@@ -2,6 +2,65 @@
     "language":"suomi",
     "login":{
         "title":"Kirjaudu sisään"
+    },
+    "loading":{
+        "title":"Ladataan..."
+    },
+    "FeedbackFormBad":{
+        "bad":"Todella paha"
+    },
+    "FeedbackFormGood":{
+        "good":"Oikein Hyvä"
+    },
+    "FeedbackFormSubmit":{
+        "submit":"Antaa palautetta"
+    },
+    "RequestDataGridView":{
+        "title":"näkymä"
+    },
+    "RequestDataGridDelete":{
+        "title":"Poistaa"
+    },
+    "RequestDataGridDeleteRequest":{
+        "title":"Haluatko varmasti poistaa pyynnön "
+    },
+    "RequestDataGridDeleteImmediately":{
+        "title":"Tämä kohde poistetaan välittömästi, Tätä toimintoa ei voi kumota."
+    },
+    "RequestDataGridCancel":{
+        "title":"peruuttaa"
+    },
+    "UnconfirmedRequestCardReviewee":{
+        "title":"arvioija"
+    },
+    "UnconfirmedRequestCardReveiwer":{
+        "title":"arvostelija"
+    },
+    "UnconfirmedRequestCardDueDate":{
+        "title":"Eräpäivä"
+    },
+    "UnconfirmedRequestCardView":{
+        "title":"näkymä"
+    },
+    "UnconfirmedRequestCardQuickRemind":{
+        "title":"Nopea muistutus"
+    },
+    "RequestCardReviewee":{
+        "title":"arvioija"
+    },
+    "RequestCardConfirmedByHR":{
+        "title":"HR vahvistaa"
+    },
+    "RequestCardFeedback":{
+        "title":"Paluate"
+    },
+    "RequestCardView":{
+        "title":"näkymä"
+    },
+    "RequestCardQuickRemind":{
+        "title":"Nopea muistutus"
+    },
+    "RequestCardNotConfirmedByHR":{
+        "title":"HR ei ole vielä vahvistanut"
     }
-    
 }

@@ -2,6 +2,7 @@
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { Section, CustomFormData } from '../types/types'
+import { useTranslation } from "react-i18next";
 import {
   Typography,
   RadioGroup,
@@ -19,6 +20,7 @@ interface CustomFormProps {
 }
 
 const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
+  const { t } = useTranslation();
   const {
     handleSubmit,
     control,
@@ -53,7 +55,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                       spacing={2}
                       sx={{ alignItems: 'center', justifyContent: 'center' }}
                     >
-                      <Typography>Very bad</Typography>
+                      <Typography>{t("FeedbackFormBad.bad")}</Typography>
                       <RadioGroup {...field} row>
                         {[1, 2, 3, 4, 5].map((value) => (
                           <FormControlLabel
@@ -64,7 +66,8 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                           />
                         ))}
                       </RadioGroup>
-                      <Typography>Very Good</Typography>
+                      <Typography>
+                      {t("FeedbackFormGood.good")}</Typography>
                     </Stack>
                   )}
                 />
@@ -75,7 +78,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
       ))}
       <Grid item>
         <Button type="submit" variant="contained" color="primary" disabled={!isValid}>
-          Submit Feedback
+        {t("FeedbackFormSubmit.submit")}
         </Button>
       </Grid>
     </form>

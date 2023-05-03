@@ -12,8 +12,10 @@ import { Stack } from "@mui/system";
 import { Request } from "../types/types";
 import { Link } from "react-router-dom";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const RequestCard: React.FC<Request> = (prop) => {
+  const { t } = useTranslation();
   const givenFeedback = prop.reviewers.filter(
     (reviewer) => reviewer.feedbackSubmitted
   ).length;
@@ -24,21 +26,24 @@ const RequestCard: React.FC<Request> = (prop) => {
       >
       </CardHeader>
       <CardContent>
-        <Typography fontWeight={'bold'}>Reviewee: {prop.employeeName}</Typography>
+        <Typography fontWeight={'bold'}>
+            {t("RequestCard.title")}: {prop.employeeName}</Typography>
         {prop.confirmedByHR ? (
           <Stack>
             <Stack direction={"row"}>
               <CheckCircleIcon color="success" />
-              <Typography>Confirmed by HR</Typography>
+              <Typography>
+            {t("RequestCard.title")}</Typography>
             </Stack>
             <Typography>
-              Feedback: {givenFeedback}/{prop.reviewers.length}
+            {t("RequestCard.title")}: {givenFeedback}/{prop.reviewers.length}
             </Typography>
           </Stack>
         ) : (
           <Stack direction={"row"}>
             <BlockIcon color="disabled" />
-            <Typography>Not yet confirmed by HR</Typography>
+            <Typography>
+            {t("RequestCard.title")}</Typography>
           </Stack>
         )}
       </CardContent>
@@ -47,10 +52,12 @@ const RequestCard: React.FC<Request> = (prop) => {
           to={`/requests/${prop._id}`}
           style={{ textDecoration: "none", paddingRight: "13px" }}
         >
-          <Button variant="contained">View</Button>
+          <Button variant="contained">View
+            {t("RequestCard.title")}</Button>
         </Link>
 
-        <Button variant="contained">Quick remind</Button>
+        <Button variant="contained">
+            {t("RequestCard.title")}</Button>
       </CardActions>
     </Card>
   );

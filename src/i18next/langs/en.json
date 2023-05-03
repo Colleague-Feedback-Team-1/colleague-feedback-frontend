@@ -2,5 +2,65 @@
     "language":"english",
     "login":{
         "title":"Sign in to use the app"
+    },
+    "loading":{
+        "title":"Loading..."
+    },
+    "FeedbackFormBad":{
+        "bad":"Very Bad"
+    },
+    "FeedbackFormGood":{
+        "good":"Very Good"
+    },
+    "FeedbackFormSubmit":{
+        "submit":"Submit Feedback"
+    },
+    "RequestDataGridView":{
+        "title":"View"
+    },
+    "RequestDataGridDelete":{
+        "title":"Delete"
+    },
+    "RequestDataGridDeleteRequest":{
+        "title":"Are you sure to delete request "
+    },
+    "RequestDataGridDeleteImmediately":{
+        "title":"This item will be deleted immediately. You can't undo this action."
+    },
+    "RequestDataGridCancel":{
+        "title":"Cancel"
+    },
+    "UnconfirmedRequestCardReviewee":{
+        "title":"Reviewee"
+    },
+    "UnconfirmedRequestCardReveiwer":{
+        "title":"Reviewer"
+    },
+    "UnconfirmedRequestCardDueDate":{
+        "title":"Due Date"
+    },
+    "UnconfirmedRequestCardView":{
+        "title":"View"
+    },
+    "UnconfirmedRequestCardQuickRemind":{
+        "title":"Quick Remind"
+    },
+    "RequestCardReviewee":{
+        "title":"Reviewee"
+    },
+    "RequestCardConfirmedByHR":{
+        "title":"Confirmed by HR"
+    },
+    "RequestCardFeedback":{
+        "title":"Feedback"
+    },
+    "RequestCardView":{
+        "title":"View"
+    },
+    "RequestCardQuickRemind":{
+        "title":"Quick Remind"
+    },
+    "RequestCardNotConfirmedByHR":{
+        "title":"Not yet confirmed by HR"
     }
 }

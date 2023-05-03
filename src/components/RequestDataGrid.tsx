@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { Check } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const modalStyle = {
   position: "absolute",
@@ -24,6 +25,7 @@ const modalStyle = {
 };
 
 const RequestDataGrid = () => {
+  const { t } = useTranslation();
   const [adminRequestList, setAdminRequestList] = useState<Request[] | null>();
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
@@ -144,14 +146,15 @@ const RequestDataGrid = () => {
             to={`/requests/${params.row._id}`}
             style={{ textDecoration: "none", paddingRight: "13px" }}
           >
-            <Button variant="contained">View</Button>
+            <Button variant="contained">
+            {t("RequestDataGridView.title")}</Button>
           </Link>
           <Button
             variant="contained"
             color="error"
             onClick={() => handleDeleteModal(params.row._id)}
           >
-            Delete
+            {t("RequestDataGridDelete.title")}
           </Button>
         </>
       ),
@@ -179,11 +182,12 @@ const RequestDataGrid = () => {
       >
         <>
           <Typography variant="h3">
-            Are you sure to delete request "
+            {t("RequestDataGridDeleteRequest.title")}
             {`...${deletingRequestId.slice(-7)}`}"?
           </Typography>
           <Typography variant="body1">
-            This item will be deleted immediately. You can't undo this action.{" "}
+            {" "}
+            {t("RequestDataGridDeleteImmediately.title")}
           </Typography>
           <Stack
             direction={"row"}
@@ -196,14 +200,14 @@ const RequestDataGrid = () => {
               color="success"
               onClick={handleModalClose}
             >
-              Cancel
+              {t("RequestDataGridCancel.title")}
             </Button>
             <Button
               variant="contained"
               color="error"
               onClick={() => deleteRequest(deletingRequestId)}
             >
-              Delete
+              {t("RequestDataGridDelete.title")}
             </Button>
           </Stack>
         </>
