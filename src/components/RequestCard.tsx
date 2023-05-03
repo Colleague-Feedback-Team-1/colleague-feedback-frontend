@@ -23,27 +23,26 @@ const RequestCard: React.FC<Request> = (prop) => {
     <Card sx={{ backgroundColor: "#4CA85A", color: "white" }}>
       <CardHeader
         title={`ID ${prop._id.slice(0, 5)}...${prop._id.slice(-5)}`}
-      >
-      </CardHeader>
+      ></CardHeader>
       <CardContent>
-        <Typography fontWeight={'bold'}>
-            {t("RequestCard.title")}: {prop.employeeName}</Typography>
+        <Typography fontWeight={"bold"}>
+          {t("RequestCard.reviewee")}: {prop.employeeName}
+        </Typography>
         {prop.confirmedByHR ? (
           <Stack>
             <Stack direction={"row"}>
               <CheckCircleIcon color="success" />
-              <Typography>
-            {t("RequestCard.title")}</Typography>
+              <Typography>{t("RequestCard.confirmed")}</Typography>
             </Stack>
             <Typography>
-            {t("RequestCard.title")}: {givenFeedback}/{prop.reviewers.length}
+              {t("RequestCard.feedback")}: {givenFeedback}/
+              {prop.reviewers.length}
             </Typography>
           </Stack>
         ) : (
           <Stack direction={"row"}>
             <BlockIcon color="disabled" />
-            <Typography>
-            {t("RequestCard.title")}</Typography>
+            <Typography>{t("RequestCard.notConfirmed")}</Typography>
           </Stack>
         )}
       </CardContent>
@@ -52,12 +51,10 @@ const RequestCard: React.FC<Request> = (prop) => {
           to={`/requests/${prop._id}`}
           style={{ textDecoration: "none", paddingRight: "13px" }}
         >
-          <Button variant="contained">View
-            {t("RequestCard.title")}</Button>
+          <Button variant="contained">{t("RequestCard.view")}</Button>
         </Link>
 
-        <Button variant="contained">
-            {t("RequestCard.title")}</Button>
+        <Button variant="contained">{t("RequestCard.remind")}</Button>
       </CardActions>
     </Card>
   );

@@ -19,8 +19,6 @@ const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
     return outputDate;
   };
 
- 
-  
   return (
     <Card sx={{ backgroundColor: "#ff6900", color: "white" }}>
       <CardHeader
@@ -28,11 +26,17 @@ const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
       />
       <CardContent>
         <Stack>
-          <Typography> {t(UnconfirmedRequestCardReviewee.title)}: {prop.employeeName}</Typography>
           <Typography>
-            {t("UnconfirmedRequestCardReviewer.title")}: {prop.reviewers.length}</Typography>
+            {" "}
+            {t("UnconfirmedRequestCard.reviewee")}: {prop.employeeName}
+          </Typography>
           <Typography>
-            {t("UnconfirmedRequestCardDueDate.title")}: {formatDate(prop.dateRequested!)}</Typography>
+            {t("UnconfirmedRequestCard.reviewer")}: {prop.reviewers.length}
+          </Typography>
+          <Typography>
+            {t("UnconfirmedRequestCardDueDate.title")}:{" "}
+            {formatDate(prop.dateRequested!)}
+          </Typography>
         </Stack>
       </CardContent>
       <CardActions sx={{ width: "100%", bottom: 0, position: "relative" }}>
@@ -41,11 +45,13 @@ const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
           style={{ textDecoration: "none", paddingRight: "13px" }}
         >
           <Button variant="contained">
-            {t("UnconfirmedRequestCardView.title")}</Button>
+            {t("UnconfirmedRequestCardView.title")}
+          </Button>
         </Link>
 
         <Button variant="contained">
-            {t("UnconfirmedRequestQuickRemind.title")}</Button>
+          {t("UnconfirmedRequestQuickRemind.title")}
+        </Button>
       </CardActions>
     </Card>
   );
