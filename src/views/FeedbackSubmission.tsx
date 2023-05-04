@@ -48,22 +48,19 @@ function FeedbackSubmission() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4500/api/questions/"
-        );
-        setData(response.data);
+    axios
+      .get("http://localhost:4500/api/questions/")
+      .then((res) => {
+        setData(res.data);
         setIsLoading(false);
-      } catch (error) {
+      })
+
+      .catch((error) => {
         console.error("Error fetching data:", error);
         setIsLoading(false);
-      }
+      });
 
-      await fetchRequestByRequestId(params.requestId!);
-    };
-
-    fetchData();
+    fetchRequestByRequestId(params.requestId!);
   }, []);
 
   useEffect(() => {
@@ -110,7 +107,6 @@ function FeedbackSubmission() {
         console.error("Error updating reviewer feedback status:", error);
       }
     } else {
-      console.log("Update self review status");
       try {
         await axios.patch(
           `http://localhost:4500/api/review-requests/update-status/${requestId}`,
@@ -157,12 +153,9 @@ function FeedbackSubmission() {
       sections,
     };
 
-    console.log("submit data: ", submitData);
-
     if (userRoleOnRequest !== null) {
       try {
         await submitFeedback(submitData);
-        console.log("Form submitted successfully");
 
         if (reviewerData && reviewerData.reviewerid) {
           await updateReviewerFeedbackStatus(

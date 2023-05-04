@@ -6,8 +6,6 @@ import axios from "axios";
 import RequestCard from "../components/RequestCard";
 import Loading from "../components/Loading";
 
-
-
 const RequestSimpleView = () => {
   const { user } = useContext<UserContextProps>(UserContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +13,7 @@ const RequestSimpleView = () => {
   const [asReviewerList, setAsReviewerList] = useState<Request[] | null>();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    setTimeout(() => {
       axios
         .get(
           `http://localhost:4500/api/review-requests/by-employeeid/${user!._id}`
@@ -32,11 +30,8 @@ const RequestSimpleView = () => {
           setAsReviewerList(res.data);
         })
         .catch((err) => console.log(err));
-    };
 
-    // Create a quick loading duration
-    setTimeout(() => {
-      fetchUserData();
+      // Create a quick loading duration
       setIsLoading(false);
     }, 700);
   }, [user]);

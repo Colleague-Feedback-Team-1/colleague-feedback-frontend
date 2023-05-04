@@ -27,7 +27,6 @@ const Login = () => {
     axios
       .post("http://localhost:5600/auth", loginData, { withCredentials: true })
       .then(async (res) => {
-        console.log(res.data);
         // Fetch user data from the getSession cookie function
         try {
           const userDataResponse = await axios.get(
@@ -38,7 +37,6 @@ const Login = () => {
           );
           setUser(userDataResponse.data);
           if (!user) {
-            console.log("User has logged in");
             localStorage.setItem("loggedIn", "true");
             toast.success("Login successfully");
           } else {

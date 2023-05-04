@@ -23,26 +23,21 @@ import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const [user, setUser] = useState<Employee | null>(null);
   useEffect(() => {
-    const verifyUser = async () => {
-      // Check if the loggedIn flag is set in the local storage
-      const loggedIn = localStorage.getItem("loggedIn");
+    // Check if the loggedIn flag is set in the local storage
+    const loggedIn = localStorage.getItem("loggedIn");
 
-      if (loggedIn) {
-        try {
-          const res = await axios.get(
-            "http://localhost:4500/api/employees/verify",
-            {
-              withCredentials: true,
-            }
-          );
+    if (loggedIn) {
+      axios
+        .get("http://localhost:4500/api/employees/verify", {
+          withCredentials: true,
+        })
+        .then((res) => {
           setUser(res.data);
-        } catch (error) {
-          console.error("Failed to verify user:", error);
-        }
-      }
-    };
-
-    verifyUser();
+        })
+        .catch((err) => {
+          console.error("Failed to verify user:", err);
+        });
+    }
   }, []);
 
   return (

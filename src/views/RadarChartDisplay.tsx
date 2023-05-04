@@ -4,6 +4,7 @@ import axios from "axios";
 import RadarChartComponent from "../components/RadarChart";
 import { FeedbackSection } from "../types/types";
 import Loading from "../components/Loading";
+import { Typography } from "@mui/material";
 
 type FeedbackCustomType = {
   sectionName: string;
@@ -39,12 +40,11 @@ const RadarChartDisplay = () => {
     },
   ];
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:4500/api/feedback-data/${requestId}`
-        );
-        const data = response.data;
+    // fetch totalData (data that is not filtered)
+    axios
+      .get(`http://localhost:4500/api/feedback-data/${requestId}`)
+      .then((res) => {
+        const data = res.data;
 
         const formattedChartData = data.answersBySection
           .filter(
@@ -61,53 +61,41 @@ const RadarChartDisplay = () => {
           }));
 
         setTotalData(formattedChartData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    const fetchDataByRole = async () => {
-      await axios
-        .get(`http://localhost:4500/api/feedback-data/${requestId}/reviewee`)
-        .then((res) => {
-          const data = res.data.answersBySection.map(
-            (item: FeedbackSection) => ({
-              sectionName: item.sectionName,
-              average: item.score[0].average,
-            })
-          );
-          setRevieweeData(data);
-        });
-      await axios
-        .get(`http://localhost:4500/api/feedback-data/${requestId}/manager`)
-        .then((res) => {
-          const data = res.data.answersBySection.map(
-            (item: FeedbackSection) => ({
-              sectionName: item.sectionName,
-              average: item.score[0].average,
-            })
-          );
-          setManagerData(data);
-        });
-      await axios
-        .get(`http://localhost:4500/api/feedback-data/${requestId}/reviewer`)
-        .then((res) => {
-          const data = res.data.answersBySection.map(
-            (item: FeedbackSection) => ({
-              sectionName: item.sectionName,
-              average: (
-                item.score.reduce(
-                  (sum: number, score: any) => sum + score.average,
-                  0
-                ) / item.score.length
-              ).toFixed(2),
-            })
-          );
-          setReviewerData(data);
-        });
-    };
+      });
 
-    fetchData();
-    fetchDataByRole();
+    // fetch data filtered by the role (submittedBy)
+    axios
+      .get(`http://localhost:4500/api/feedback-data/${requestId}/reviewee`)
+      .then((res) => {
+        const data = res.data.answersBySection.map((item: FeedbackSection) => ({
+          sectionName: item.sectionName,
+          average: item.score[0].average,
+        }));
+        setRevieweeData(data);
+      });
+    axios
+      .get(`http://localhost:4500/api/feedback-data/${requestId}/manager`)
+      .then((res) => {
+        const data = res.data.answersBySection.map((item: FeedbackSection) => ({
+          sectionName: item.sectionName,
+          average: item.score[0].average,
+        }));
+        setManagerData(data);
+      });
+    axios
+      .get(`http://localhost:4500/api/feedback-data/${requestId}/reviewer`)
+      .then((res) => {
+        const data = res.data.answersBySection.map((item: FeedbackSection) => ({
+          sectionName: item.sectionName,
+          average: (
+            item.score.reduce(
+              (sum: number, score: any) => sum + score.average,
+              0
+            ) / item.score.length
+          ).toFixed(2),
+        }));
+        setReviewerData(data);
+      });
   }, [requestId]);
 
   useEffect(() => {
@@ -135,7 +123,6 @@ const RadarChartDisplay = () => {
             average: matchingTotal ? matchingTotal.average : null,
           };
         });
-        console.log("Done creating chart data: ", chartData1);
         setChartData(chartData1);
       }
       createChartData();
@@ -144,7 +131,16 @@ const RadarChartDisplay = () => {
   }, [reviewerData]);
 
   return (
-    <>{isLoading ? <Loading /> : <RadarChartComponent data={chartData} />}</>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <Typography variant="h3">Chart View</Typography>
+          <RadarChartComponent data={chartData} />
+        </>
+      )}
+    </>
   );
 };
 

@@ -24,7 +24,6 @@ interface RadarChartProps {
 }
 
 const RadarChartComponent: React.FC<RadarChartProps> = ({ data }) => {
-  console.log(data);
   return (
     <>
       <ResponsiveContainer width="100%" height={750}>

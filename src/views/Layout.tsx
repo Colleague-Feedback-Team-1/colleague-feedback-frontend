@@ -104,8 +104,6 @@ const Layout = () => {
   const handleLogOut = () => {
     setTimeout(() => {
       axios.post("http://localhost:4500/api/employees/logout").then((res) => {
-        console.log(res.data);
-        console.log("Log out successfully.");
         setUser(null);
         toast.success("Log out successfully");
       });
