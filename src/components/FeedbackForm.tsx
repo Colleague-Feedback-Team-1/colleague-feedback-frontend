@@ -1,7 +1,7 @@
 // imports
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Section, CustomFormData } from "../types/types";
+import { QuestionSection, CustomFormData } from "../types/types";
 import {
   Typography,
   RadioGroup,
@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 interface CustomFormProps {
-  data: Section[];
+  data: QuestionSection[];
   onSubmit: (data: CustomFormData) => void;
 }
 

@@ -45,7 +45,7 @@ export interface Question {
   isFreeForm: boolean;
 }
 
-export interface Section {
+export interface QuestionSection {
   _id: string;
   sectionName: string;
   questions: Question[];
@@ -61,3 +61,23 @@ export interface CustomFormData {
     };
   };
 }
+
+// for feedbackData
+export type FeedbackScore = {
+  submittedBy: string;
+  average: number;
+  openFeedback: string[];
+};
+
+export type FeedbackSection = {
+  sectionName:
+    | "People skills"
+    | "Self guidance"
+    | "Leadership"
+    | "Readiness for change"
+    | "Creativity"
+    | "General evaluation";
+  score: FeedbackScore[];
+};
+
+export type Feedback = FeedbackSection[];

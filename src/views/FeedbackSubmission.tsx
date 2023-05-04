@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import FeedbackForm from "../components/FeedbackForm";
-import { Section, CustomFormData } from "../types/types";
+import { QuestionSection, CustomFormData } from "../types/types";
 import Loading from "../components/Loading";
 import FormIntro from "../assets/FormIntro";
 import UserContext from "../context/UserContext";
@@ -17,7 +17,7 @@ type RouteParams = {
 function FeedbackSubmission() {
   const params = useParams<RouteParams>();
   const [requestData, setRequestData] = useState<Request | null>();
-  const [data, setData] = useState<Section[]>([]);
+  const [data, setData] = useState<QuestionSection[]>([]);
   const { user } = useContext<UserContextProps>(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
