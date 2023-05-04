@@ -8,7 +8,6 @@ import UserContext from "../context/UserContext";
 import { UserContextProps, Request, Reviewer } from "../types/types";
 import { Container, Box } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 type RouteParams = {
   requestId: string;
@@ -42,7 +41,6 @@ function FeedbackSubmission() {
         ) {
           setUserRoleOnRequest("reviewer");
         }
-        return;
       });
     }
   };

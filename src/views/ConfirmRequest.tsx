@@ -44,7 +44,6 @@ const ConfirmRequest = () => {
   const [managerList, setManagerList] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
-  const { user } = useContext<UserContextProps>(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {

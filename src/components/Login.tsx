@@ -1,17 +1,10 @@
-import {
-  Button,
-  Typography,
-  TextField,
-  Box,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
+import { Button, Typography, TextField, Box } from "@mui/material";
 import axios from "axios";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import ExoveLogo from "../assets/ExoveLogo.png";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);

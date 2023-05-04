@@ -64,7 +64,6 @@ const RequestSingle = () => {
         ) {
           setUserRoleOnRequest("reviewer");
         }
-        return;
       });
     }
   };
