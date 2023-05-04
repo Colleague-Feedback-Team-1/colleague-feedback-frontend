@@ -25,6 +25,7 @@ import SearchBar from "../components/SearchBar";
 import ExoveLogoWhite from "../assets/ExoveLogoWhite.png";
 import UserContext from "../context/UserContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -103,9 +104,8 @@ const Layout = () => {
   const handleLogOut = () => {
     setTimeout(() => {
       axios.post("http://localhost:4500/api/employees/logout").then((res) => {
-        console.log(res.data);
-        console.log("Log out successfully.");
         setUser(null);
+        toast.success("Log out successfully");
       });
     }, 1000);
   };
@@ -185,16 +185,24 @@ const Layout = () => {
       </Stack>
 
       {/* Drawer in the left side of the screen */}
-      <Drawer variant="permanent" anchor="left">
-        <Box
-          p={2}
-          width={"170px"}
-          minHeight={"89.6vh"}
-          sx={{ marginTop: "64px", backgroundColor: "#9b51e0", color: "white" }}
-        >
-          <List>{renderDrawer()}</List>
-        </Box>
-      </Drawer>
+      {user !== null ? (
+        <Drawer variant="permanent" anchor="left">
+          <Box
+            p={2}
+            minHeight={"87.3vh"}
+            sx={{
+              marginTop: "64px",
+              backgroundColor: "#9b51e0",
+              color: "white",
+              overflow: "hidden",
+            }}
+          >
+            <List>{renderDrawer()}</List>
+          </Box>
+        </Drawer>
+      ) : (
+        <></>
+      )}
 
       <Main />
     </>

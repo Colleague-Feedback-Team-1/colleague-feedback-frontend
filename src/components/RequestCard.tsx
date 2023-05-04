@@ -18,13 +18,16 @@ const RequestCard: React.FC<Request> = (prop) => {
     (reviewer) => reviewer.feedbackSubmitted
   ).length;
   return (
-    <Card sx={{ backgroundColor: "#4CA85A", color: "white" }}>
+    <Card
+      sx={{ backgroundColor: "#4CA85A", color: "white", minWidth: "260px" }}
+    >
       <CardHeader
         title={`ID ${prop._id.slice(0, 5)}...${prop._id.slice(-5)}`}
-      >
-      </CardHeader>
-      <CardContent>
-        <Typography fontWeight={'bold'}>Reviewee: {prop.employeeName}</Typography>
+      ></CardHeader>
+      <CardContent sx={{minHeight:'70px'}}>
+        <Typography fontWeight={"bold"}>
+          Reviewee: {prop.employeeName}
+        </Typography>
         {prop.confirmedByHR ? (
           <Stack>
             <Stack direction={"row"}>
@@ -42,15 +45,24 @@ const RequestCard: React.FC<Request> = (prop) => {
           </Stack>
         )}
       </CardContent>
-      <CardActions sx={{ width: "100%", bottom: 0, position: "relative" }}>
-        <Link
-          to={`/requests/${prop._id}`}
-          style={{ textDecoration: "none", paddingRight: "13px" }}
+      <CardActions>
+        <Stack
+          direction={"row"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          sx={{
+            width: "100%",
+          }}
         >
-          <Button variant="contained">View</Button>
-        </Link>
+          <Link
+            to={`/requests/${prop._id}`}
+            style={{ textDecoration: "none", paddingRight: "13px" }}
+          >
+            <Button variant="contained">View</Button>
+          </Link>
 
-        <Button variant="contained">Quick remind</Button>
+          <Button variant="contained">Quick remind</Button>
+        </Stack>
       </CardActions>
     </Card>
   );

@@ -16,22 +16,18 @@ import Loading from "../components/Loading";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Employee,
-  UserContextProps,
-  RequestWithoutId,
-} from "../types/types";
+import { Employee, UserContextProps, RequestWithoutId } from "../types/types";
 import EmployeeCard from "../components/EmployeeCard";
 import UserContext from "../context/UserContext";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 
 const modalStyle = {
   position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "25%",
+  top: "50vh",
+  left: "30vw",
+  width: "30%",
   height: "25%",
   backgroundColor: "#9b51e0",
   boxShadow: 24,
@@ -116,7 +112,7 @@ const CreateNewRequest = () => {
   //render the list of all employees with filter from searchbar
   const renderAllEmployees = () => {
     if (filterUser === "") {
-      return 
+      return;
     } else {
       return employeeList!
         .filter((employee: Employee) => employee._id !== user?._id)
@@ -131,14 +127,14 @@ const CreateNewRequest = () => {
     }
   };
 
-function isInArray(targetObject: any, objectArray: any) {
-  for (const object of objectArray) {
-    if (JSON.stringify(targetObject) === JSON.stringify(object)) {
-      return true;
+  function isInArray(targetObject: any, objectArray: any) {
+    for (const object of objectArray) {
+      if (JSON.stringify(targetObject) === JSON.stringify(object)) {
+        return true;
+      }
     }
+    return false;
   }
-  return false;
-}
 
   const renderCardAction = (prop: Employee) => {
     if (isInArray(prop, reviewerList)) {
@@ -209,8 +205,7 @@ function isInArray(targetObject: any, objectArray: any) {
           </Button>
         </>
       );
-    }
-    else {
+    } else {
       return (
         <>
           <Typography>
@@ -253,9 +248,10 @@ function isInArray(targetObject: any, objectArray: any) {
       .then((res) => {
         console.log(res);
         handleModalClose();
+        toast.success("Created new request successfully");
         navigate("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => toast.error(err));
   };
 
   return (
@@ -329,7 +325,7 @@ function isInArray(targetObject: any, objectArray: any) {
               alignItems={"center"}
               justifyContent={"flex-start"}
               height={"200px"}
-              sx={{ overflowY: "scroll" }}
+              sx={{ overflowY: "auto" }}
             >
               {renderAllEmployees()}
             </Stack>
