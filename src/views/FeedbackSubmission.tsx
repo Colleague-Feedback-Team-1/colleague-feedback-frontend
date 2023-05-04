@@ -60,24 +60,18 @@ function FeedbackSubmission() {
         setIsLoading(false);
       });
 
-    fetchRequestByRequestId(params.requestId!);
+    axios
+      .get(
+        `http://localhost:4500/api/review-requests/by-requestid/${params.requestId}`
+      )
+      .then((res) => {
+        setRequestData(res.data);
+      });
   }, []);
 
   useEffect(() => {
     checkRole();
   }, [requestData]);
-
-  const fetchRequestByRequestId = async (requestId: string) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:4500/api/review-requests/by-requestid/${requestId}`
-      );
-      setRequestData(response.data);
-    } catch (error) {
-      console.error("Error fetching request data:", error);
-      return null;
-    }
-  };
 
   const submitFeedback = async (requestData: any) => {
     try {
