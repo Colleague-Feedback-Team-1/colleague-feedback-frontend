@@ -55,7 +55,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                       spacing={2}
                       sx={{ alignItems: 'center', justifyContent: 'center' }}
                     >
-                      <Typography>{t("FeedbackFormBad.bad")}</Typography>
+                      <Typography>{t("FeedbackForm.bad")}</Typography>
                       <RadioGroup {...field} row>
                         {[1, 2, 3, 4, 5].map((value) => (
                           <FormControlLabel
@@ -67,7 +67,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                         ))}
                       </RadioGroup>
                       <Typography>
-                      {t("FeedbackFormGood.good")}</Typography>
+                      {t("FeedbackForm.good")}</Typography>
                     </Stack>
                   )}
                 />
@@ -78,7 +78,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
       ))}
       <Grid item>
         <Button type="submit" variant="contained" color="primary" disabled={!isValid}>
-        {t("FeedbackFormSubmit.submit")}
+        {t("FeedbackForm.submit")}
         </Button>
       </Grid>
     </form>

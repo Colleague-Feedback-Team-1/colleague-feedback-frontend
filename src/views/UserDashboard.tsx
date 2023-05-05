@@ -22,12 +22,14 @@ import { UserContextProps, Reviewer } from "../types/types";
 import { Link } from "react-router-dom";
 //import type {} from "@mui/x-data-grid/themeAugmentation";
 import RequestDashboard from "../components/RequestDataGrid";
+import { useTranslation } from "react-i18next";
 
 const UserDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [requestList, setRequestList] = useState<Request[] | null>();
   const [adminRequestList, setAdminRequestList] = useState<Request[] | null>();
   const [asReviewerList, setAsReviewerList] = useState<Request[] | null>();
+  const { t } = useTranslation();
  
   const { user } = useContext<UserContextProps>(UserContext);
 
@@ -82,7 +84,7 @@ const UserDashboard = () => {
       return (
         <>
           <Box paddingBottom={"50px"}>
-            <Typography variant="h4">Your feedback requests:</Typography>
+            <Typography variant="h4">{t("UserDashboard.requestFeedback")}</Typography>
             <Stack
               direction={"row"}
               spacing={"2px"}
@@ -95,7 +97,7 @@ const UserDashboard = () => {
                   return <RequestCard {...request} key={request._id} />;
                 })
               ) : (
-                <Typography>You have no requests</Typography>
+                <Typography>{t("UserDashboard.noRequest")}</Typography>
               )}
             </Stack>
             
@@ -103,7 +105,7 @@ const UserDashboard = () => {
 
           <Box paddingBottom={"50px"}>
             <Typography variant="h4">
-              Your co-worker needs your feedback:{" "}
+            {t("UserDashboard.yourFeedback")}{" "}
             </Typography>
             <Stack
               direction={"row"}
@@ -118,7 +120,7 @@ const UserDashboard = () => {
                 })
               ) : (
                 <Typography>
-                  You have no review requests from your colleagues
+                 {t("UserDashboard.yourColleagues")}
                 </Typography>
               )}
             </Stack>
@@ -144,12 +146,12 @@ const UserDashboard = () => {
             paddingBottom={"50px"}
           >
             <Box>
-              <Typography variant="h3">Hello, {user!.displayName}</Typography>
-              <Typography variant="h6">Today is {date}</Typography>
+              <Typography variant="h3">{t("UserDashboard.hello")} {user!.displayName}</Typography>
+              <Typography variant="h6">{t("UserDashboard.today")}{date}</Typography>
             </Box>
             <Link to={"/requests/createNewRequest"}>
               <Button variant="contained" size="large" color="success">
-                Create New Request
+              {t("UserDashboard.newRequest")}
               </Button>
             </Link>
           </Stack>

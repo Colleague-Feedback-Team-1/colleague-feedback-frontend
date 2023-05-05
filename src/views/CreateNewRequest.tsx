@@ -25,6 +25,7 @@ import EmployeeCard from "../components/EmployeeCard";
 import UserContext from "../context/UserContext";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 
 const modalStyle = {
   position: "absolute",
@@ -50,6 +51,7 @@ const CreateNewRequest = () => {
   const [openModal, setOpenModal] = useState(false);
   const { user } = useContext<UserContextProps>(UserContext);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [dueDate, setDueDate] = useState<string | undefined>("");
 
   useEffect(() => {
@@ -201,11 +203,10 @@ function isInArray(targetObject: any, objectArray: any) {
       return (
         <>
           <Typography>
-            After you create this request, it needs to be confirmed by HR before
-            everyone can give feedbacks
-          </Typography>
+            
+            {t("CreateNewRequest.confirmedEveryone")}</Typography>
           <Button variant="contained" onClick={handleModalOpen}>
-            Create this request
+            {t("CreateNewRequest.thisRequest")}
           </Button>
         </>
       );
@@ -214,10 +215,9 @@ function isInArray(targetObject: any, objectArray: any) {
       return (
         <>
           <Typography>
-            Please choose a due date and 5 reviewers for this request!
-          </Typography>
+            {t("CreateNewRequest.dueRequest")}</Typography>
           <Button variant="outlined" disabled>
-            Create this request
+            {t("CreateNewRequest.thisRequest")}
           </Button>
         </>
       );
@@ -268,7 +268,7 @@ function isInArray(targetObject: any, objectArray: any) {
           }}
         >
           <Typography variant="h3" pb={"50px"}>
-            CREATE NEW REQUEST
+           {t("CreateNewRequest.newRequest")}
           </Typography>
           <Stack
             flexGrow={1}
@@ -276,7 +276,7 @@ function isInArray(targetObject: any, objectArray: any) {
             justifyContent={"space-between"}
           >
             <Stack>
-              <Typography variant="h4">Reviewee:</Typography>
+              <Typography variant="h4">{t("CreateNewRequest.reviewee")}</Typography>
               {
                 <EmployeeCard
                   employeeid={revieweeList!._id}
@@ -286,7 +286,7 @@ function isInArray(targetObject: any, objectArray: any) {
               }
             </Stack>
             <Stack flexGrow={3}>
-              <Typography variant="h4">Due date:</Typography>
+              <Typography variant="h4">{t("CreateNewRequest.dueDate")}</Typography>
               <DatePicker
                 value={dueDate}
                 onChange={(e: any) => handleChangeTimePicker(e)}
@@ -296,7 +296,7 @@ function isInArray(targetObject: any, objectArray: any) {
           </Stack>
           <Stack flexGrow={4}>
             <Typography variant="h4">
-              Reviewers: ({reviewerList?.length}/5)
+            {t("CreateNewRequest.reviewers")}({reviewerList?.length}/5)
             </Typography>
             <Stack
               direction={"row"}
@@ -310,7 +310,7 @@ function isInArray(targetObject: any, objectArray: any) {
                   return renderReviewerCard(reviewer);
                 })
               ) : (
-                <Typography>Choose a reviewer below</Typography>
+                <Typography>{t("CreateNewRequest.chooseReviewer")}</Typography>
               )}
             </Stack>
           </Stack>
@@ -343,7 +343,7 @@ function isInArray(targetObject: any, objectArray: any) {
             sx={modalStyle}
           >
             <>
-              <Typography variant="h2">Are you sure?</Typography>
+              <Typography variant="h2">{t("CreateNewRequest.sure")}</Typography>
               <Stack
                 direction={"row"}
                 mt={3}
@@ -355,14 +355,14 @@ function isInArray(targetObject: any, objectArray: any) {
                   color="error"
                   onClick={handleModalClose}
                 >
-                  No, let me check again
+                  {t("CreateNewRequest.checkAgain")}
                 </Button>
                 <Button
                   variant="contained"
                   color="success"
                   onClick={createRequest}
                 >
-                  Yes, create this request
+                 {t("CreateNewRequest.createRequest")} 
                 </Button>
               </Stack>
             </>

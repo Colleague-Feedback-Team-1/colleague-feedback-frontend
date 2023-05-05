@@ -147,14 +147,14 @@ const RequestDataGrid = () => {
             style={{ textDecoration: "none", paddingRight: "13px" }}
           >
             <Button variant="contained">
-            {t("RequestDataGridView.title")}</Button>
+            {t("RequestDataGrid.view")}</Button>
           </Link>
           <Button
             variant="contained"
             color="error"
             onClick={() => handleDeleteModal(params.row._id)}
           >
-            {t("RequestDataGridDelete.title")}
+            {t("RequestDataGrid.delete")}
           </Button>
         </>
       ),
@@ -182,12 +182,12 @@ const RequestDataGrid = () => {
       >
         <>
           <Typography variant="h3">
-            {t("RequestDataGridDeleteRequest.title")}
+            {t("RequestDataGrid.deleteRequest")}
             {`...${deletingRequestId.slice(-7)}`}"?
           </Typography>
           <Typography variant="body1">
             {" "}
-            {t("RequestDataGridDeleteImmediately.title")}
+            {t("RequestDataGrid.deleteImmediately")}
           </Typography>
           <Stack
             direction={"row"}
@@ -200,14 +200,14 @@ const RequestDataGrid = () => {
               color="success"
               onClick={handleModalClose}
             >
-              {t("RequestDataGridCancel.title")}
+              {t("RequestDataGrid.cancel")}
             </Button>
             <Button
               variant="contained"
               color="error"
               onClick={() => deleteRequest(deletingRequestId)}
             >
-              {t("RequestDataGridDelete.title")}
+              {t("RequestDataGrid.delete")}
             </Button>
           </Stack>
         </>

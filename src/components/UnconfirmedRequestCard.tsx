@@ -34,7 +34,7 @@ const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
             {t("UnconfirmedRequestCard.reviewer")}: {prop.reviewers.length}
           </Typography>
           <Typography>
-            {t("UnconfirmedRequestCardDueDate.title")}:{" "}
+            {t("UnconfirmedRequestCardDueDate.dueDate")}:{" "}
             {formatDate(prop.dateRequested!)}
           </Typography>
         </Stack>
@@ -45,12 +45,12 @@ const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
           style={{ textDecoration: "none", paddingRight: "13px" }}
         >
           <Button variant="contained">
-            {t("UnconfirmedRequestCardView.title")}
+            {t("UnconfirmedRequestCardView.view")}
           </Button>
         </Link>
 
         <Button variant="contained">
-          {t("UnconfirmedRequestQuickRemind.title")}
+          {t("UnconfirmedRequestCard.remind")}
         </Button>
       </CardActions>
     </Card>

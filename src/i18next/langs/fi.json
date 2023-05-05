@@ -1,66 +1,106 @@
+
 {
-    "language":"suomi",
-    "login":{
-        "title":"Kirjaudu sisään"
+    "language": "englanti",
+    "login": {
+    "title": "Kirjaudu sisään käyttääksesi sovellusta",
+    "sign": "Kirjaudu sisään"
     },
-    "loading":{
-        "title":"Ladataan..."
+    "loading": {
+    "title": "Ladataan..."
     },
-    "FeedbackFormBad":{
-        "bad":"Todella paha"
+    "RequestCard": {
+    "reviewee": "Arvioitava henkilö",
+    "confirmed": "Vahvistettu HR:ltä",
+    "notConfirmed": "Ei vielä vahvistettu HR:ltä",
+    "feedback": "Palaute",
+    "view": "Näytä",
+    "remind": "Muistuta nopeasti"
     },
-    "FeedbackFormGood":{
-        "good":"Oikein Hyvä"
+    "FeedbackForm": {
+    "bad": "Erittäin huono",
+    "good": "Erittäin hyvä",
+    "submit": "Lähetä palaute"
     },
-    "FeedbackFormSubmit":{
-        "submit":"Antaa palautetta"
+    "RequestDataGrid": {
+    "view": "Näytä",
+    "delete": "Poista",
+    "deleteRequest": "Haluatko varmasti poistaa pyynnön ",
+    "deleteImmediately": "Tämä kohde poistetaan välittömästi. Tätä toimintoa ei voi peruuttaa.",
+    "cancel": "Peruuta"
     },
-    "RequestDataGridView":{
-        "title":"näkymä"
+    "UncomfirmedRequestCard": {
+    "reviewee": "Arvioitava henkilö",
+    "reviewer": "Arvioija",
+    "dueDate": "Eräpäivä",
+    "view": "Näytä",
+    "remind": "Muistuta nopeasti"
     },
-    "RequestDataGridDelete":{
-        "title":"Poistaa"
+    "RequestSingleNeedtocheck": {
+    "gfChart": "Ei tarpeeksi palautetta kaavion generoimiseksi",
+    "gChart": "Generoi kaavio"
     },
-    "RequestDataGridDeleteRequest":{
-        "title":"Haluatko varmasti poistaa pyynnön "
+    "Layout": {
+    "cFeedback": "KOLLEGAN PALAUTE",
+    "profile": "Profiili",
+    "logout": "Kirjaudu ulos"
     },
-    "RequestDataGridDeleteImmediately":{
-        "title":"Tämä kohde poistetaan välittömästi, Tätä toimintoa ei voi kumota."
+    "ComfirmedRequest": {
+    "cRequest": "PYNNÖN VAHVISTAMINEN #",
+    "reviewee": "Arvioitava henkilö:",
+    "reviewers": "Arvioijat:",
+    "apManager": "Projektipäällikön määrittäminen ",
+    "searchEmployee": "Etsi työntekijä:",
+    "confirmRequest": "Vahvista tämä pyyntö",
+    "selectManager": "Valitse ensin yksi projektipäällikkö!",
+    "confirmedRequest2": "Vahvista tämä pyyntö",
+    "sure": "Oletko varma?",
+    "checkAgain": "Ei, tarkistan uudelleen",
+    "confirmRequest2": "Kyllä, vahvista tämä pyyntö"
     },
-    "RequestDataGridCancel":{
-        "title":"peruuttaa"
-    },
-    "UnconfirmedRequestCardReviewee":{
-        "title":"arvioija"
-    },
-    "UnconfirmedRequestCardReveiwer":{
-        "title":"arvostelija"
-    },
-    "UnconfirmedRequestCardDueDate":{
-        "title":"Eräpäivä"
-    },
-    "UnconfirmedRequestCardView":{
-        "title":"näkymä"
-    },
-    "UnconfirmedRequestCardQuickRemind":{
-        "title":"Nopea muistutus"
-    },
-    "RequestCardReviewee":{
-        "title":"arvioija"
-    },
-    "RequestCardConfirmedByHR":{
-        "title":"HR vahvistaa"
-    },
-    "RequestCardFeedback":{
-        "title":"Paluate"
-    },
-    "RequestCardView":{
-        "title":"näkymä"
-    },
-    "RequestCardQuickRemind":{
-        "title":"Nopea muistutus"
-    },
-    "RequestCardNotConfirmedByHR":{
-        "title":"HR ei ole vielä vahvistanut"
-    }
+    "CreateNewRequest": {
+    "confirmedEveryone": "Kun olet luonut tämän pyynnön, henkilöstöhallinnon on vahvistettava se ennen kuin kaikki voivat antaa palautetta.",
+    "thisRequest": "Luo tämä pyyntö",
+    "dueRequest": "Valitse eräpäivä ja 5 arvioijaa tälle pyynnölle!",
+    "newRequest": " LUO UUSI PYYNTÖ ",
+    "reviewee": "Arvioitava henkilö:",
+    "dueDate": "Eräpäivä:",
+    "reviewers": "Arvioijat: ",
+    "chooseReviewer": "Valitse arvioija alla olevasta luettelosta",
+    "sure": "Oletko varma?",
+    "checkAgain": "Ei, haluan tarkistaa uudelleen",
+    "createRequest": "Kyllä, luo tämä pyyntö"
+},
+"UserDashboard": {
+"requestFeedback": "Pyyntösi palautteesta:",
+"noRequest": "Sinulla ei ole pyyntöjä",
+"yourFeedback": "Työtoverisi tarvitsee palautettasi:",
+"yourColleagues": "Sinulla ei ole arviointipyyntöjä kollegoiltasi",
+"hello": "Hei,",
+"today": "Tänään on ",
+"newRequest": "Luo uusi pyyntö"
+},
+"RequestSingle": {
+"assignManager": "Henkilöstöhallinto voi klikata 'Vahvista tämä pyyntö' nimetäkseen managerin ja vahvistaakseen pyynnön.",
+"rejectRequest": "Hylkää tämä pyyntö",
+"confirmRequest": "Vahvista tämä pyyntö",
+"toDashboard": "Takaisin hallintapaneeliin",
+"review": "Itsearviointi",
+"giveFeedback": "Anna palautetta",
+"as": "kuten ",
+"requestID": "PYYNTÖ ID #",
+"requestConfirmed": "Tämä pyyntö on vahvistettu, arvioijat voivat nyt antaa palautetta.",
+"created": "Luotu: ",
+"date": "Eräpäivä: ",
+"status": "Tila:",
+"confirmed": "Vahvistettu henkilöstöhallinnolta",
+"notConfirmed": "Ei vahvistettu",
+"selfReview": "Itsearviointi:",
+"no": "Ei",
+"yes": "Kyllä",
+"feedbacks": "Saatujen palautteiden määrä:",
+"reviewee": "Arvioitava henkilö:",
+"manager": "Projektipäällikkö:",
+"noManager": "Ei manageria määritelty vielä.",
+"reviewers": "Arvioijat:"
+}
 }

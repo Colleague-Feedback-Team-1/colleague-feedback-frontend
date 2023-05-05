@@ -113,7 +113,7 @@ const Login = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {t("login.sign")}
             </Button>
             <Grid container>
               <Grid item>
