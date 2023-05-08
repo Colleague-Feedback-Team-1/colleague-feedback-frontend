@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export interface Employee {
   _id: string;
   uid: string;
@@ -81,3 +83,29 @@ export type FeedbackSection = {
 };
 
 export type Feedback = FeedbackSection[];
+
+// for Notification
+export enum NotificationType {
+  "confirmed-by-admin",
+  "denied-by-admin",
+  "create-new-request",
+  "remind-give-feedback",
+  "remind-create-request",
+  "remind-self-review",
+}
+export type Sender = {
+  employeeid: string;
+  employeeName: string;
+};
+export type Receiver = {
+  employeeid: string;
+  employeeName: string;
+};
+export interface Notification {
+  date: string;
+  unread: boolean;
+  type: NotificationType;
+  sender: Sender[];
+  receiver: Receiver[];
+  requestid: string;
+}

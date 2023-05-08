@@ -46,9 +46,9 @@ const Layout = () => {
       link: "/dashboard",
     },
     {
-      text: "Users",
+      text: "Notification",
       icon: <AccountCircleIcon />,
-      link: "/request-dashboard",
+      link: "/notification",
     },
   ];
 

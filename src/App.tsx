@@ -19,6 +19,7 @@ import RequestDashboard from "./components/RequestDataGrid";
 import RadarChartDisplay from "./views/RadarChartDisplay";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NotiDemo from "./components/NotiDemo";
 
 const App = () => {
   const [user, setUser] = useState<Employee | null>(null);
@@ -73,8 +74,8 @@ const App = () => {
                 ></Route>
 
                 <Route
-                  path="/request-dashboard"
-                  element={<RequestDashboard />}
+                  path="/notification"
+                  element={<NotiDemo />}
                 ></Route>
 
                 <Route
