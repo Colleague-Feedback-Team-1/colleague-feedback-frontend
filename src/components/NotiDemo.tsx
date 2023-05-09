@@ -73,11 +73,10 @@ function NotiDemo() {
                                 {noti.sender[0].employeeName} has created a new
                                 request.{" "}
                               </b>
-                              You can confirm or deny it.
+                              You can confirm or deny it from the dashboard.
                             </Typography>
                           }
                           subheader={noti.date}
-                          action={<Button variant="contained">View</Button>}
                         ></CardHeader>
                       </Card>
                     </MenuItem>
