@@ -259,6 +259,35 @@ function NotiDemo() {
                       </Card>
                     </MenuItem>
                   );
+                case "ask-for-feedback":
+                  return (
+                    <MenuItem onClick={handleClose}>
+                      <Card
+                        sx={{
+                          width: "700px",
+                          backgroundColor: "#d0e8ff",
+                        }}
+                      >
+                        <CardHeader
+                          avatar={<Avatar src={ExoveLogo}></Avatar>}
+                          title={
+                            <Typography>
+                              <b>
+                                {noti.sender[0].employeeName} is asking for your
+                                feedback.{" "}
+                              </b>
+                            </Typography>
+                          }
+                          subheader={noti.date}
+                          action={
+                            <Link to={`/requests/${noti.requestid}`}>
+                              <Button variant="contained">View request</Button>
+                            </Link>
+                          }
+                        ></CardHeader>
+                      </Card>
+                    </MenuItem>
+                  );
               }
             })}
           </>
