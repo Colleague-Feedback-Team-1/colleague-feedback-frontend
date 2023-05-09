@@ -58,7 +58,7 @@ function NotificationBell() {
         open={openNotiMenu}
         anchorEl={anchorEl}
         onClose={handleClose}
-        sx={{ maxHeight: "80vh" }}
+        sx={{ maxHeight: "80vh", marginTop: "10px" }}
       >
         <Stack>
           <Button
@@ -332,18 +332,16 @@ function NotificationBell() {
 
   return (
     <>
-      <Stack direction={"row"} justifyContent={"flex-end"}>
-        <IconButton
-          size="large"
-          color="inherit"
-          onClick={handleClick}
-          sx={{ alignItems: "flex-end" }}
-        >
-          <Badge badgeContent={notiData?.length} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-      </Stack>
+      <IconButton
+        size="large"
+        color="inherit"
+        onClick={handleClick}
+        sx={{ alignItems: "flex-end" }}
+      >
+        <Badge badgeContent={notiData?.length} color="error">
+          <NotificationsIcon />
+        </Badge>
+      </IconButton>
       {renderMenu()}
     </>
   );
