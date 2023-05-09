@@ -85,14 +85,16 @@ export type FeedbackSection = {
 export type Feedback = FeedbackSection[];
 
 // for Notification
-export enum NotificationType {
-  "confirmed-by-admin",
-  "denied-by-admin",
-  "create-new-request",
-  "remind-give-feedback",
-  "remind-create-request",
-  "remind-self-review",
-}
+export type NotificationType =
+  | "confirmed-by-admin"
+  | "denied-by-admin"
+  | "create-new-request"
+  | "ask-for-feedback"
+  | "remind-give-feedback"
+  | "remind-create-request"
+  | "remind-self-review"
+  | "feedback-submitted";
+
 export type Sender = {
   employeeid: string;
   employeeName: string;
