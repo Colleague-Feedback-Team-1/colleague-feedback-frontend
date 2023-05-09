@@ -26,6 +26,7 @@ import ExoveLogoWhite from "../assets/ExoveLogoWhite.png";
 import UserContext from "../context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import NotificationBell from "../components/NotificationBell";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -151,11 +152,7 @@ const Layout = () => {
                   sx={{ alignItems: "center", justifyContent: "right" }}
                 >
                   <SearchBar />
-                  <IconButton size="large" color="inherit">
-                    <Badge badgeContent={5} color="error">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
+                  <NotificationBell />
                   <IconButton
                     size="large"
                     color="inherit"
