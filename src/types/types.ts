@@ -96,14 +96,15 @@ export type NotificationType =
   | "feedback-submitted";
 
 export type Sender = {
-  employeeid: string;
-  employeeName: string;
+  senderid: string;
+  senderName: string;
 };
 export type Receiver = {
-  employeeid: string;
-  employeeName: string;
+  receiverid: string;
+  receiverName: string;
 };
 export interface Notification {
+  _id?:string;
   date: string;
   type: NotificationType;
   sender: Sender[];
