@@ -105,7 +105,6 @@ export type Receiver = {
 };
 export interface Notification {
   date: string;
-  unread: boolean;
   type: NotificationType;
   sender: Sender[];
   receiver: Receiver[];

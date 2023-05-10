@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "./Loading";
-import { Request, Reviewer } from "../types/types";
+import { Receiver, Request, Reviewer } from "../types/types";
 import { Stack, Box, Typography, Button, Modal } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -11,23 +11,27 @@ import { useNavigate } from "react-router-dom";
 
 const modalStyle = {
   position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "50%",
-  height: "20%",
+  width: "60%",
+  maxHeight: "60%",
   backgroundColor: "#9b51e0",
   boxShadow: 24,
   p: 4,
   color: "white",
   textAlign: "center",
+  borderRadius: "30px",
+  margin: "auto",
+  alignItem: "center",
 };
 
 const RequestDataGrid = () => {
   const [adminRequestList, setAdminRequestList] = useState<Request[] | null>();
   const [isLoading, setIsLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openRemindModal, setOpenRemindModal] = useState(false);
   const [deletingRequestId, setDeletingRequestId] = useState<string>("");
+  const [remindingRequestData, setRemindingRequestData] = useState<Request>();
+  const [remindingReviewers, setRemindingReviewers] = useState<Receiver[]>([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,10 +44,13 @@ const RequestDataGrid = () => {
   }, []);
 
   // handle the modal
-  const handleModalClose = () => setOpenModal(false);
+  const handleModalClose = () => {
+    setOpenDeleteModal(false);
+    setOpenRemindModal(false);
+  };
 
   const handleDeleteModal = (requestId: string) => {
-    setOpenModal(true);
+    setOpenDeleteModal(true);
     setDeletingRequestId(requestId);
   };
 
@@ -69,6 +76,33 @@ const RequestDataGrid = () => {
     ) : (
       <CloseIcon style={{ color: "red" }} />
     );
+  };
+
+  const remind = (requestID: string) => {
+    let isReady = false;
+    axios
+      .get(
+        `http://localhost:4500/api/review-requests/by-requestid/${requestID}`
+      )
+      .then((res) => {
+        setRemindingRequestData(res.data);
+        let remindingReviewers: Receiver[] = [];
+        remindingRequestData?.reviewers.forEach((reviewer) => {
+          if (!reviewer.feedbackSubmitted) {
+            remindingReviewers.push({
+              employeeid: reviewer.reviewerid,
+              employeeName: reviewer.reviewerName,
+            });
+            setRemindingReviewers(remindingReviewers);
+          }
+        });
+        isReady = true;
+      });
+    console.log("remindingReviewers: ", remindingReviewers);
+
+    if (isReady) {
+      setOpenRemindModal(true);
+    }
   };
 
   // Define the columns
@@ -99,10 +133,18 @@ const RequestDataGrid = () => {
     {
       field: "dateRequested",
       headerName: "Due Date",
+      sortable: false,
       width: 120,
       renderCell: (params) => {
-        const date = new Date(params.row.dateRequested);
-        return date.toLocaleDateString();
+        const date = new Date(params.row.dateRequested).toLocaleString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }
+        );
+        return date;
       },
     },
     {
@@ -139,15 +181,23 @@ const RequestDataGrid = () => {
       field: "View",
       headerName: "Actions",
       sortable: false,
-      width: 200,
+      width: 400,
       renderCell: (params) => (
-        <>
+        <Stack direction={"row"} spacing={2}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => remind(params.row._id)}
+          >
+            Remind
+          </Button>
           <Link
             to={`/requests/${params.row._id}`}
             style={{ textDecoration: "none", paddingRight: "13px" }}
           >
             <Button variant="contained">View</Button>
           </Link>
+
           <Button
             variant="contained"
             color="error"
@@ -155,7 +205,7 @@ const RequestDataGrid = () => {
           >
             Delete
           </Button>
-        </>
+        </Stack>
       ),
     },
   ];
@@ -174,7 +224,7 @@ const RequestDataGrid = () => {
         </div>
       )}
       <Modal
-        open={openModal}
+        open={openDeleteModal}
         onClose={handleModalClose}
         keepMounted
         sx={modalStyle}
@@ -206,6 +256,45 @@ const RequestDataGrid = () => {
               onClick={() => deleteRequest(deletingRequestId)}
             >
               Delete
+            </Button>
+          </Stack>
+        </>
+      </Modal>
+      {/* Modal for reminder */}
+      <Modal
+        open={openRemindModal}
+        onClose={handleModalClose}
+        keepMounted
+        sx={modalStyle}
+      >
+        <>
+          <Stack spacing={2}>
+            <Typography variant="h3">
+              A reminder notification will be sent to:
+            </Typography>
+            {remindingReviewers.map((reviewer) => {
+              return (
+                <Typography variant="h5">▪ {reviewer.employeeName}</Typography>
+              );
+            })}
+            <Typography variant="h3">Are you sure?</Typography>
+          </Stack>
+
+          <Stack
+            direction={"row"}
+            mt={3}
+            spacing={2}
+            sx={{ alignItems: "center", justifyContent: "center" }}
+          >
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleModalClose}
+            >
+              Cancel
+            </Button>
+            <Button variant="contained" color="success">
+              Send notification
             </Button>
           </Stack>
         </>

@@ -6,7 +6,7 @@
       "sender": [
         { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
       ],
-      "receiver": [{ "employeeid": "Admin", "employeeName": "Admin" }],
+      "receiver": [{ "employeeid": null, "employeeName": "Admin" }],
       "requestid": null
     },
     {
@@ -15,7 +15,7 @@
       "receiver": [
         { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
       ],
-      "sender": [{ "employeeid": "Admin", "employeeName": "Admin" }],
+      "sender": [{ "employeeid": null, "employeeName": "Admin" }],
       "requestid": null
     },
     {
