@@ -5,16 +5,32 @@ import {
   Button,
   Card,
   LinearProgress,
+  Modal,
 } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Employee, Request, UserContextProps } from "../types/types";
 import Loading from "../components/Loading";
 import UserContext from "../context/UserContext";
+import { getTodayDate } from "../utils/formatDate";
+
+const modalStyle = {
+  position: "fixed",
+  backgroundColor: "#9b51e0",
+  boxShadow: 24,
+  p: 4,
+  color: "white",
+  textAlign: "center",
+  borderRadius: "30px",
+  alignItem: "center",
+  margin: "80px auto auto auto",
+  width: "60%",
+  height: "min-content",
+};
 
 const RequestSingle = () => {
   const params = useParams();
@@ -25,6 +41,9 @@ const RequestSingle = () => {
   const [userRoleOnRequest, setUserRoleOnRequest] = useState<
     "reviewee" | "reviewer" | "manager" | null
   >(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const feedbackSubmitted = requestData?.reviewers.filter(
     (reviewer: any) => reviewer.feedbackSubmitted
@@ -66,6 +85,53 @@ const RequestSingle = () => {
         }
       });
     }
+  };
+
+  // function to reject the request (and delete it)
+  const handleModalClose = () => {
+    setOpenDeleteModal(false);
+  };
+
+  const openModal = () => {
+    setOpenDeleteModal(true);
+  };
+
+  const rejectRequest = async () => {
+    setTimeout(() => {
+      axios
+        .delete(
+          `http://localhost:4500/api/review-requests/delete/${requestData?._id}`
+        )
+        .then((res) => {
+          console.log(res);
+          handleModalClose();
+          navigate("/");
+        });
+        let today = getTodayDate();
+      const notification = {
+        type: "denied-by-admin",
+        date: today,
+        receiver: [
+          {
+            receiverid: "6441133714d75de5fb40b5fd",
+            receiverName: "Dang Le",
+          },
+        ],
+        sender: [
+          {
+            senderid: "Admin",
+            senderName: "Admin",
+          },
+        ],
+        requestid: null,
+      };
+      axios
+        .post(
+          "http://localhost:4500/api/notifications/insert-notification",
+          notification
+        )
+        .then((res) => console.log(res));
+    }, 1000);
   };
 
   // render feedback received slider
@@ -140,7 +206,7 @@ const RequestSingle = () => {
             </Typography>
             <Stack direction={"row"} justifyContent={"space-between"}>
               <Stack spacing={2} direction={"row"}>
-                <Button variant="contained" color="error">
+                <Button variant="contained" color="error" onClick={openModal}>
                   Reject this request
                 </Button>
                 <Link to={`/requests/${params.requestId}/confirm`}>
@@ -311,6 +377,44 @@ const RequestSingle = () => {
           </Stack>
 
           {renderCardAction()}
+          <Modal
+            open={openDeleteModal}
+            onClose={handleModalClose}
+            keepMounted
+            sx={modalStyle}
+          >
+            <>
+              <Typography variant="h3">
+                Are you sure to delete request "
+                {`...${requestData?._id.slice(-7)}`}"?
+              </Typography>
+              <Typography variant="body1">
+                This item will be deleted immediately. You can't undo this
+                action.{" "}
+              </Typography>
+              <Stack
+                direction={"row"}
+                mt={3}
+                spacing={2}
+                sx={{ alignItems: "center", justifyContent: "center" }}
+              >
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleModalClose}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={rejectRequest}
+                >
+                  Delete
+                </Button>
+              </Stack>
+            </>
+          </Modal>
         </Card>
       ) : (
         <Loading />
