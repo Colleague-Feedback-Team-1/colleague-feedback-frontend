@@ -153,13 +153,13 @@ const Layout = () => {
                   direction={"row"}
                   sx={{ alignItems: "center", justifyContent: "right" }}
                 >
-                  <LanguageSelector />
                   <SearchBar />
                   <IconButton size="large" color="inherit">
                     <Badge badgeContent={5} color="error">
                       <NotificationsIcon />
                     </Badge>
                   </IconButton>
+                  <LanguageSelector/>
                   <IconButton
                     size="large"
                     color="inherit"
