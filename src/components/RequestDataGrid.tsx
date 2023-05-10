@@ -5,22 +5,22 @@ import { Receiver, Request, Reviewer } from "../types/types";
 import { Stack, Box, Typography, Button, Modal } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
-import { Check } from "@mui/icons-material";
+import { Check, Margin } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 
 const modalStyle = {
-  position: "absolute",
-  width: "60%",
-  maxHeight: "60%",
+  position: "fixed",
   backgroundColor: "#9b51e0",
   boxShadow: 24,
   p: 4,
   color: "white",
   textAlign: "center",
   borderRadius: "30px",
-  margin: "auto",
   alignItem: "center",
+  margin:"80px auto auto auto",
+  width:"60%",
+  height:"min-content"
 };
 
 const RequestDataGrid = () => {
@@ -78,110 +78,39 @@ const RequestDataGrid = () => {
     );
   };
 
-  const remind = (requestID: string) => {
-    let isReady = false;
-    axios
-      .get(
-        `http://localhost:4500/api/review-requests/by-requestid/${requestID}`
-      )
-      .then((res) => {
-        setRemindingRequestData(res.data);
-        let remindingReviewers: Receiver[] = [];
-        remindingRequestData?.reviewers.forEach((reviewer) => {
-          if (!reviewer.feedbackSubmitted) {
-            remindingReviewers.push({
-              employeeid: reviewer.reviewerid,
-              employeeName: reviewer.reviewerName,
-            });
-            setRemindingReviewers(remindingReviewers);
-          }
+  // function for reminder
+  const remind = async (requestID: string) => {
+    let result = await axios.get(
+      `http://localhost:4500/api/review-requests/by-requestid/${requestID}`
+    );
+    let remindingReviewers: Receiver[] = [];
+    result.data.reviewers.forEach((reviewer: Reviewer) => {
+      if (!reviewer.feedbackSubmitted) {
+        remindingReviewers.push({
+          receiverid: reviewer.reviewerid,
+          receiverName: reviewer.reviewerName,
         });
-        isReady = true;
-      });
-    console.log("remindingReviewers: ", remindingReviewers);
-
-    if (isReady) {
-      setOpenRemindModal(true);
-    }
+        
+      }
+    });
+      if(!result.data.selfReview) {
+        remindingReviewers.push({
+          receiverid: result.data.employeeid,
+          receiverName: result.data.employeeName,
+        })
+      }
+    
+    setRemindingReviewers(remindingReviewers);
+    setOpenRemindModal(true);
   };
 
   // Define the columns
   const columns: GridColDef[] = [
     {
-      field: "_id",
-      headerName: "Request ID",
-      width: 100,
-      valueGetter: (params: GridValueGetterParams) => {
-        return `...${params.row._id.slice(-6)}`;
-      },
-    },
-    { field: "employeeName", headerName: "Reviewee", width: 120 },
-    {
-      field: "confirmedByHR",
-      headerName: "Confirmed",
-      width: 120,
-      type: "boolean",
-      renderCell: booleanCellRenderer,
-    },
-    {
-      field: "selfReview",
-      headerName: "Self Review",
-      width: 120,
-      type: "boolean",
-      renderCell: booleanCellRenderer,
-    },
-    {
-      field: "dateRequested",
-      headerName: "Due Date",
-      sortable: false,
-      width: 120,
-      renderCell: (params) => {
-        const date = new Date(params.row.dateRequested).toLocaleString(
-          "en-US",
-          {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          }
-        );
-        return date;
-      },
-    },
-    {
-      field: "assignedManagerName",
-      headerName: "Manager",
-      width: 100,
-      renderCell: (params) => {
-        return params.row.assignedManagerName.split(" ")[0];
-      },
-    },
-    {
-      field: "reviewers",
-      headerName: "Reviewers",
-      width: 300,
-      valueGetter: (params: GridValueGetterParams) => {
-        const allReviewerNames = params.row.reviewers
-          .map((reviewer: Reviewer) => reviewer.reviewerName.split(" ")[0])
-          .join(", ");
-        return allReviewerNames;
-      },
-    },
-    {
-      field: "feedbackReceived",
-      headerName: "Feedback Received",
-      width: 120,
-      valueGetter: (params: GridValueGetterParams) => {
-        const feedbackSubmitted = params.row.reviewers.filter(
-          (reviewer: any) => reviewer.feedbackSubmitted
-        );
-        return `${feedbackSubmitted.length}/${params.row.reviewers.length}`;
-      },
-    },
-    {
       field: "View",
       headerName: "Actions",
       sortable: false,
-      width: 400,
+      width: 320,
       renderCell: (params) => (
         <Stack direction={"row"} spacing={2}>
           <Button
@@ -208,6 +137,77 @@ const RequestDataGrid = () => {
         </Stack>
       ),
     },
+    { field: "employeeName", headerName: "Reviewee", width: 120 },
+    {
+      field: "confirmedByHR",
+      headerName: "Confirmed",
+      width: 120,
+      type: "boolean",
+      renderCell: booleanCellRenderer,
+    },
+    {
+      field: "selfReview",
+      headerName: "Self Review",
+      width: 120,
+      type: "boolean",
+      renderCell: booleanCellRenderer,
+    },
+    {
+      field: "feedbackReceived",
+      headerName: "Feedback",
+      width: 100,
+      valueGetter: (params: GridValueGetterParams) => {
+        const feedbackSubmitted = params.row.reviewers.filter(
+          (reviewer: any) => reviewer.feedbackSubmitted
+        );
+        return `${feedbackSubmitted.length}/${params.row.reviewers.length}`;
+      },
+    },
+    {
+      field: "assignedManagerName",
+      headerName: "Manager",
+      width: 100,
+      renderCell: (params) => {
+        return params.row.assignedManagerName.split(" ")[0];
+      },
+    },
+    {
+      field: "reviewers",
+      headerName: "Reviewers",
+      width: 300,
+      valueGetter: (params: GridValueGetterParams) => {
+        const allReviewerNames = params.row.reviewers
+          .map((reviewer: Reviewer) => reviewer.reviewerName.split(" ")[0])
+          .join(", ");
+        return allReviewerNames;
+      },
+    },
+
+    {
+      field: "dateRequested",
+      headerName: "Due Date",
+      sortable: false,
+      width: 120,
+      renderCell: (params) => {
+        const date = new Date(params.row.dateRequested).toLocaleString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }
+        );
+        return date;
+      },
+    },
+    {
+      field: "_id",
+      headerName: "Request ID",
+      width: 100,
+      valueGetter: (params: GridValueGetterParams) => {
+        return `...${params.row._id.slice(-6)}`;
+      },
+    },
   ];
 
   return (
@@ -223,6 +223,7 @@ const RequestDataGrid = () => {
           />
         </div>
       )}
+      {/* DELETE MODAL */}
       <Modal
         open={openDeleteModal}
         onClose={handleModalClose}
@@ -260,7 +261,8 @@ const RequestDataGrid = () => {
           </Stack>
         </>
       </Modal>
-      {/* Modal for reminder */}
+
+      {/* REMINDER MODAL */}
       <Modal
         open={openRemindModal}
         onClose={handleModalClose}
@@ -268,13 +270,13 @@ const RequestDataGrid = () => {
         sx={modalStyle}
       >
         <>
-          <Stack spacing={2}>
+          <Stack spacing={3} >
             <Typography variant="h3">
               A reminder notification will be sent to:
             </Typography>
             {remindingReviewers.map((reviewer) => {
               return (
-                <Typography variant="h5">▪ {reviewer.employeeName}</Typography>
+                <Typography variant="h5">▪ {reviewer.receiverName}</Typography>
               );
             })}
             <Typography variant="h3">Are you sure?</Typography>
