@@ -4,48 +4,48 @@
       "type": "create-new-request",
       "date": "May 7, 2023",
       "sender": [
-        { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
+        { "senderid": "6441133714d75de5fb40b5fd", "senderName": "Dang Le" }
       ],
-      "receiver": [{ "employeeid": null, "employeeName": "Admin" }],
+      "receiver": [{ "receiverid": null, "receiverName": "Admin" }],
       "requestid": null
     },
     {
       "type": "denied-by-admin",
       "date": "May 7, 2023",
       "receiver": [
-        { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
+        { "receiverid": "6441133714d75de5fb40b5fd", "receiverName": "Dang Le" }
       ],
-      "sender": [{ "employeeid": null, "employeeName": "Admin" }],
+      "sender": [{ "employeeid": null, "senderName": "Admin" }],
       "requestid": null
     },
     {
       "type": "denied-by-admin",
       "date": "May 7, 2023",
       "receiver": [
-        { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
+        { "receiverid": "6441133714d75de5fb40b5fd", "receiverName": "Dang Le" }
       ],
-      "sender": [{ "employeeid": "Admin", "employeeName": "Admin" }],
+      "sender": [{ "senderid": "Admin", "senderName": "Admin" }],
       "requestid": null
     },
     {
       "type": "confirmed-by-admin",
       "date": "May 7, 2023",
       "receiver": [
-        { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
+        { "receiverid": "6441133714d75de5fb40b5fd", "receiverName": "Dang Le" }
       ],
-      "sender": [{ "employeeid": "Admin", "employeeName": "Admin" }],
+      "sender": [{ "senderid": "Admin", "senderName": "Admin" }],
       "requestid": "6446923c1b963e7ccdd5e633"
     },
     {
       "type": "feedback-submitted",
       "date": "May 7, 2023",
       "receiver": [
-        { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
+        { "receiverid": "6441133714d75de5fb40b5fd", "receiverName": "Dang Le" }
       ],
       "sender": [
         {
-          "employeeid": "6441133714d75de5fb40b5ff",
-          "employeeName": "Ilya Ponomarenko"
+          "senderid": "6441133714d75de5fb40b5ff",
+          "senderName": "Ilya Ponomarenko"
         }
       ],
       "requestid": "6446923c1b963e7ccdd5e633"
@@ -54,40 +54,30 @@
       "type": "remind-self-review",
       "date": "May 8, 2023",
       "receiver": [
-        { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
+        { "receiverid": "6441133714d75de5fb40b5fd", "receiverName": "Dang Le" }
       ],
-      "sender": [
-        {
-          "employeeid": "Admin",
-          "employeeName": "Admin"
-        }
-      ],
+      "sender": [{ "senderid": "Admin", "senderName": "Admin" }],
       "requestid": "6446923c1b963e7ccdd5e633"
     },
     {
       "type": "remind-create-request",
       "date": "May 8, 2023",
       "receiver": [
-        { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
+        { "receiverid": "6441133714d75de5fb40b5fd", "receiverName": "Dang Le" }
       ],
-      "sender": [
-        {
-          "employeeid": "Admin",
-          "employeeName": "Admin"
-        }
-      ],
+      "sender": [{ "senderid": "Admin", "senderName": "Admin" }],
       "requestid": "null"
     },
     {
       "type": "remind-give-feedback",
       "date": "May 7, 2023",
       "sender": [
-        { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
+        { "senderid": "6441133714d75de5fb40b5fd", "senderName": "Dang Le" }
       ],
       "receiver": [
         {
-          "employeeid": "6441133714d75de5fb40b5ff",
-          "employeeName": "Ilya Ponomarenko"
+          "receiverid": "6441133714d75de5fb40b5ff",
+          "receiverName": "Ilya Ponomarenko"
         }
       ],
       "requestid": "6446923c1b963e7ccdd5e633"
@@ -96,28 +86,28 @@
       "type": "ask-for-feedback",
       "date": "May 7, 2023",
       "sender": [
-        { "employeeid": "6441133714d75de5fb40b5fd", "employeeName": "Dang Le" }
+        { "senderid": "6441133714d75de5fb40b5fd", "senderName": "Dang Le" }
       ],
       "receiver": [
         {
-          "employeeid": "6441133714d75de5fb40b5f5",
-          "employeeName": "lucas smith"
+          "receiverid": "6441133714d75de5fb40b5f5",
+          "receiverName": "lucas smith"
         },
         {
-          "employeeid": "6441133714d75de5fb40b5f7",
-          "employeeName": "Alex Otulugbu"
+          "receiverid": "6441133714d75de5fb40b5f7",
+          "receiverName": "Alex Otulugbu"
         },
         {
-          "employeeid": "6441133714d75de5fb40b5f9",
-          "employeeName": "Mark Upton"
+          "receiverid": "6441133714d75de5fb40b5f9",
+          "receiverName": "Mark Upton"
         },
         {
-          "employeeid": "6441133714d75de5fb40b601",
-          "employeeName": "James Narraway"
+          "receiverid": "6441133714d75de5fb40b601",
+          "receiverName": "James Narraway"
         },
         {
-          "employeeid": "6441133714d75de5fb40b5ff",
-          "employeeName": "Ilya Ponomarenko"
+          "receiverid": "6441133714d75de5fb40b5ff",
+          "receiverName": "Ilya Ponomarenko"
         }
       ],
       "requestid": "6446923c1b963e7ccdd5e633"
