@@ -33,8 +33,6 @@ function NotificationBell() {
     setAnchorEl(null);
   };
 
-  console.log(notiData);
-
   useEffect(() => {
     axios.get("http://localhost:4500/api/notifications/").then((res) => {
       setNotiData(res.data);
