@@ -22,6 +22,7 @@ import UserContext from "../context/UserContext";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
+import { getTodayDate } from "../utils/formatDate";
 
 const modalStyle = {
   position: "fixed",
@@ -230,6 +231,31 @@ const CreateNewRequest = () => {
     };
   });
   const createRequest = () => {
+    let today = getTodayDate();
+
+    const notification = {
+      type: "create-new-request",
+      date: today,
+      receiver: [
+        {
+          receiverid: "Admin",
+          receiverName: "Admin",
+        },
+      ],
+      sender: [
+        {
+          senderid: user?._id,
+          senderName: user?.displayName,
+        },
+      ],
+      requestid: null,
+    };
+    axios
+      .post(
+        "http://localhost:4500/api/notifications/insert-notification",
+        notification
+      )
+      .then((res) => console.log(res));
     let request: RequestWithoutId = {
       confirmedByHR: false,
       selfReview: false,
@@ -243,6 +269,7 @@ const CreateNewRequest = () => {
     };
 
     console.log(JSON.stringify(request));
+
     axios
       .post("http://localhost:4500/api/review-requests/insert-request", request)
       .then((res) => {
