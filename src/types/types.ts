@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export interface Employee {
   _id: string;
   uid: string;
@@ -104,7 +102,7 @@ export type Receiver = {
   receiverName: string;
 };
 export interface Notification {
-  _id?:string;
+  _id?: string;
   date: string;
   type: NotificationType;
   sender: Sender[];
