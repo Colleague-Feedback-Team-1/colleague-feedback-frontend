@@ -107,14 +107,14 @@ const RequestSingle = () => {
           handleModalClose();
           navigate("/");
         });
-        let today = getTodayDate();
+      let today = getTodayDate();
       const notification = {
         type: "denied-by-admin",
         date: today,
         receiver: [
           {
-            receiverid: "6441133714d75de5fb40b5fd",
-            receiverName: "Dang Le",
+            receiverid: requestData?.employeeid,
+            receiverName: requestData?.employeeName,
           },
         ],
         sender: [
@@ -131,6 +131,7 @@ const RequestSingle = () => {
           notification
         )
         .then((res) => console.log(res));
+      console.log(notification);
     }, 1000);
   };
 

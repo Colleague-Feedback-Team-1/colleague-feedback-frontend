@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { Check, Margin } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
+import { getTodayDate } from "../utils/formatDate";
 
 const modalStyle = {
   position: "fixed",
@@ -18,9 +19,9 @@ const modalStyle = {
   textAlign: "center",
   borderRadius: "30px",
   alignItem: "center",
-  margin:"80px auto auto auto",
-  width:"60%",
-  height:"min-content"
+  margin: "80px auto auto auto",
+  width: "60%",
+  height: "min-content",
 };
 
 const RequestDataGrid = () => {
@@ -59,6 +60,38 @@ const RequestDataGrid = () => {
     console.log("deleting request ", requestId);
     setTimeout(() => {
       axios
+        .get(
+          `http://localhost:4500/api/review-requests/by-requestid/${deletingRequestId}`
+        )
+        .then((res) => {
+          let result: Request = res.data;
+          let today = getTodayDate();
+          const notification = {
+            type: "denied-by-admin",
+            date: today,
+            receiver: [
+              {
+                receiverid: result.employeeid,
+                receiverName: result.employeeName,
+              },
+            ],
+            sender: [
+              {
+                senderid: "Admin",
+                senderName: "Admin",
+              },
+            ],
+            requestid: null,
+          };
+          axios
+            .post(
+              "http://localhost:4500/api/notifications/insert-notification",
+              notification
+            )
+            .then((res) => console.log(res));
+          console.log(notification);
+        });
+      axios
         .delete(
           `http://localhost:4500/api/review-requests/delete/${deletingRequestId}`
         )
@@ -90,16 +123,15 @@ const RequestDataGrid = () => {
           receiverid: reviewer.reviewerid,
           receiverName: reviewer.reviewerName,
         });
-        
       }
     });
-      if(!result.data.selfReview) {
-        remindingReviewers.push({
-          receiverid: result.data.employeeid,
-          receiverName: result.data.employeeName,
-        })
-      }
-    
+    if (!result.data.selfReview) {
+      remindingReviewers.push({
+        receiverid: result.data.employeeid,
+        receiverName: result.data.employeeName,
+      });
+    }
+
     setRemindingReviewers(remindingReviewers);
     setOpenRemindModal(true);
   };
@@ -270,7 +302,7 @@ const RequestDataGrid = () => {
         sx={modalStyle}
       >
         <>
-          <Stack spacing={3} >
+          <Stack spacing={3}>
             <Typography variant="h3">
               A reminder notification will be sent to:
             </Typography>
