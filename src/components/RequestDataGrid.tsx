@@ -9,6 +9,7 @@ import { Check, Margin } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { getTodayDate } from "../utils/formatDate";
+import { toast } from "react-toastify";
 
 const modalStyle = {
   position: "fixed",
@@ -32,8 +33,12 @@ const RequestDataGrid = () => {
   const [deletingRequestId, setDeletingRequestId] = useState<string>("");
   const [remindingRequestData, setRemindingRequestData] = useState<Request>();
   const [remindingReviewers, setRemindingReviewers] = useState<Receiver[]>([]);
+  const [remindingSelfReview, setRemindingSelfReview] = useState<Receiver[]>(
+    []
+  );
 
   const navigate = useNavigate();
+  let today = getTodayDate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -65,7 +70,6 @@ const RequestDataGrid = () => {
         )
         .then((res) => {
           let result: Request = res.data;
-          let today = getTodayDate();
           const notification = {
             type: "denied-by-admin",
             date: today,
@@ -112,28 +116,78 @@ const RequestDataGrid = () => {
   };
 
   // function for reminder
-  const remind = async (requestID: string) => {
+  const showReminderModal = async (requestID: string) => {
     let result = await axios.get(
       `http://localhost:4500/api/review-requests/by-requestid/${requestID}`
     );
-    let remindingReviewers: Receiver[] = [];
+    setRemindingRequestData(result.data);
+    let receivingReviewers: Receiver[] = [];
+    let receivingSelfReview: Receiver[] = [];
     result.data.reviewers.forEach((reviewer: Reviewer) => {
       if (!reviewer.feedbackSubmitted) {
-        remindingReviewers.push({
+        receivingReviewers.push({
           receiverid: reviewer.reviewerid,
           receiverName: reviewer.reviewerName,
         });
       }
     });
     if (!result.data.selfReview) {
-      remindingReviewers.push({
+      receivingSelfReview.push({
         receiverid: result.data.employeeid,
         receiverName: result.data.employeeName,
       });
     }
 
-    setRemindingReviewers(remindingReviewers);
+    setRemindingReviewers(receivingReviewers);
+    setRemindingSelfReview(receivingSelfReview);
     setOpenRemindModal(true);
+  };
+
+  const sendReminder = () => {
+    const notification1 = {
+      type: "remind-give-feedback",
+      date: today,
+      receiver: remindingReviewers,
+      sender: [
+        {
+          senderid: remindingRequestData?.employeeid,
+          senderName: remindingRequestData?.employeeName,
+        },
+      ],
+      requestid: remindingRequestData?._id,
+    };
+    axios
+      .post(
+        "http://localhost:4500/api/notifications/insert-notification",
+        notification1
+      )
+      .then((res) => console.log(res));
+    if (remindingSelfReview.length > 0) {
+      const notification2 = {
+        type: "remind-self-review",
+        date: today,
+        receiver: remindingSelfReview,
+        sender: [
+          {
+            senderid: "Admin",
+            senderName: "Admin",
+          },
+        ],
+        requestid: remindingRequestData?._id,
+      };
+      axios
+        .post(
+          "http://localhost:4500/api/notifications/insert-notification",
+          notification2
+        )
+        .then((res) => console.log(res));
+      console.log(notification2);
+    }
+    console.log(notification1);
+    setRemindingReviewers([]);
+    setRemindingSelfReview([]);
+    setOpenRemindModal(false);
+    toast.success("Successfully sent reminders");
   };
 
   // Define the columns
@@ -148,7 +202,7 @@ const RequestDataGrid = () => {
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => remind(params.row._id)}
+            onClick={() => showReminderModal(params.row._id)}
           >
             Remind
           </Button>
@@ -308,7 +362,16 @@ const RequestDataGrid = () => {
             </Typography>
             {remindingReviewers.map((reviewer) => {
               return (
-                <Typography variant="h5">▪ {reviewer.receiverName}</Typography>
+                <Typography variant="h5">
+                  ▪ {reviewer.receiverName} (reviewer)
+                </Typography>
+              );
+            })}
+            {remindingSelfReview.map((reviewer) => {
+              return (
+                <Typography variant="h5">
+                  ▪ {reviewer.receiverName} (self-review)
+                </Typography>
               );
             })}
             <Typography variant="h3">Are you sure?</Typography>
@@ -327,7 +390,7 @@ const RequestDataGrid = () => {
             >
               Cancel
             </Button>
-            <Button variant="contained" color="success">
+            <Button variant="contained" color="success" onClick={sendReminder}>
               Send notification
             </Button>
           </Stack>
