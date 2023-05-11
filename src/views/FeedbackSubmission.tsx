@@ -8,6 +8,8 @@ import UserContext from "../context/UserContext";
 import { UserContextProps, Request, Reviewer } from "../types/types";
 import { Container, Box } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getTodayDate } from "../utils/formatDate";
 
 type RouteParams = {
   requestId: string;
@@ -77,10 +79,36 @@ function FeedbackSubmission() {
         "http://localhost:4500/api/feedback-data/insert-feedback",
         requestData
       );
+      // post notification
+      let today = getTodayDate();
+      const notification = {
+        type: "feedback-submitted",
+        date: today,
+        receiver: [
+          {
+            receiverid: requestData.employeeid,
+            receiverName: requestData.employeeName,
+          },
+        ],
+        sender: [
+          {
+            senderid: user?._id,
+            senderName: user?.displayName,
+          },
+        ],
+        requestid: requestData?._id,
+      };
+      axios
+        .post(
+          "http://localhost:4500/api/notifications/insert-notification",
+          notification
+        )
+        .then((res) => console.log(res));
       console.log("Form submitted successfully");
       navigate("/");
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error("Error submitting form");
     }
   };
 
