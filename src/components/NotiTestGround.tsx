@@ -1,51 +1,32 @@
-import { Button, Typography } from "@mui/material";
-import { getTodayDate } from "../utils/formatDate";
+import { Button, Stack, Typography } from "@mui/material";
 import axios from "axios";
+import NotificationBoard from "./NotificationBoard";
+import { useState, useEffect } from "react";
+import { Notification } from "../types/types";
 
 const NotiTestGround = () => {
-  // get the current date and time
-  const currentDate = new Date();
+  const [notiData, setNotiData] = useState<Notification[]>([]);
+  const [reloadCount, setReloadCount] = useState(0);
+  useEffect(() => {
+    axios.get("http://localhost:4500/api/notifications/").then((res) => {
+      setNotiData(res.data.reverse());
+    });
+  }, [reloadCount]);
 
-  // format the date in the desired format
-  const year = currentDate.getFullYear();
-  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  const day = String(currentDate.getDate()).padStart(2, "0");
-  const formattedDate = `${year}-${month}-${day}`;
+  // make the component reload to fetch new noti
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setReloadCount(reloadCount + 1);
+    }, 120000); // 2 minutes
 
-  console.log(formattedDate); // outputs something like "2023-05-10"
-
-  const rejectRequest = async () => {
-     let today = getTodayDate()
-      const notification = {
-        type: "denied-by-admin",
-        date: today,
-        receiver: [
-          {
-            receiverid: "6441133714d75de5fb40b5fd",
-            receiverName: "Dang Le",
-          },
-        ],
-        sender: [
-          {
-            senderid: "Admin",
-            senderName: "Admin",
-          },
-        ],
-        requestid: null,
-      };
-      ;
-   console.log(notification)
-   axios
-     .post(
-       "http://localhost:4500/api/notifications/insert-notification",
-       notification
-     )
-     .then((res) => console.log(res));
-  };
+    return () => clearTimeout(timer);
+  }, [reloadCount]);
   return (
     <>
-      <Typography variant="h3">NotiTestGround</Typography>
-      <Button onClick={rejectRequest}>Test</Button>
+      <Typography variant="h3">All notifications</Typography>
+      <Stack alignItems={"center"} textAlign={"left"}>
+        <NotificationBoard data={notiData} />
+      </Stack>
     </>
   );
 };
