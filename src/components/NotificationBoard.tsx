@@ -1,21 +1,14 @@
 import {
-  Badge,
-  IconButton,
-  Menu,
   MenuItem,
   Typography,
   Button,
   Card,
   CardHeader,
   Avatar,
-  Stack,
-  Box,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { Notification, UserContextProps } from "../types/types";
+import { Notification } from "../types/types";
 import ExoveLogo from "../assets/ExoveLogoSquareBlack.jpeg";
-import { useContext } from "react";
-import UserContext from "../context/UserContext";
 import { getTodayDate } from "../utils/formatDate";
 
 interface NotificationBoardProps {
@@ -24,8 +17,6 @@ interface NotificationBoardProps {
 }
 
 const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
-  const { user } = useContext<UserContextProps>(UserContext);
-
   let today = getTodayDate();
 
   console.log(data);

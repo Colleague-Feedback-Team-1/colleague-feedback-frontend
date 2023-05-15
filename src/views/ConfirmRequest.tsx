@@ -16,16 +16,9 @@ import Loading from "../components/Loading";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  Employee,
-  Receiver,
-  Request,
-  Reviewer,
-  UserContextProps,
-} from "../types/types";
+import { Employee, Receiver, Request, Reviewer } from "../types/types";
 import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
-import UserContext from "../context/UserContext";
 import { toast } from "react-toastify";
 import { getTodayDate } from "../utils/formatDate";
 

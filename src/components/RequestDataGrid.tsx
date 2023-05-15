@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "./Loading";
 import { Receiver, Request, Reviewer } from "../types/types";
-import { Stack, Box, Typography, Button, Modal } from "@mui/material";
+import { Stack, Typography, Button, Modal } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
-import { Check, Margin } from "@mui/icons-material";
+import { Check } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { getTodayDate } from "../utils/formatDate";
@@ -362,14 +362,14 @@ const RequestDataGrid = () => {
             </Typography>
             {remindingReviewers.map((reviewer) => {
               return (
-                <Typography variant="h5">
+                <Typography variant="h5" key={reviewer.receiverid}>
                   ▪ {reviewer.receiverName} (reviewer)
                 </Typography>
               );
             })}
             {remindingSelfReview.map((reviewer) => {
               return (
-                <Typography variant="h5">
+                <Typography variant="h5" key={reviewer.receiverid}>
                   ▪ {reviewer.receiverName} (self-review)
                 </Typography>
               );

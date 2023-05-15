@@ -4,7 +4,6 @@ import {
   Box,
   IconButton,
   Typography,
-  Badge,
   Drawer,
   List,
   ListItem,
@@ -15,7 +14,6 @@ import {
   MenuItem,
   Avatar,
 } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { useState, useContext } from "react";

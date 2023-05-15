@@ -1,13 +1,6 @@
 import {
-  Badge,
-  IconButton,
-  Menu,
-  MenuItem,
   Typography,
   Button,
-  Card,
-  CardHeader,
-  Avatar,
   Stack,
   Box,
   FormControlLabel,
@@ -23,19 +16,11 @@ import { UserContextProps } from "../types/types";
 import UserContext from "../context/UserContext";
 
 const AllNotifications = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const openNotiMenu = Boolean(anchorEl);
   const [notiData, setNotiData] = useState<Notification[]>([]);
   const { user } = useContext<UserContextProps>(UserContext);
   const [reloadCount, setReloadCount] = useState(0);
   const [adminNoti, setAdminNoti] = useState<boolean>(true);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const handleChangeNoti = () => {
     if (adminNoti === false) {
       setAdminNoti(true);

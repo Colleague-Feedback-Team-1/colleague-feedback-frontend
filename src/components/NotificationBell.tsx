@@ -2,12 +2,7 @@ import {
   Badge,
   IconButton,
   Menu,
-  MenuItem,
-  Typography,
   Button,
-  Card,
-  CardHeader,
-  Avatar,
   Stack,
   Box,
   FormControlLabel,
@@ -15,13 +10,12 @@ import {
   Switch,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Notification } from "../types/types";
+import { Notification, UserContextProps } from "../types/types";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import NotificationBoard from "./NotificationBoard";
 import { useEffect, useState, useContext } from "react";
-import { UserContextProps } from "../types/types";
 import UserContext from "../context/UserContext";
 
 function NotificationBell() {
