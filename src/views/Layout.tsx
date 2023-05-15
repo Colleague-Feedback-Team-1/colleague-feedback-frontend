@@ -39,6 +39,11 @@ const Layout = () => {
       icon: <BarChartIcon />,
       link: "/dashboard",
     },
+    {
+      text: "Notifications",
+      icon: <NotificationsIcon />,
+      link: "/notification",
+    },
   ];
   const adminDrawerList = [
     {
@@ -49,11 +54,6 @@ const Layout = () => {
     {
       text: "Notifications",
       icon: <NotificationsIcon />,
-      link: "/notification",
-    },
-    {
-      text: "Employees",
-      icon: <AccountCircleIcon />,
       link: "/notification",
     },
   ];
