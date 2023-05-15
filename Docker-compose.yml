@@ -1,0 +1,10 @@
+services:
+  frontend:
+    image: ilyaponomarenko/colleague-feedback-frontend:main
+    ports:
+      - 3000:3000
+    volumes:
+      - ./colleague-feedback-frontend:/usr/src/app 
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
