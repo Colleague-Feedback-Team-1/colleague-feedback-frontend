@@ -62,6 +62,7 @@ function NotificationBell() {
           });
       }
     } else {
+      setAdminNoti(false);
       axios
         .get(`http://localhost:4500/api/notifications/by-receiver/${user?._id}`)
         .then((res) => {
@@ -111,7 +112,9 @@ function NotificationBell() {
           >
             Refresh
           </Button>
-          <NotificationBoard data={notiData} adminNoti={adminNoti} />
+          <Stack width={"750px"}>
+            <NotificationBoard data={notiData} adminNoti={adminNoti} />
+          </Stack>
           <Box>
             <Link to={"/notification"}>
               <Button>See all Notifications</Button>

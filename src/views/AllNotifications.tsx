@@ -85,7 +85,11 @@ const AllNotifications = () => {
   const renderMenu = () => {
     return (
       <Stack p={"30px"}>
-        <Stack direction={"row"} justifyContent={"space-between"}>
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          padding={"10px 0"}
+        >
           <Typography variant="h2" textAlign={"left"}>
             All notifications ({notiData.length})
           </Typography>
@@ -120,6 +124,7 @@ const AllNotifications = () => {
             width: "80%",
             padding: "15px",
             backgroundColor: "#ffdbeb",
+            margin: "auto",
           }}
         >
           <NotificationBoard data={notiData} adminNoti={adminNoti} />
