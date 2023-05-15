@@ -17,7 +17,7 @@ type RouteParams = {
 
 function FeedbackSubmission() {
   const params = useParams<RouteParams>();
-  const [requestData, setRequestData] = useState<Request | null>();
+  const [requestData, setRequestData] = useState<Request>();
   const [data, setData] = useState<QuestionSection[]>([]);
   const { user } = useContext<UserContextProps>(UserContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -73,11 +73,11 @@ function FeedbackSubmission() {
     checkRole();
   }, [requestData]);
 
-  const submitFeedback = async (requestData: any) => {
+  const submitFeedback = async (submitData: any) => {
     try {
       await axios.post(
         "http://localhost:4500/api/feedback-data/insert-feedback",
-        requestData
+        submitData
       );
       // post notification
       let today = getTodayDate();
@@ -86,8 +86,8 @@ function FeedbackSubmission() {
         date: today,
         receiver: [
           {
-            receiverid: requestData.employeeid,
-            receiverName: requestData.employeeName,
+            receiverid: requestData?.employeeid,
+            receiverName: requestData?.employeeName,
           },
         ],
         sender: [
