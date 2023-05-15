@@ -10,6 +10,9 @@ import {
   Avatar,
   Stack,
   Box,
+  FormControlLabel,
+  FormGroup,
+  Switch,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Notification } from "../types/types";
@@ -25,8 +28,9 @@ function NotificationBell() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openNotiMenu = Boolean(anchorEl);
   const [notiData, setNotiData] = useState<Notification[]>([]);
-  const [reloadCount, setReloadCount] = useState(0);
   const { user } = useContext<UserContextProps>(UserContext);
+  const [reloadCount, setReloadCount] = useState(0);
+  const [adminNoti, setAdminNoti] = useState<boolean>(true);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -34,12 +38,29 @@ function NotificationBell() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleChangeNoti = () => {
+    if (adminNoti === false) {
+      setAdminNoti(true);
+    } else {
+      setAdminNoti(false);
+    }
+  };
 
   useEffect(() => {
     if (user?.description === "HR") {
-      axios.get("http://localhost:4500/api/notifications/").then((res) => {
-        setNotiData(res.data.reverse());
-      });
+      if (adminNoti) {
+        axios.get("http://localhost:4500/api/notifications/").then((res) => {
+          setNotiData(res.data.reverse());
+        });
+      } else {
+        axios
+          .get(
+            `http://localhost:4500/api/notifications/by-receiver/${user?._id}`
+          )
+          .then((res) => {
+            setNotiData(res.data.reverse());
+          });
+      }
     } else {
       axios
         .get(`http://localhost:4500/api/notifications/by-receiver/${user?._id}`)
@@ -47,7 +68,7 @@ function NotificationBell() {
           setNotiData(res.data.reverse());
         });
     }
-  }, [reloadCount]);
+  }, [reloadCount, adminNoti]);
 
   // make the component reload to fetch new noti
   useEffect(() => {
@@ -71,6 +92,18 @@ function NotificationBell() {
         sx={{ maxHeight: "80vh", marginTop: "10px" }}
       >
         <Stack>
+          {user?.description === "HR" ? (
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch checked={adminNoti} onChange={handleChangeNoti} />
+                }
+                label="Admin Notifications"
+              />
+            </FormGroup>
+          ) : (
+            <></>
+          )}
           <Button
             variant="outlined"
             startIcon={<RefreshIcon />}
@@ -78,7 +111,7 @@ function NotificationBell() {
           >
             Refresh
           </Button>
-          <NotificationBoard data={notiData} />
+          <NotificationBoard data={notiData} adminNoti={adminNoti} />
           <Box>
             <Link to={"/notification"}>
               <Button>See all Notifications</Button>
