@@ -54,6 +54,11 @@ const RequestSingle = () => {
     return outputDate;
   };
 
+  // fix bug, so that everytime params.requestId change, all the state reload.
+  const refreshData = () => {
+    setUserRoleOnRequest(null);
+  };
+
   // fetch data for the manager from requestData.assignedManagerid
   const fetchManager = () => {
     if (requestData?.assignedManagerid) {
@@ -180,6 +185,8 @@ const RequestSingle = () => {
 
   /* Fetch data of the request */
   useEffect(() => {
+    refreshData();
+    setIsLoading(true);
     setTimeout(() => {
       axios
         .get(
