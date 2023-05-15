@@ -51,8 +51,13 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
           <Stack direction={"column"} sx={{ width: "100%" }}>
             {section.questions.map((question) => (
               <Box key={question._id}>
-                <Typography variant="body1" fontWeight={"bold"}>
-                  {question.question}
+                <Typography
+                  variant="body1"
+                  fontWeight={"bold"}
+                  padding={"10px 0"}
+                  textAlign={"justify"}
+                >
+                  {question.question}:
                 </Typography>
                 {question.isFreeForm ? (
                   <Controller
@@ -76,7 +81,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                         sx={{ alignItems: "center", justifyContent: "center" }}
                       >
                         <Typography color={"red"} fontWeight={"bold"}>
-                          Very bad
+                          Strongly <br /> Disagree
                         </Typography>
                         <RadioGroup {...field} row>
                           {[1, 2, 3, 4, 5].map((value) => (
@@ -89,7 +94,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                           ))}
                         </RadioGroup>
                         <Typography color={"green"} fontWeight={"bold"}>
-                          Very Good
+                          Strongly <br /> Agree
                         </Typography>
                       </Stack>
                     )}
