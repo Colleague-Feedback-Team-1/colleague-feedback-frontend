@@ -436,7 +436,10 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
                             {noti.sender[0].senderName}
                           </span>{" "}
                           has submitted a feedback for
-                          {noti.receiver[0].receiverName}.
+                          <span style={{ color: "#9b51e0" }}>
+                            {" "}
+                            {noti.receiver[0].receiverName}.
+                          </span>
                         </b>
                       </Typography>
                     }
