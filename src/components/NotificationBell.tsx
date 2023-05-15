@@ -10,72 +10,26 @@ import {
   Switch,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Notification, UserContextProps } from "../types/types";
-import axios from "axios";
+import { UserContextProps } from "../types/types";
 import { Link } from "react-router-dom";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import NotificationBoard from "./NotificationBoard";
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import UserContext from "../context/UserContext";
+import useNotifications from "../utils/useNotifications";
 
 function NotificationBell() {
+  const { user } = useContext<UserContextProps>(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openNotiMenu = Boolean(anchorEl);
-  const [notiData, setNotiData] = useState<Notification[]>([]);
-  const { user } = useContext<UserContextProps>(UserContext);
-  const [reloadCount, setReloadCount] = useState(0);
-  const [adminNoti, setAdminNoti] = useState<boolean>(true);
+  const { notiData, adminNoti, handleChangeNoti, forceReloadNotification } =
+    useNotifications();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-  const handleChangeNoti = () => {
-    if (adminNoti === false) {
-      setAdminNoti(true);
-    } else {
-      setAdminNoti(false);
-    }
-  };
-
-  useEffect(() => {
-    if (user?.description === "HR") {
-      if (adminNoti) {
-        axios.get("http://localhost:4500/api/notifications/").then((res) => {
-          setNotiData(res.data.reverse());
-        });
-      } else {
-        axios
-          .get(
-            `http://localhost:4500/api/notifications/by-receiver/${user?._id}`
-          )
-          .then((res) => {
-            setNotiData(res.data.reverse());
-          });
-      }
-    } else {
-      setAdminNoti(false);
-      axios
-        .get(`http://localhost:4500/api/notifications/by-receiver/${user?._id}`)
-        .then((res) => {
-          setNotiData(res.data.reverse());
-        });
-    }
-  }, [reloadCount, adminNoti]);
-
-  // make the component reload to fetch new noti
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setReloadCount(reloadCount + 1);
-    }, 120000); // 2 minutes
-
-    return () => clearTimeout(timer);
-  }, [reloadCount]);
-
-  const forceReloadNotification = () => {
-    setReloadCount(reloadCount + 1);
   };
 
   const renderMenu = () => {
