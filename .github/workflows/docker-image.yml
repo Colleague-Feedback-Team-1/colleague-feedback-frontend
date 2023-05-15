@@ -23,5 +23,5 @@ jobs:
 
     - name: Build and push the Docker image (main)
       run: |
-        docker build . --file Dockerfile.main --tag ilyaponomarenko/colleague-feedback-frontend:main-frontend
+        docker build . --file Dockerfile --tag ilyaponomarenko/colleague-feedback-frontend:main-frontend
         docker push ilyaponomarenko/colleague-feedback-frontend:main-frontend
