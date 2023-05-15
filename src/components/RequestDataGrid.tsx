@@ -260,7 +260,7 @@ const RequestDataGrid = () => {
     {
       field: "reviewers",
       headerName: "Reviewers",
-      width: 300,
+      width: 280,
       valueGetter: (params: GridValueGetterParams) => {
         const allReviewerNames = params.row.reviewers
           .map((reviewer: Reviewer) => reviewer.reviewerName.split(" ")[0])

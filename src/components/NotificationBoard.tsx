@@ -39,8 +39,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -68,8 +68,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -103,8 +103,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -148,8 +148,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -183,8 +183,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -215,8 +215,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -253,8 +253,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -296,8 +296,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -342,8 +342,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -374,8 +374,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -413,8 +413,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -459,8 +459,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -497,8 +497,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -535,8 +535,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
@@ -577,8 +577,8 @@ const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
               <MenuItem key={noti._id}>
                 <Card
                   sx={{
-                    minWidth: "700px",
-                    maxWidth: "100%",
+                    minWidth: "100%",
+                    textAlign: "left",
                     backgroundColor:
                       noti.date === today ? "#d0e8ff" : "#ffffff",
                   }}
