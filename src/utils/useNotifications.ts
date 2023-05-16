@@ -20,26 +20,19 @@ const useNotifications = (): UseNotificationsProps => {
     setAdminNoti((prevState) => !prevState);
   };
 
-  const fetchData = async () => {
-    try {
-      let response;
-      const apiUrl = "http://localhost:4500/api/notifications/";
-
-      if (user?.description === "HR" && adminNoti) {
-        response = await axios.get(apiUrl);
-      } else {
-        response = await axios.get(`${apiUrl}by-receiver/${user?._id}`);
-      }
-
-      setNotiData(response.data.reverse());
-    } catch (error) {
-      // Handle error
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchData();
+    const apiUrl = "http://localhost:4500/api/notifications/";
+    if (user?.description === "HR" && adminNoti) {
+      axios
+        .get(apiUrl)
+        .then((res) => setNotiData(res.data.reverse()))
+        .catch((err) => console.error(err));
+    } else {
+      axios
+        .get(`${apiUrl}by-receiver/${user?._id}`)
+        .then((res) => setNotiData(res.data.reverse()))
+        .catch((err) => console.error(err));
+    }
   }, [reloadCount, adminNoti, user]);
 
   useEffect(() => {

@@ -1,6 +1,5 @@
 import { MenuItem } from "@mui/material";
 import { Notification } from "../types/types";
-import { getTodayDate } from "../utils/formatDate";
 import CreateNewRequestCard from "./NotificationCards/CreateNewRequestCard";
 import DeniedByAdminCard from "./NotificationCards/DeniedByAdminCard";
 import ConfirmedByAdminCard from "./NotificationCards/ConfirmedByAdminCard";
@@ -16,8 +15,6 @@ interface NotificationBoardProps {
 }
 
 const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
-  let today = getTodayDate();
-
   console.log(data);
   const renderNotifications = () => {
     return data.map((noti: Notification) => {
