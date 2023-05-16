@@ -19,10 +19,10 @@ import UserContext from "../context/UserContext";
 import useNotifications from "../utils/useNotifications";
 
 function NotificationBell() {
-  const { user } = useContext<UserContextProps>(UserContext);
+  const { user, adminNoti } = useContext<UserContextProps>(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openNotiMenu = Boolean(anchorEl);
-  const { notiData, adminNoti, handleChangeNoti, forceReloadNotification } =
+  const { notiData, handleChangeNoti, forceReloadNotification } =
     useNotifications();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

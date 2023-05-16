@@ -1,10 +1,11 @@
 import { Typography, Card, CardHeader, Avatar, Button } from "@mui/material";
-import { Notification } from "../../types/types";
+import { Notification, UserContextProps } from "../../types/types";
 import { getTodayDate } from "../../utils/formatDate";
 import { CardStyle, CardSubheader } from "./constant";
-import useNotifications from "../../utils/useNotifications";
 import ExoveLogo from "../../assets/ExoveLogoSquareBlack.jpeg";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../../context/UserContext";
 
 type RemindCreateRequestCardProps = {
   noti: Notification;
@@ -13,7 +14,7 @@ type RemindCreateRequestCardProps = {
 const RemindCreateRequestCard = ({ noti }: RemindCreateRequestCardProps) => {
   let today = getTodayDate();
 
-  const { adminNoti } = useNotifications();
+  const { adminNoti } = useContext<UserContextProps>(UserContext);
 
   return (
     <Card sx={CardStyle(noti.date === today)}>

@@ -1,9 +1,10 @@
 import { Typography, Card, CardHeader, Avatar, Button } from "@mui/material";
-import { Notification } from "../../types/types";
+import { Notification, UserContextProps } from "../../types/types";
 import { getTodayDate } from "../../utils/formatDate";
 import { CardStyle, CardSubheader } from "./constant";
-import useNotifications from "../../utils/useNotifications";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../../context/UserContext";
 
 type AskForFeedbackCardProps = {
   noti: Notification;
@@ -11,8 +12,8 @@ type AskForFeedbackCardProps = {
 
 const AskForFeedbackCard = ({ noti }: AskForFeedbackCardProps) => {
   let today = getTodayDate();
-
-  const { adminNoti } = useNotifications();
+  const { user } = useContext<UserContextProps>(UserContext);
+  const { adminNoti } = useContext<UserContextProps>(UserContext);
 
   return (
     <Card sx={CardStyle(noti.date === today)}>
@@ -28,7 +29,7 @@ const AskForFeedbackCard = ({ noti }: AskForFeedbackCardProps) => {
         }
         title={
           <Typography>
-            {adminNoti ? (
+            {user?.description === "HR" && adminNoti ? (
               <b>
                 <span style={{ color: "#9b51e0" }}>
                   {noti.sender[0].senderName}{" "}

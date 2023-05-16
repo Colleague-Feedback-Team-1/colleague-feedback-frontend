@@ -12,6 +12,8 @@ export interface Employee {
 export interface UserContextProps {
   user: Employee | null;
   setUser: (user: Employee | null) => void;
+  adminNoti: boolean;
+  setAdminNoti: (adminNoti2: boolean) => void;
 }
 
 export interface Request {

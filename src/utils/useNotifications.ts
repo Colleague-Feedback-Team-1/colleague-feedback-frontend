@@ -5,7 +5,7 @@ import UserContext from "../context/UserContext";
 
 interface UseNotificationsProps {
   notiData: Notification[];
-  adminNoti: boolean;
+
   handleChangeNoti: () => void;
   forceReloadNotification: () => void;
 }
@@ -13,13 +13,16 @@ interface UseNotificationsProps {
 const useNotifications = (): UseNotificationsProps => {
   const [notiData, setNotiData] = useState<Notification[]>([]);
   const { user } = useContext<UserContextProps>(UserContext);
+  const { adminNoti } = useContext<UserContextProps>(UserContext);
+  const { setAdminNoti } = useContext<UserContextProps>(UserContext);
   const [reloadCount, setReloadCount] = useState<number>(0);
-  const [adminNoti, setAdminNoti] = useState<boolean>(true);
-
   const handleChangeNoti = () => {
-    setAdminNoti((prevState) => !prevState);
+    if (adminNoti) {
+      setAdminNoti(false);
+    } else {
+      setAdminNoti(true);
+    }
   };
-
   useEffect(() => {
     const apiUrl = "http://localhost:4500/api/notifications/";
     if (user?.description === "HR" && adminNoti) {
@@ -38,7 +41,7 @@ const useNotifications = (): UseNotificationsProps => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setReloadCount((prevCount) => prevCount + 1);
-    }, 120000); // 2 minutes
+    }, 60000); // 1 minutes
 
     return () => clearTimeout(timer);
   }, [reloadCount]);
@@ -49,7 +52,6 @@ const useNotifications = (): UseNotificationsProps => {
 
   return {
     notiData,
-    adminNoti,
     handleChangeNoti,
     forceReloadNotification,
   };

@@ -1,9 +1,10 @@
 import { Typography, Card, CardHeader, Avatar, Button } from "@mui/material";
-import { Notification } from "../../types/types";
+import { Notification, UserContextProps } from "../../types/types";
 import { getTodayDate } from "../../utils/formatDate";
 import { CardStyle, CardSubheader } from "./constant";
-import useNotifications from "../../utils/useNotifications";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../../context/UserContext";
 
 type FeedbackSubmittedCardProps = {
   noti: Notification;
@@ -12,7 +13,7 @@ type FeedbackSubmittedCardProps = {
 const FeedbackSubmittedCard = ({ noti }: FeedbackSubmittedCardProps) => {
   let today = getTodayDate();
 
-  const { adminNoti } = useNotifications();
+  const { adminNoti } = useContext<UserContextProps>(UserContext);
 
   return (
     <Card sx={CardStyle(noti.date === today)}>
