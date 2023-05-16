@@ -8,11 +8,8 @@ import { Link } from "react-router-dom";
 import { Check } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
-
 import { getTodayDate } from "../utils/formatDate";
 import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
-
 
 const modalStyle = {
   position: "fixed",
@@ -29,7 +26,6 @@ const modalStyle = {
 };
 
 const RequestDataGrid = () => {
-  const { t } = useTranslation();
   const [adminRequestList, setAdminRequestList] = useState<Request[] | null>();
   const [isLoading, setIsLoading] = useState(true);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -291,33 +287,12 @@ const RequestDataGrid = () => {
       },
     },
     {
-
       field: "_id",
       headerName: "Request ID",
-      sortable: false,
       width: 100,
       valueGetter: (params: GridValueGetterParams) => {
         return `...${params.row._id.slice(-6)}`;
       },
-      renderCell: (params) => (
-        <>
-          <Link
-            to={`/requests/${params.row._id}`}
-            style={{ textDecoration: "none", paddingRight: "13px" }}
-          >
-            <Button variant="contained">
-            {t("RequestDataGrid.view")}</Button>
-          </Link>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => handleDeleteModal(params.row._id)}
-          >
-            {t("RequestDataGrid.delete")}
-          </Button>
-        </>
-      ),
-
     },
   ];
 
@@ -343,12 +318,11 @@ const RequestDataGrid = () => {
       >
         <>
           <Typography variant="h3">
-            {t("RequestDataGrid.deleteRequest")}
+            Are you sure to delete request "
             {`...${deletingRequestId.slice(-7)}`}"?
           </Typography>
           <Typography variant="body1">
-            {" "}
-            {t("RequestDataGrid.deleteImmediately")}
+            This item will be deleted immediately. You can't undo this action.{" "}
           </Typography>
           <Stack
             direction={"row"}
@@ -361,14 +335,14 @@ const RequestDataGrid = () => {
               color="success"
               onClick={handleModalClose}
             >
-              {t("RequestDataGrid.cancel")}
+              Cancel
             </Button>
             <Button
               variant="contained"
               color="error"
               onClick={() => deleteRequest(deletingRequestId)}
             >
-              {t("RequestDataGrid.delete")}
+              Delete
             </Button>
           </Stack>
         </>
