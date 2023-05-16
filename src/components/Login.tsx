@@ -8,8 +8,6 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
-  console.log("Logged in User: ", user);
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -33,7 +31,7 @@ const Login = () => {
             localStorage.setItem("loggedIn", "true");
             toast.success("Login successfully");
           } else {
-            console.log("Please log in to continue");
+            toast.error("Login failed");
           }
         } catch (error) {
           console.error("Failed to fetch user data:", error);
@@ -41,7 +39,7 @@ const Login = () => {
       })
       .catch((error) => {
         console.error("Authentication failed:", error);
-        toast.error("Your email or password is incorrect. Please try again.");
+        toast.error("Your username or password is incorrect. Please try again.");
       });
   };
 
