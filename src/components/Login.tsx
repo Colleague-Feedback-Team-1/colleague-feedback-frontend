@@ -4,11 +4,13 @@ import { useContext } from "react";
 import UserContext from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import ExoveLogo from "../assets/ExoveLogo.png";
-import { toast } from "react-toastify";
 
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
   console.log("Logged in User: ", user);
+    const { t } = useTranslation();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -69,7 +71,7 @@ const Login = () => {
           />
 
           <Typography component="h1" variant="h5">
-            Sign in to use the app
+            {t("login.title")}
           </Typography>
           <Box
             component="form"
@@ -104,7 +106,7 @@ const Login = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {t("login.sign")}
             </Button>
             <Typography variant="body2">
               Contact the HR to get your account registed, if you do not have

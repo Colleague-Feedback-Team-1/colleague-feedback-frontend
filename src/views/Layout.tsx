@@ -23,13 +23,17 @@ import SearchBar from "../components/SearchBar";
 import ExoveLogoWhite from "../assets/ExoveLogoWhite.png";
 import UserContext from "../context/UserContext";
 import axios from "axios";
+
 import { toast } from "react-toastify";
 import NotificationBell from "../components/NotificationBell";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../components/LanguageSelector";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
+  const { t } = useTranslation();
 
   const drawerList = [
     {
@@ -155,7 +159,15 @@ const Layout = () => {
                   sx={{ alignItems: "center", justifyContent: "right" }}
                 >
                   <SearchBar />
+                  
                   <NotificationBell />
+                  <IconButton size="large" color="inherit">
+                    <Badge badgeContent={5} color="error">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                  <LanguageSelector/>
+
                   <IconButton
                     size="large"
                     color="inherit"
@@ -169,16 +181,16 @@ const Layout = () => {
                   </IconButton>
                 </Stack>
               ) : (
-                <Typography variant="h5">COLLEAGUE FEEDBACK</Typography>
+                <Typography variant="h5">{t("Layout.cFeedback")}</Typography>
               )}
             </Box>
 
             {/* Menu open when click in IconButton */}
             <Menu anchorEl={anchorEl} open={openMenu} onClose={handleClose}>
               <Link to={`/employees/${user?._id}`} {...user}>
-                <MenuItem>Profile</MenuItem>
+                <MenuItem>{t("Layout.profile")}</MenuItem>
               </Link>
-              <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
+              <MenuItem onClick={handleLogOut}>{t("Layout.logout")}</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
