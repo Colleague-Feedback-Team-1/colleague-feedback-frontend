@@ -16,24 +16,24 @@ import Loading from "../components/Loading";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Employee, Request, UserContextProps } from "../types/types";
+import { Employee, Receiver, Request, Reviewer } from "../types/types";
 import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
-import UserContext from "../context/UserContext";
 import { toast } from "react-toastify";
+import { getTodayDate } from "../utils/formatDate";
 
 const modalStyle = {
-  position: "absolute",
-  top: "50vh",
-  left: "30vw",
-  width: "30%",
-  height: "25%",
+  position: "fixed",
   backgroundColor: "#9b51e0",
   boxShadow: 24,
   p: 4,
   color: "white",
   textAlign: "center",
   borderRadius: "30px",
+  alignItem: "center",
+  margin: "80px auto auto auto",
+  width: "60%",
+  height: "min-content",
 };
 
 const ConfirmRequest = () => {
@@ -76,6 +76,61 @@ const ConfirmRequest = () => {
     };
 
     setTimeout(() => {
+      // first create a confirmed-by-admin noti
+      let today = getTodayDate();
+      const notification1 = {
+        type: "confirmed-by-admin",
+        date: today,
+        receiver: [
+          {
+            receiverid: requestData?.employeeid,
+            receiverName: requestData?.employeeName,
+          },
+        ],
+        sender: [
+          {
+            senderid: "Admin",
+            senderName: "Admin",
+          },
+        ],
+        requestid: requestData?._id,
+      };
+      axios
+        .post(
+          "http://localhost:4500/api/notifications/insert-notification",
+          notification1
+        )
+        .then((res) => console.log(res));
+      // then create a ask-for-feedback noti
+      let receiverList: Receiver[] = [];
+      requestData?.reviewers.forEach((reviewer: Reviewer) => {
+        receiverList.push({
+          receiverid: reviewer.reviewerid,
+          receiverName: reviewer.reviewerName,
+        });
+      });
+      receiverList.push({
+        receiverid: managerList[0]._id,
+        receiverName: managerList[0].displayName,
+      });
+      const notification2 = {
+        type: "ask-for-feedback",
+        date: today,
+        receiver: receiverList,
+        sender: [
+          {
+            senderid: requestData?.employeeid,
+            senderName: requestData?.employeeName,
+          },
+        ],
+        requestid: requestData?._id,
+      };
+      axios
+        .post(
+          "http://localhost:4500/api/notifications/insert-notification",
+          notification2
+        )
+        .then((res) => console.log(res));
       axios
         .patch(
           `http://localhost:4500/api/review-requests/update-manager/${params.requestId}`,

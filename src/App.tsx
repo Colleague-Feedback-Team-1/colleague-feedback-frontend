@@ -15,10 +15,10 @@ import CreateNewRequest from "./views/CreateNewRequest";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import FeedbackSubmission from "./views/FeedbackSubmission";
-import RequestDashboard from "./components/RequestDataGrid";
 import RadarChartDisplay from "./views/RadarChartDisplay";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AllNotifications from "./views/AllNotifications";
 
 const App = () => {
   const [user, setUser] = useState<Employee | null>(null);
@@ -73,8 +73,8 @@ const App = () => {
                 ></Route>
 
                 <Route
-                  path="/request-dashboard"
-                  element={<RequestDashboard />}
+                  path="/notification"
+                  element={<AllNotifications />}
                 ></Route>
 
                 <Route

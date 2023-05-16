@@ -1,34 +1,44 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "./Loading";
-import { Request, Reviewer } from "../types/types";
-import { Stack, Box, Typography, Button, Modal } from "@mui/material";
+import { Receiver, Request, Reviewer } from "../types/types";
+import { Stack, Typography, Button, Modal } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { Check } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
+import { getTodayDate } from "../utils/formatDate";
+import { toast } from "react-toastify";
 
 const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "50%",
-  height: "20%",
+  position: "fixed",
   backgroundColor: "#9b51e0",
   boxShadow: 24,
   p: 4,
   color: "white",
   textAlign: "center",
+  borderRadius: "30px",
+  alignItem: "center",
+  margin: "80px auto auto auto",
+  width: "60%",
+  height: "min-content",
 };
 
 const RequestDataGrid = () => {
   const [adminRequestList, setAdminRequestList] = useState<Request[] | null>();
   const [isLoading, setIsLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openRemindModal, setOpenRemindModal] = useState(false);
   const [deletingRequestId, setDeletingRequestId] = useState<string>("");
+  const [remindingRequestData, setRemindingRequestData] = useState<Request>();
+  const [remindingReviewers, setRemindingReviewers] = useState<Receiver[]>([]);
+  const [remindingSelfReview, setRemindingSelfReview] = useState<Receiver[]>(
+    []
+  );
+
   const navigate = useNavigate();
+  let today = getTodayDate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -40,10 +50,13 @@ const RequestDataGrid = () => {
   }, []);
 
   // handle the modal
-  const handleModalClose = () => setOpenModal(false);
+  const handleModalClose = () => {
+    setOpenDeleteModal(false);
+    setOpenRemindModal(false);
+  };
 
   const handleDeleteModal = (requestId: string) => {
-    setOpenModal(true);
+    setOpenDeleteModal(true);
     setDeletingRequestId(requestId);
   };
 
@@ -51,6 +64,37 @@ const RequestDataGrid = () => {
   const deleteRequest = async (requestId: string) => {
     console.log("deleting request ", requestId);
     setTimeout(() => {
+      axios
+        .get(
+          `http://localhost:4500/api/review-requests/by-requestid/${deletingRequestId}`
+        )
+        .then((res) => {
+          let result: Request = res.data;
+          const notification = {
+            type: "denied-by-admin",
+            date: today,
+            receiver: [
+              {
+                receiverid: result.employeeid,
+                receiverName: result.employeeName,
+              },
+            ],
+            sender: [
+              {
+                senderid: "Admin",
+                senderName: "Admin",
+              },
+            ],
+            requestid: null,
+          };
+          axios
+            .post(
+              "http://localhost:4500/api/notifications/insert-notification",
+              notification
+            )
+            .then((res) => console.log(res));
+          console.log(notification);
+        });
       axios
         .delete(
           `http://localhost:4500/api/review-requests/delete/${deletingRequestId}`
@@ -71,15 +115,113 @@ const RequestDataGrid = () => {
     );
   };
 
+  // function for reminder
+  const showReminderModal = async (requestID: string) => {
+    let result = await axios.get(
+      `http://localhost:4500/api/review-requests/by-requestid/${requestID}`
+    );
+    setRemindingRequestData(result.data);
+    let receivingReviewers: Receiver[] = [];
+    let receivingSelfReview: Receiver[] = [];
+    result.data.reviewers.forEach((reviewer: Reviewer) => {
+      if (!reviewer.feedbackSubmitted) {
+        receivingReviewers.push({
+          receiverid: reviewer.reviewerid,
+          receiverName: reviewer.reviewerName,
+        });
+      }
+    });
+    if (!result.data.selfReview) {
+      receivingSelfReview.push({
+        receiverid: result.data.employeeid,
+        receiverName: result.data.employeeName,
+      });
+    }
+
+    setRemindingReviewers(receivingReviewers);
+    setRemindingSelfReview(receivingSelfReview);
+    setOpenRemindModal(true);
+  };
+
+  const sendReminder = () => {
+    const notification1 = {
+      type: "remind-give-feedback",
+      date: today,
+      receiver: remindingReviewers,
+      sender: [
+        {
+          senderid: remindingRequestData?.employeeid,
+          senderName: remindingRequestData?.employeeName,
+        },
+      ],
+      requestid: remindingRequestData?._id,
+    };
+    axios
+      .post(
+        "http://localhost:4500/api/notifications/insert-notification",
+        notification1
+      )
+      .then((res) => console.log(res));
+    if (remindingSelfReview.length > 0) {
+      const notification2 = {
+        type: "remind-self-review",
+        date: today,
+        receiver: remindingSelfReview,
+        sender: [
+          {
+            senderid: "Admin",
+            senderName: "Admin",
+          },
+        ],
+        requestid: remindingRequestData?._id,
+      };
+      axios
+        .post(
+          "http://localhost:4500/api/notifications/insert-notification",
+          notification2
+        )
+        .then((res) => console.log(res));
+      console.log(notification2);
+    }
+    console.log(notification1);
+    setRemindingReviewers([]);
+    setRemindingSelfReview([]);
+    setOpenRemindModal(false);
+    toast.success("Successfully sent reminders");
+  };
+
   // Define the columns
   const columns: GridColDef[] = [
     {
-      field: "_id",
-      headerName: "Request ID",
-      width: 100,
-      valueGetter: (params: GridValueGetterParams) => {
-        return `...${params.row._id.slice(-6)}`;
-      },
+      field: "View",
+      headerName: "Actions",
+      sortable: false,
+      width: 320,
+      renderCell: (params) => (
+        <Stack direction={"row"} spacing={2}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => showReminderModal(params.row._id)}
+          >
+            Remind
+          </Button>
+          <Link
+            to={`/requests/${params.row._id}`}
+            style={{ textDecoration: "none", paddingRight: "13px" }}
+          >
+            <Button variant="contained">View</Button>
+          </Link>
+
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => handleDeleteModal(params.row._id)}
+          >
+            Delete
+          </Button>
+        </Stack>
+      ),
     },
     { field: "employeeName", headerName: "Reviewee", width: 120 },
     {
@@ -97,12 +239,14 @@ const RequestDataGrid = () => {
       renderCell: booleanCellRenderer,
     },
     {
-      field: "dateRequested",
-      headerName: "Due Date",
-      width: 120,
-      renderCell: (params) => {
-        const date = new Date(params.row.dateRequested);
-        return date.toLocaleDateString();
+      field: "feedbackReceived",
+      headerName: "Feedback",
+      width: 100,
+      valueGetter: (params: GridValueGetterParams) => {
+        const feedbackSubmitted = params.row.reviewers.filter(
+          (reviewer: any) => reviewer.feedbackSubmitted
+        );
+        return `${feedbackSubmitted.length}/${params.row.reviewers.length}`;
       },
     },
     {
@@ -116,7 +260,7 @@ const RequestDataGrid = () => {
     {
       field: "reviewers",
       headerName: "Reviewers",
-      width: 300,
+      width: 280,
       valueGetter: (params: GridValueGetterParams) => {
         const allReviewerNames = params.row.reviewers
           .map((reviewer: Reviewer) => reviewer.reviewerName.split(" ")[0])
@@ -124,39 +268,31 @@ const RequestDataGrid = () => {
         return allReviewerNames;
       },
     },
+
     {
-      field: "feedbackReceived",
-      headerName: "Feedback Received",
+      field: "dateRequested",
+      headerName: "Due Date",
+      sortable: false,
       width: 120,
-      valueGetter: (params: GridValueGetterParams) => {
-        const feedbackSubmitted = params.row.reviewers.filter(
-          (reviewer: any) => reviewer.feedbackSubmitted
+      renderCell: (params) => {
+        const date = new Date(params.row.dateRequested).toLocaleString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }
         );
-        return `${feedbackSubmitted.length}/${params.row.reviewers.length}`;
+        return date;
       },
     },
     {
-      field: "View",
-      headerName: "Actions",
-      sortable: false,
-      width: 200,
-      renderCell: (params) => (
-        <>
-          <Link
-            to={`/requests/${params.row._id}`}
-            style={{ textDecoration: "none", paddingRight: "13px" }}
-          >
-            <Button variant="contained">View</Button>
-          </Link>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => handleDeleteModal(params.row._id)}
-          >
-            Delete
-          </Button>
-        </>
-      ),
+      field: "_id",
+      headerName: "Request ID",
+      width: 100,
+      valueGetter: (params: GridValueGetterParams) => {
+        return `...${params.row._id.slice(-6)}`;
+      },
     },
   ];
 
@@ -173,8 +309,9 @@ const RequestDataGrid = () => {
           />
         </div>
       )}
+      {/* DELETE MODAL */}
       <Modal
-        open={openModal}
+        open={openDeleteModal}
         onClose={handleModalClose}
         keepMounted
         sx={modalStyle}
@@ -206,6 +343,55 @@ const RequestDataGrid = () => {
               onClick={() => deleteRequest(deletingRequestId)}
             >
               Delete
+            </Button>
+          </Stack>
+        </>
+      </Modal>
+
+      {/* REMINDER MODAL */}
+      <Modal
+        open={openRemindModal}
+        onClose={handleModalClose}
+        keepMounted
+        sx={modalStyle}
+      >
+        <>
+          <Stack spacing={3}>
+            <Typography variant="h3">
+              A reminder notification will be sent to:
+            </Typography>
+            {remindingReviewers.map((reviewer) => {
+              return (
+                <Typography variant="h5" key={reviewer.receiverid}>
+                  ▪ {reviewer.receiverName} (reviewer)
+                </Typography>
+              );
+            })}
+            {remindingSelfReview.map((reviewer) => {
+              return (
+                <Typography variant="h5" key={reviewer.receiverid}>
+                  ▪ {reviewer.receiverName} (self-review)
+                </Typography>
+              );
+            })}
+            <Typography variant="h3">Are you sure?</Typography>
+          </Stack>
+
+          <Stack
+            direction={"row"}
+            mt={3}
+            spacing={2}
+            sx={{ alignItems: "center", justifyContent: "center" }}
+          >
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleModalClose}
+            >
+              Cancel
+            </Button>
+            <Button variant="contained" color="success" onClick={sendReminder}>
+              Send notification
             </Button>
           </Stack>
         </>

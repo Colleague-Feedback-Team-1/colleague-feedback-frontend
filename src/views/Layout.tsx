@@ -4,7 +4,6 @@ import {
   Box,
   IconButton,
   Typography,
-  Badge,
   Drawer,
   List,
   ListItem,
@@ -15,7 +14,6 @@ import {
   MenuItem,
   Avatar,
 } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { useState, useContext } from "react";
@@ -26,6 +24,7 @@ import ExoveLogoWhite from "../assets/ExoveLogoWhite.png";
 import UserContext from "../context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import NotificationBell from "../components/NotificationBell";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -38,6 +37,11 @@ const Layout = () => {
       icon: <BarChartIcon />,
       link: "/dashboard",
     },
+    {
+      text: "Notifications",
+      icon: <NotificationsIcon />,
+      link: "/notification",
+    },
   ];
   const adminDrawerList = [
     {
@@ -46,9 +50,9 @@ const Layout = () => {
       link: "/dashboard",
     },
     {
-      text: "Users",
-      icon: <AccountCircleIcon />,
-      link: "/request-dashboard",
+      text: "Notifications",
+      icon: <NotificationsIcon />,
+      link: "/notification",
     },
   ];
 
@@ -151,11 +155,7 @@ const Layout = () => {
                   sx={{ alignItems: "center", justifyContent: "right" }}
                 >
                   <SearchBar />
-                  <IconButton size="large" color="inherit">
-                    <Badge badgeContent={5} color="error">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
+                  <NotificationBell />
                   <IconButton
                     size="large"
                     color="inherit"

@@ -49,7 +49,7 @@ const UserDashboard = () => {
   };
 
   return (
-    <Stack textAlign="left">
+    <Stack textAlign="left" paddingBottom={"20px"}>
       <div>
         <Stack
           direction={"row"}

@@ -81,3 +81,31 @@ export type FeedbackSection = {
 };
 
 export type Feedback = FeedbackSection[];
+
+// for Notification
+export type NotificationType =
+  | "confirmed-by-admin"
+  | "denied-by-admin"
+  | "create-new-request"
+  | "ask-for-feedback"
+  | "remind-give-feedback"
+  | "remind-create-request"
+  | "remind-self-review"
+  | "feedback-submitted";
+
+export type Sender = {
+  senderid: string;
+  senderName: string;
+};
+export type Receiver = {
+  receiverid: string;
+  receiverName: string;
+};
+export interface Notification {
+  _id?: string;
+  date: string;
+  type: NotificationType;
+  sender: Sender[];
+  receiver: Receiver[];
+  requestid: string;
+}

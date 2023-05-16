@@ -39,7 +39,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "noti-server": "json-server -p3001 --watch notiDB.json "
   },
   "eslintConfig": {
     "extends": [
@@ -61,6 +62,7 @@
   },
   "devDependencies": {
     "@types/material-ui": "^0.21.12",
+    "json-server": "^0.17.3",
     "sonarqube-scanner": "^3.0.1"
   }
 }
