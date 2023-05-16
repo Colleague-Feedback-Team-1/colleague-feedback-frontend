@@ -2,10 +2,11 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { UserContextProps, Notification } from "../types/types";
 import UserContext from "../context/UserContext";
+import { getTodayDate } from "./formatDate";
 
 interface UseNotificationsProps {
   notiData: Notification[];
-
+  todayNoti: number;
   handleChangeNoti: () => void;
   forceReloadNotification: () => void;
 }
@@ -13,9 +14,21 @@ interface UseNotificationsProps {
 const useNotifications = (): UseNotificationsProps => {
   const [notiData, setNotiData] = useState<Notification[]>([]);
   const { user } = useContext<UserContextProps>(UserContext);
-  const { adminNoti } = useContext<UserContextProps>(UserContext);
-  const { setAdminNoti } = useContext<UserContextProps>(UserContext);
+  const { adminNoti, todayNoti } = useContext<UserContextProps>(UserContext);
+  const { setAdminNoti, setTodayNoti } =
+    useContext<UserContextProps>(UserContext);
   const [reloadCount, setReloadCount] = useState<number>(0);
+
+  const checkTodayNoti = () => {
+    let today = getTodayDate();
+    let todayNotiCount = 0;
+    notiData.map((noti) => {
+      if (noti.date == today) {
+        todayNotiCount += 1;
+      }
+    });
+    setTodayNoti(todayNotiCount);
+  };
   const handleChangeNoti = () => {
     if (adminNoti) {
       setAdminNoti(false);
@@ -23,17 +36,22 @@ const useNotifications = (): UseNotificationsProps => {
       setAdminNoti(true);
     }
   };
+  checkTodayNoti();
   useEffect(() => {
     const apiUrl = "http://localhost:4500/api/notifications/";
     if (user?.description === "HR" && adminNoti) {
       axios
         .get(apiUrl)
-        .then((res) => setNotiData(res.data.reverse()))
+        .then((res) => {
+          setNotiData(res.data.reverse());
+        })
         .catch((err) => console.error(err));
     } else {
       axios
         .get(`${apiUrl}by-receiver/${user?._id}`)
-        .then((res) => setNotiData(res.data.reverse()))
+        .then((res) => {
+          setNotiData(res.data.reverse());
+        })
         .catch((err) => console.error(err));
     }
   }, [reloadCount, adminNoti, user]);
@@ -41,7 +59,7 @@ const useNotifications = (): UseNotificationsProps => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setReloadCount((prevCount) => prevCount + 1);
-    }, 60000); // 1 minutes
+    }, 30000); // 0.5 minutes
 
     return () => clearTimeout(timer);
   }, [reloadCount]);
@@ -52,6 +70,7 @@ const useNotifications = (): UseNotificationsProps => {
 
   return {
     notiData,
+    todayNoti,
     handleChangeNoti,
     forceReloadNotification,
   };

@@ -18,7 +18,6 @@ const AllNotifications = () => {
   const { user, adminNoti } = useContext<UserContextProps>(UserContext);
   const { notiData, handleChangeNoti, forceReloadNotification } =
     useNotifications();
-  console.log(adminNoti);
 
   const renderMenu = () => {
     return (

@@ -6,6 +6,8 @@ const UserContext = createContext<UserContextProps>({
   setUser: () => {},
   adminNoti: false,
   setAdminNoti: () => {},
+  todayNoti: 0,
+  setTodayNoti: () => {},
 });
 
 export default UserContext;
