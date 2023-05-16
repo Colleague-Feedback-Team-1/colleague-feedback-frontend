@@ -28,7 +28,6 @@ const EmployeeSingle = () => {
         .get(`http://localhost:4500/api/employees/${params.employeeId}`)
         .then((res) => {
           setEmployee(res.data);
-          console.log(res.data)
         });
       setIsLoading(false);
     }, 1000);
