@@ -151,7 +151,12 @@ const RequestSingle = () => {
             <LinearProgress
               variant="determinate"
               value={value}
-              sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+              sx={{
+                width: "100%",
+                height: "20px",
+                borderRadius: "10px",
+                margin: "10px 0 15px 0",
+              }}
               color="error"
             />
             <Button variant="outlined" disabled>
@@ -165,7 +170,12 @@ const RequestSingle = () => {
             <LinearProgress
               variant="determinate"
               value={value}
-              sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+              sx={{
+                width: "100%",
+                height: "20px",
+                borderRadius: "10px",
+                margin: "10px 0 15px 0",
+              }}
               color="success"
             />
             <Link to={`/chart/${params.requestId}`}>

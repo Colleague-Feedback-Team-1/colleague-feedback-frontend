@@ -196,7 +196,7 @@ const RequestDataGrid = () => {
       field: "View",
       headerName: "Actions",
       sortable: false,
-      width: 320,
+      width: 220,
       renderCell: (params) => (
         <Stack direction={"row"} spacing={2}>
           <Button
@@ -212,17 +212,10 @@ const RequestDataGrid = () => {
           >
             <Button variant="contained">View</Button>
           </Link>
-
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => handleDeleteModal(params.row._id)}
-          >
-            Delete
-          </Button>
         </Stack>
       ),
     },
+
     { field: "employeeName", headerName: "Reviewee", width: 120 },
     {
       field: "confirmedByHR",
@@ -293,6 +286,21 @@ const RequestDataGrid = () => {
       valueGetter: (params: GridValueGetterParams) => {
         return `...${params.row._id.slice(-6)}`;
       },
+    },
+    {
+      field: "Delete",
+      headerName: "Delete",
+      sortable: false,
+      width: 120,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => handleDeleteModal(params.row._id)}
+        >
+          Delete
+        </Button>
+      ),
     },
   ];
 
