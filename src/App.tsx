@@ -86,7 +86,7 @@ const App = () => {
           </Routes>
         </div>
         {/* Toast container, autoclose after 2secs */}
-        <ToastContainer autoClose={2000} />
+        <ToastContainer autoClose={3000} />
       </LocalizationProvider>
     </UserContext.Provider>
   );
