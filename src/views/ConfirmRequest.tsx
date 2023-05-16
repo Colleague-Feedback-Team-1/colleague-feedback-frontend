@@ -57,7 +57,6 @@ const ConfirmRequest = () => {
         `http://localhost:4500/api/review-requests/by-requestid/${params.requestId}`
       )
       .then((res) => {
-        console.log(res.data);
         setRequestData(res.data);
         setIsLoading(false);
       });
@@ -100,7 +99,7 @@ const ConfirmRequest = () => {
           "http://localhost:4500/api/notifications/insert-notification",
           notification1
         )
-        .then((res) => console.log(res));
+        .then((res) => toast.success("Confirmed request successfully"));
       // then create a ask-for-feedback noti
       let receiverList: Receiver[] = [];
       requestData?.reviewers.forEach((reviewer: Reviewer) => {
@@ -130,14 +129,13 @@ const ConfirmRequest = () => {
           "http://localhost:4500/api/notifications/insert-notification",
           notification2
         )
-        .then((res) => console.log(res));
+        .then((res) => toast.success("Failed to fetch your requests"));
       axios
         .patch(
           `http://localhost:4500/api/review-requests/update-manager/${params.requestId}`,
           confirmBody
         )
         .then((res) => {
-          console.log(res);
           setOpenModal(false);
           toast.success("Confirm request successfully");
           navigate("/");
