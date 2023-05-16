@@ -11,20 +11,11 @@ import { useState, useContext } from "react";
 import UserContext from "../context/UserContext";
 import { UserContextProps } from "../types/types";
 import { Link } from "react-router-dom";
-
 import type {} from "@mui/x-data-grid/themeAugmentation";
 import RequestDataGrid from "../components/RequestDataGrid";
 import RequestSimpleView from "../components/RequestSimpleView";
 
-import { useTranslation } from "react-i18next";
-
 const UserDashboard = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [requestList, setRequestList] = useState<Request[] | null>();
-  const [adminRequestList, setAdminRequestList] = useState<Request[] | null>();
-  const [asReviewerList, setAsReviewerList] = useState<Request[] | null>();
-  const { t } = useTranslation();
-
   const { user } = useContext<UserContextProps>(UserContext);
   const [simpleView, setSimpleView] = useState<boolean>(false);
 
@@ -47,55 +38,7 @@ const UserDashboard = () => {
   // render the page depends on the view choosen
   const renderDashboard = () => {
     if (user?.description !== "HR") {
-
-      return (
-        <RequestSimpleView />;
-        <>
-          <Box paddingBottom={"50px"}>
-            <Typography variant="h4">{t("UserDashboard.requestFeedback")}</Typography>
-            <Stack
-              direction={"row"}
-              spacing={"2px"}
-              flexWrap={"wrap"}
-              gap={"20px"}
-              paddingY={"10px"}
-            >
-              {requestList ? (
-                requestList!.map((request) => {
-                  return <RequestCard {...request} key={request._id} />;
-                })
-              ) : (
-                <Typography>{t("UserDashboard.noRequest")}</Typography>
-              )}
-            </Stack>
-            
-          </Box>
-
-          <Box paddingBottom={"50px"}>
-            <Typography variant="h4">
-            {t("UserDashboard.yourFeedback")}{" "}
-            </Typography>
-            <Stack
-              direction={"row"}
-              spacing={"2px"}
-              flexWrap={"wrap"}
-              gap={"20px"}
-              paddingY={"10px"}
-            >
-              {asReviewerList ? (
-                asReviewerList!.map((request) => {
-                  return <RequestCard {...request} key={request._id} />;
-                })
-              ) : (
-                <Typography>
-                 {t("UserDashboard.yourColleagues")}
-                </Typography>
-              )}
-            </Stack>
-            
-          </Box>
-        </>
-      );
+      return <RequestSimpleView />;
     } else {
       if (simpleView) {
         return <RequestSimpleView />;
@@ -107,9 +50,6 @@ const UserDashboard = () => {
 
   return (
     <Stack textAlign="left" paddingBottom={"20px"}>
-           {isLoading ? (
-        <Loading />
-      ) : (
       <div>
         <Stack
           direction={"row"}
@@ -118,12 +58,12 @@ const UserDashboard = () => {
           paddingBottom={"50px"}
         >
           <Box>
-              <Typography variant="h3">{t("UserDashboard.hello")} {user!.displayName}</Typography>
-              <Typography variant="h6">{t("UserDashboard.today")}{date}</Typography>
-            </Box>
+            <Typography variant="h3">Hello, {user!.displayName}</Typography>
+            <Typography variant="h6">Today is {date}</Typography>
+          </Box>
           <Link to={"/requests/createNewRequest"}>
             <Button variant="contained" size="large" color="success">
-              {t("UserDashboard.newRequest")}
+              Create New Request
             </Button>
           </Link>
         </Stack>
@@ -139,7 +79,6 @@ const UserDashboard = () => {
         ) : (
           <></>
         )}
-
 
         <Box>{renderDashboard()}</Box>
       </div>
