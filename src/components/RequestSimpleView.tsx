@@ -5,6 +5,8 @@ import { UserContextProps, Request } from "../types/types";
 import axios from "axios";
 import RequestCard from "../components/RequestCard";
 import Loading from "../components/Loading";
+import { toast } from 'react-toastify'
+
 
 const RequestSimpleView = () => {
   const { user } = useContext<UserContextProps>(UserContext);
@@ -21,7 +23,7 @@ const RequestSimpleView = () => {
         .then((res) => {
           setRequestList(res.data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toast.error("Failed to fetch your requests"));
       axios
         .get(
           `http://localhost:4500/api/review-requests/as-reviewer/${user!._id}`
@@ -29,7 +31,7 @@ const RequestSimpleView = () => {
         .then((res) => {
           setAsReviewerList(res.data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toast.error("Failed to fetch your requests"));
 
       // Create a quick loading duration
       setIsLoading(false);
