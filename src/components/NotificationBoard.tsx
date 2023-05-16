@@ -1,14 +1,5 @@
-import {
-  MenuItem,
-  Typography,
-  Button,
-  Card,
-  CardHeader,
-  Avatar,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+import { MenuItem } from "@mui/material";
 import { Notification } from "../types/types";
-import ExoveLogo from "../assets/ExoveLogoSquareBlack.jpeg";
 import { getTodayDate } from "../utils/formatDate";
 import CreateNewRequestCard from "./NotificationCards/CreateNewRequestCard";
 import DeniedByAdminCard from "./NotificationCards/DeniedByAdminCard";

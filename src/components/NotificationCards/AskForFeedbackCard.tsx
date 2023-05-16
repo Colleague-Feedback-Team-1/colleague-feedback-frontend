@@ -3,7 +3,6 @@ import { Notification } from "../../types/types";
 import { getTodayDate } from "../../utils/formatDate";
 import { CardStyle, CardSubheader } from "./constant";
 import useNotifications from "../../utils/useNotifications";
-import ExoveLogo from "../../assets/ExoveLogoSquareBlack.jpeg";
 import { Link } from "react-router-dom";
 
 type AskForFeedbackCardProps = {
