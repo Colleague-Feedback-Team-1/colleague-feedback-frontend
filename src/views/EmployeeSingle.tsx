@@ -5,11 +5,8 @@ import axios from "axios";
 import {
   Card,
   CardMedia,
-  CardHeader,
-  Avatar,
   Stack,
   Typography,
-  Box,
 } from "@mui/material";
 import ExoveEmployee from "../assets/Exove-employee.png";
 import Loading from "../components/Loading";
