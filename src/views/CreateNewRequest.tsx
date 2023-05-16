@@ -62,7 +62,6 @@ const CreateNewRequest = () => {
 
   const handleChangeTimePicker = (date: any) => {
     const formattedDate = timeFormatter(date.$d)
-    console.log(formattedDate)
     setDueDate(formattedDate)
   }
 
@@ -245,9 +244,6 @@ const CreateNewRequest = () => {
       reviewers: updatedReviewerList!,
       dateRequested: dueDate,
     }
-
-    console.log(JSON.stringify(request))
-
     axios
       .post('http://localhost:4500/api/review-requests/insert-request', request)
       .then((res) => {
