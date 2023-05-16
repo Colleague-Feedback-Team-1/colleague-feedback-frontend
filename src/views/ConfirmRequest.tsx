@@ -19,8 +19,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Employee, Receiver, Request, Reviewer } from "../types/types";
 import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
+
 import { toast } from "react-toastify";
 import { getTodayDate } from "../utils/formatDate";
+import UserContext from "../context/UserContext";
+import { useTranslation } from "react-i18next";
+
 
 const modalStyle = {
   position: "fixed",
@@ -45,6 +49,7 @@ const ConfirmRequest = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios
@@ -239,17 +244,19 @@ const ConfirmRequest = () => {
           }}
         >
           <Typography variant="h3" pb={"50px"}>
-            CONFIRMING REQUEST #
+          {t("ComfirmedRequest.cRequest")}
             {`${requestData!._id.slice(0, 5)}...${requestData!._id.slice(-3)}`}
           </Typography>
           <Stack direction={"row"} paddingBottom={"50px"} spacing={10}>
             <Stack flexGrow={1}>
-              <Typography variant="h4">Reviewee:</Typography>
+              <Typography variant="h4">{t("ComfirmedRequest.reviewee")}</Typography>
               <EmployeeCard {...requestData!} />
             </Stack>
             <Stack flexGrow={4}>
-              <Typography variant="h4">Reviewers:</Typography>
+
+              <Typography variant="h4">{t("ComfirmedRequest.reviewers")}</Typography>
               <Stack direction={"row"} flexWrap={"wrap"}>
+
                 {requestData!.reviewers.map((reviewer) => {
                   return <ReviewerCard {...reviewer} />;
                 })}
@@ -260,7 +267,7 @@ const ConfirmRequest = () => {
           <Stack paddingBottom={"50px"} direction={"row"}>
             <Stack flexGrow={1} width={"40vw"}>
               <Typography variant="h4">
-                Assigning Project Manager ({managerList.length}/1):
+              {t("ComfirmedRequest.apManager")} ({managerList.length}/1):
               </Typography>
               <Stack
                 direction={"row"}
@@ -274,7 +281,7 @@ const ConfirmRequest = () => {
               </Stack>
             </Stack>
             <Stack sx={{ width: "60vw" }}>
-              <Typography variant="h4">Search for an employee:</Typography>
+              <Typography variant="h4">{t("ComfirmedRequest.searchEmployee")}</Typography>
               <TextField
                 id="search-bar"
                 label="Search"
@@ -300,13 +307,13 @@ const ConfirmRequest = () => {
               color="success"
               onClick={handleModalOpen}
             >
-              Confirm this request
+             {t("ComfirmedRequest.confirmRequest")} 
             </Button>
           ) : (
             <>
-              <Typography>Please choose one Project Manager first!</Typography>
+              <Typography>{t("ComfirmedRequest.selectManager")}</Typography>
               <Button variant="outlined" disabled onClick={handleModalOpen}>
-                Confirm this request
+              {t("ComfirmedRequest.confirmedRequest2")} 
               </Button>
             </>
           )}
@@ -318,7 +325,7 @@ const ConfirmRequest = () => {
             sx={modalStyle}
           >
             <>
-              <Typography variant="h2">Are you sure?</Typography>
+              <Typography variant="h2">{t("ComfirmedRequest.sure")}</Typography>
               <Stack
                 direction={"row"}
                 mt={3}
@@ -330,14 +337,14 @@ const ConfirmRequest = () => {
                   color="error"
                   onClick={handleModalClose}
                 >
-                  No, let me check again
+                 {t("ComfirmedRequest.checkAgain")} 
                 </Button>
                 <Button
                   variant="contained"
                   color="success"
                   onClick={handleConfirm}
                 >
-                  Yes, confirm this request
+                 {t("ComfirmedRequest.confirmRequest2")} 
                 </Button>
               </Stack>
             </>

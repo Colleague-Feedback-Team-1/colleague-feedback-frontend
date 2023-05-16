@@ -1,7 +1,9 @@
 // imports
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { QuestionSection, CustomFormData } from "../types/types";
+import { Section, QuestionSection, CustomFormData } from "../types/types";
+import { useTranslation } from "react-i18next";
+
 import {
   Typography,
   RadioGroup,
@@ -19,6 +21,7 @@ interface CustomFormProps {
 }
 
 const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
+  const { t } = useTranslation();
   const {
     handleSubmit,
     control,
@@ -28,6 +31,21 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {data.map((section) => (
+         <Grid key={section._id} container direction="column" spacing={2}>
+          <Grid item>
+            <Typography variant="h6">{section.sectionName}</Typography>
+          </Grid>
+          {section.questions.map((question) => (
+            <Grid item key={question._id}>
+              <Typography variant="body1">{question.question}</Typography>
+              {question.isFreeForm ? (
+                <Controller
+                  name={`answers.${section._id}.${question._id}`}
+                  rules={{ required: true }}
+                  control={control}
+                  render={({ field }) => <TextField {...field} variant="outlined" fullWidth />}
+                />
+              ) : (
         <Stack
           key={section._id}
           direction="row"
@@ -81,7 +99,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                         sx={{ alignItems: "center", justifyContent: "center" }}
                       >
                         <Typography color={"red"} fontWeight={"bold"}>
-                          Strongly <br /> Disagree
+                      {t("FeedbackForm.bad")}
                         </Typography>
                         <RadioGroup {...field} row>
                           {[1, 2, 3, 4, 5].map((value) => (
@@ -94,7 +112,7 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
                           ))}
                         </RadioGroup>
                         <Typography color={"green"} fontWeight={"bold"}>
-                          Strongly <br /> Agree
+                           {t("FeedbackForm.good")}
                         </Typography>
                       </Stack>
                     )}
@@ -104,6 +122,14 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
             ))}
           </Stack>
         </Stack>
+                     )}
+                />
+              )}
+            </Grid>
+          ))}
+        </Grid>
+      ))}
+      <Grid item>
       ))}
       <Box>
         <Button
@@ -112,7 +138,9 @@ const FeedbackForm: React.FC<CustomFormProps> = ({ data, onSubmit }) => {
           color="primary"
           disabled={!isValid}
         >
+            {t("FeedbackForm.submit")}
           Submit Feedback
+
         </Button>
       </Box>
     </form>
