@@ -14,12 +14,13 @@ const resources = {
 };
 
 i18next.use(initReactI18next).init({
-  lng: "fi",
-  fallbackLng: "fi",
+  lng: "en",
+  fallbackLng: "en",
   resources: resources,
   interpolation: {
     escapeValue: false, // to prevent redundant sanitization of content in {{}}
   },
+  debug: true,
 });
 
 export default i18next;

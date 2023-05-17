@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
   const { t } = useTranslation();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -71,7 +72,7 @@ const Login = () => {
           />
 
           <Typography component="h1" variant="h5">
-            Sign in to use the app
+            {t("login.title")}
           </Typography>
           <Box
             component="form"
@@ -108,10 +109,7 @@ const Login = () => {
             >
               {t("login.sign")}
             </Button>
-            <Typography variant="body2">
-              Contact the HR to get your account registed, if you do not have
-              one.
-            </Typography>
+            <Typography variant="body2">{t("login.no-acc")}</Typography>
           </Box>
         </Box>
       ) : (

@@ -2,7 +2,8 @@
   "language": "english",
   "login": {
     "title": "Sign in to use the app",
-    "sign": "Sign in"
+    "sign": "Sign in",
+    "no-acc": "Contact the HR to get your account registed, if you do not have one."
   },
   "loading": {
     "title": "Loading..."

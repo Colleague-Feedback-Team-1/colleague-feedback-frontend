@@ -25,6 +25,7 @@ import UserContext from "../context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import NotificationBell from "../components/NotificationBell";
+import LanguageSelector from "../components/LanguageSelector";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
@@ -140,6 +141,7 @@ const Layout = () => {
                   />
                 </IconButton>
               </Link>
+              <LanguageSelector />
             </Stack>
 
             {/* Search bar and menu on the right will be shown to login user only */}
