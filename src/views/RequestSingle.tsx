@@ -1,120 +1,103 @@
-import {
-  Box,
-  Typography,
-  Stack,
-  Button,
-  Card,
-  LinearProgress,
-  Modal,
-} from "@mui/material";
-import axios from "axios";
-import { useEffect, useState, useContext } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import EmployeeCard from "../components/EmployeeCard";
-import ReviewerCard from "../components/ReviewerCard";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Employee, Request, UserContextProps } from "../types/types";
-import Loading from "../components/Loading";
-import UserContext from "../context/UserContext";
-import { getTodayDate } from "../utils/formatDate";
-import { toast } from "react-toastify";
+import { Box, Typography, Stack, Button, Card, LinearProgress, Modal } from '@mui/material'
+import axios from 'axios'
+import { useEffect, useState, useContext } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import EmployeeCard from '../components/EmployeeCard'
+import ReviewerCard from '../components/ReviewerCard'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { Employee, Request, UserContextProps } from '../types/types'
+import Loading from '../components/Loading'
+import UserContext from '../context/UserContext'
+import { getTodayDate } from '../utils/formatDate'
+import { toast } from 'react-toastify'
 
 const modalStyle = {
-  position: "fixed",
-  backgroundColor: "white",
+  position: 'fixed',
+  backgroundColor: 'white',
   boxShadow: 24,
   p: 4,
-  color: "black",
-  textAlign: "center",
-  borderRadius: "30px",
-  alignItem: "center",
-  margin: "80px auto auto auto",
-  width: "60%",
-  height: "min-content",
-};
+  color: 'black',
+  textAlign: 'center',
+  borderRadius: '30px',
+  alignItem: 'center',
+  margin: '80px auto auto auto',
+  width: '60%',
+  height: 'min-content',
+}
 
 const RequestSingle = () => {
-  const params = useParams();
-  const [requestData, setRequestData] = useState<Request | null>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [managerData, setManagerData] = useState<Employee | null>();
-  const { user } = useContext<UserContextProps>(UserContext);
+  const params = useParams()
+  const [requestData, setRequestData] = useState<Request | null>()
+  const [isLoading, setIsLoading] = useState(true)
+  const [managerData, setManagerData] = useState<Employee | null>()
+  const { user } = useContext<UserContextProps>(UserContext)
   const [userRoleOnRequest, setUserRoleOnRequest] = useState<
-    "reviewee" | "reviewer" | "manager" | null
-  >(null);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    'reviewee' | 'reviewer' | 'manager' | null
+  >(null)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const feedbackSubmitted = requestData?.reviewers.filter(
     (reviewer: any) => reviewer.feedbackSubmitted
-  );
+  )
 
   const formatDate = (date: string) => {
-    let outputDate = new Date(date).toLocaleString();
-    return outputDate;
-  };
+    let outputDate = new Date(date).toLocaleString()
+    return outputDate
+  }
 
   // fix bug, so that everytime params.requestId change, all the state reload.
   const refreshData = () => {
-    setUserRoleOnRequest(null);
-  };
+    setUserRoleOnRequest(null)
+  }
 
   // fetch data for the manager from requestData.assignedManagerid
   const fetchManager = () => {
     if (requestData?.assignedManagerid) {
       axios
-        .get(
-          `http://localhost:4500/api/employees/${
-            requestData!.assignedManagerid
-          }`
-        )
+        .get(`http://localhost:4500/api/employees/${requestData!.assignedManagerid}`)
         .then((res) => {
-          setManagerData(res.data);
-        });
+          setManagerData(res.data)
+        })
     }
-  };
+  }
 
   // check role
   const checkRole = () => {
     if (user?._id === requestData?.employeeid) {
-      setUserRoleOnRequest("reviewee");
+      setUserRoleOnRequest('reviewee')
     } else if (user?._id === requestData?.assignedManagerid) {
-      setUserRoleOnRequest("manager");
+      setUserRoleOnRequest('manager')
     } else {
       requestData?.reviewers.map((reviewer) => {
-        if (
-          user?._id === reviewer.reviewerid &&
-          reviewer.feedbackSubmitted === false
-        ) {
-          setUserRoleOnRequest("reviewer");
+        if (user?._id === reviewer.reviewerid && reviewer.feedbackSubmitted === false) {
+          setUserRoleOnRequest('reviewer')
         }
-      });
+      })
     }
-  };
+  }
 
   // function to reject the request (and delete it)
   const handleModalClose = () => {
-    setOpenDeleteModal(false);
-  };
+    setOpenDeleteModal(false)
+  }
 
   const openModal = () => {
-    setOpenDeleteModal(true);
-  };
+    setOpenDeleteModal(true)
+  }
 
   const rejectRequest = async () => {
     setTimeout(() => {
       axios
-        .delete(
-          `http://localhost:4500/api/review-requests/delete/${requestData?._id}`
-        )
+        .delete(`http://localhost:4500/api/review-requests/delete/${requestData?._id}`)
         .then((res) => {
-          handleModalClose();
-          navigate("/");
-        });
-      let today = getTodayDate();
+          handleModalClose()
+          navigate('/')
+        })
+      let today = getTodayDate()
       const notification = {
-        type: "denied-by-admin",
+        type: 'denied-by-admin',
         date: today,
         receiver: [
           {
@@ -124,26 +107,22 @@ const RequestSingle = () => {
         ],
         sender: [
           {
-            senderid: "Admin",
-            senderName: "Admin",
+            senderid: 'Admin',
+            senderName: 'Admin',
           },
         ],
         requestid: null,
-      };
+      }
       axios
-        .post(
-          "http://localhost:4500/api/notifications/insert-notification",
-          notification
-        )
-        .then((res) => toast.success("Request rejected"));
-    }, 1000);
-  };
+        .post('http://localhost:4500/api/notifications/insert-notification', notification)
+        .then((res) => toast.success('Request rejected'))
+    }, 1000)
+  }
 
   // render feedback received slider
   const renderSliderAndChart = () => {
-    const value =
-      (feedbackSubmitted?.length! / requestData?.reviewers.length!) * 100;
-    if (user?.description === "HR") {
+    const value = (feedbackSubmitted?.length! / requestData?.reviewers.length!) * 100
+    if (user?.description === 'HR') {
       if (value < 80) {
         return (
           <>
@@ -151,18 +130,18 @@ const RequestSingle = () => {
               variant="determinate"
               value={value}
               sx={{
-                width: "100%",
-                height: "20px",
-                borderRadius: "10px",
-                margin: "10px 0 15px 0",
+                width: '100%',
+                height: '20px',
+                borderRadius: '10px',
+                margin: '10px 0 15px 0',
               }}
               color="error"
             />
             <Button variant="outlined" disabled>
-              Not enough feedbacks to generate chart
+             Generate chart
             </Button>
           </>
-        );
+        )
       } else {
         return (
           <>
@@ -170,10 +149,10 @@ const RequestSingle = () => {
               variant="determinate"
               value={value}
               sx={{
-                width: "100%",
-                height: "20px",
-                borderRadius: "10px",
-                margin: "10px 0 15px 0",
+                width: '100%',
+                height: '20px',
+                borderRadius: '10px',
+                margin: '10px 0 15px 0',
               }}
               color="success"
             />
@@ -181,79 +160,71 @@ const RequestSingle = () => {
               <Button variant="contained">Generate chart</Button>
             </Link>
           </>
-        );
+        )
       }
     }
-  };
+  }
 
   useEffect(() => {
     // run check role after data is fetched
-    fetchManager();
-    checkRole();
-  }, [requestData]);
+    fetchManager()
+    checkRole()
+  }, [requestData])
 
   /* Fetch data of the request */
   useEffect(() => {
-    refreshData();
-    setIsLoading(true);
+    refreshData()
+    setIsLoading(true)
     setTimeout(() => {
       axios
-        .get(
-          `http://localhost:4500/api/review-requests/by-requestid/${params.requestId}`
-        )
+        .get(`http://localhost:4500/api/review-requests/by-requestid/${params.requestId}`)
         .then((res) => {
-          setRequestData(res.data);
+          setRequestData(res.data)
           if (requestData?.assignedManagerid) {
-            fetchManager();
+            fetchManager()
           }
-          setIsLoading(false);
-        });
-    }, 2000);
-  }, [params.requestId]);
+          setIsLoading(false)
+        })
+    }, 2000)
+  }, [params.requestId])
 
   // check the confirm status and user priviledge to render the action buttons
   const renderCardAction = () => {
     if (requestData?.confirmedByHR === false) {
-      if (user?.description === "HR") {
+      if (user?.description === 'HR') {
         return (
           <>
             <Typography variant="body1">
-              HR can click the "Confirm this request" to assign an manager and
-              then confirm this request.
+              HR can click the "Confirm this request" to assign an manager and then confirm this
+              request.
             </Typography>
-            <Stack direction={"row"} justifyContent={"space-between"}>
-              <Stack spacing={2} direction={"row"}>
+            <Stack direction={'row'} justifyContent={'space-between'}>
+              <Stack spacing={2} direction={'row'}>
                 <Button variant="contained" color="error" onClick={openModal}>
                   Reject this request
                 </Button>
                 <Link to={`/requests/${params.requestId}/confirm`}>
-                  <Button
-                    variant="contained"
-                    color="success" /* onClick={handleConfirm} */
-                  >
+                  <Button variant="contained" color="success" /* onClick={handleConfirm} */>
                     Confirm this request
                   </Button>
                 </Link>
               </Stack>
 
-              <Link to={"/dashboard"}>
+              <Link to={'/dashboard'}>
                 <Button variant="contained" color="info">
                   Back to dashboard
                 </Button>
               </Link>
             </Stack>
           </>
-        );
+        )
       }
     } else {
-      if (
-        userRoleOnRequest === "reviewee" &&
-        requestData?.selfReview === false
-      ) {
+      if (userRoleOnRequest === 'reviewee' && requestData?.selfReview === false) {
         return (
           <>
-            <Stack direction={"row"} spacing={2}>
-              <Link to={"/dashboard"}>
+            <Stack direction={'row'} spacing={2}>
+              <Link to={'/dashboard'}>
                 <Button variant="contained">Back to dashboard</Button>
               </Link>
               <Link to={`/submission-form/${params.requestId}`}>
@@ -263,14 +234,11 @@ const RequestSingle = () => {
               </Link>
             </Stack>
           </>
-        );
-      } else if (
-        userRoleOnRequest === "reviewer" ||
-        userRoleOnRequest === "manager"
-      ) {
+        )
+      } else if (userRoleOnRequest === 'reviewer' || userRoleOnRequest === 'manager') {
         return (
-          <Stack direction={"row"} spacing={2}>
-            <Link to={"/dashboard"}>
+          <Stack direction={'row'} spacing={2}>
+            <Link to={'/dashboard'}>
               <Button variant="contained">Back to dashboard</Button>
             </Link>
             <Link to={`/submission-form/${params.requestId}`}>
@@ -279,43 +247,35 @@ const RequestSingle = () => {
               </Button>
             </Link>
           </Stack>
-        );
+        )
       } else {
         return (
-          <Stack direction={"row"} spacing={2}>
-            <Link to={"/dashboard"}>
+          <Stack direction={'row'} spacing={2}>
+            <Link to={'/dashboard'}>
               <Button variant="contained">Back to dashboard</Button>
             </Link>
           </Stack>
-        );
+        )
       }
     }
-  };
+  }
 
   return (
-    <Stack sx={{ textAlign: "left", paddingBottom: "30px" }}>
+    <Stack sx={{ textAlign: 'left', paddingBottom: '30px' }}>
       {isLoading === false ? (
         <Card
           sx={{
-            padding: "20px",
-            backgroundColor: "#ffdbeb",
-            overflowX: "auto",
+            padding: '20px',
+            overflowX: 'auto',
           }}
         >
-          <Stack direction={"row"} spacing={10}>
-            <Box paddingBottom={"50px"} component={"div"}>
-              <Typography variant="h3"></Typography>
-
+          <Stack direction={'row'} spacing={20}>
+            <Box paddingBottom={'50px'} component={'div'}>
               {requestData?.confirmedByHR ? (
-                <Stack
-                  direction={"row"}
-                  spacing={1}
-                  sx={{ alignItems: "center", pb: 4 }}
-                >
+                <Stack direction={'row'} spacing={1} sx={{ alignItems: 'center', pb: 4 }}>
                   <CheckCircleIcon color="success" />
                   <Typography variant="body2">
-                    This request has been confirmed, reviewers can start giving
-                    feedback now.
+                    This request has been confirmed, reviewers can start giving feedback now.
                   </Typography>
                 </Stack>
               ) : (
@@ -323,54 +283,54 @@ const RequestSingle = () => {
               )}
 
               <Typography variant="body1">
-                <b>Created At: </b>
+                <label>Created at: </label>
                 {formatDate(requestData?.createdAt!)}
               </Typography>
               <Typography variant="body1">
-                <b>Due date: </b>
+                <label>Due date: </label>
                 {formatDate(requestData?.dateRequested!)}
               </Typography>
               <Typography variant="body1">
-                <b>Status: </b>
+                <label>Status: </label>
                 {requestData!.confirmedByHR ? (
-                  <span style={{ color: "green" }}>Confirmed by HR</span>
+                  <span style={{ color: 'green' }}>Confirmed by HR</span>
                 ) : (
-                  <span style={{ color: "red" }}>Not confirmed</span>
+                  <span style={{ color: 'red' }}>Not confirmed</span>
                 )}
               </Typography>
               <Typography variant="body1">
-                <b>Self review: </b>
+                <label>Self review: </label>
                 {requestData!.selfReview ? (
-                  <span style={{ color: "green" }}>Yes</span>
+                  <span style={{ color: 'green' }}>Yes</span>
                 ) : (
-                  <span style={{ color: "red" }}>No</span>
+                  <span style={{ color: 'red' }}>No</span>
                 )}
               </Typography>
               <Typography>
-                <b>
+                <label>
                   Feedbacks received:
                   {feedbackSubmitted!.length < 4 ? (
                     <span
-                      style={{ color: "red" }}
+                      style={{ color: 'red' }}
                     >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
                   ) : (
                     <span
-                      style={{ color: "green" }}
+                      style={{ color: 'green' }}
                     >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
                   )}
-                </b>
+                </label>
               </Typography>
               {renderSliderAndChart()}
             </Box>
 
-            <Box paddingBottom={"50px"} component={"div"}>
-              <Stack direction={"row"}>
+            <Box paddingBottom={'50px'} component={'div'}>
+              <Stack direction={'row'}>
                 <Box>
-                  <Typography variant="h4">Reviewee:</Typography>
+                  <Typography variant="h5">Reviewee:</Typography>
                   <EmployeeCard {...requestData!} />
                 </Box>
-                <Box component={"div"}>
-                  <Typography variant="h4">Project Manager:</Typography>
+                <Box component={'div'}>
+                  <Typography variant="h5">Project Manager:</Typography>
                   {managerData ? (
                     <EmployeeCard
                       employeeid={managerData?._id}
@@ -384,49 +344,34 @@ const RequestSingle = () => {
                 </Box>
               </Stack>
 
-              <Typography variant="h4">Reviewers:</Typography>
-              <Stack direction={"row"} flexWrap={"wrap"}>
+              <Typography variant="h5">Reviewers:</Typography>
+              <Stack direction={'row'} flexWrap={'wrap'}>
                 {requestData!.reviewers.map((reviewer) => {
-                  return <ReviewerCard {...reviewer} />;
+                  return <ReviewerCard {...reviewer} />
                 })}
               </Stack>
             </Box>
           </Stack>
 
           {renderCardAction()}
-          <Modal
-            open={openDeleteModal}
-            onClose={handleModalClose}
-            keepMounted
-            sx={modalStyle}
-          >
+          <Modal open={openDeleteModal} onClose={handleModalClose} keepMounted sx={modalStyle}>
             <>
               <Typography variant="h3">
-                Are you sure to delete request "
-                {`...${requestData?._id.slice(-7)}`}"?
+                Are you sure to delete request "{`...${requestData?._id.slice(-7)}`}"?
               </Typography>
               <Typography variant="body1">
-                This item will be deleted immediately. You can't undo this
-                action.{" "}
+                This item will be deleted immediately. You can't undo this action.{' '}
               </Typography>
               <Stack
-                direction={"row"}
+                direction={'row'}
                 mt={3}
                 spacing={2}
-                sx={{ alignItems: "center", justifyContent: "center" }}
+                sx={{ alignItems: 'center', justifyContent: 'center' }}
               >
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleModalClose}
-                >
+                <Button variant="contained" color="success" onClick={handleModalClose}>
                   Cancel
                 </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={rejectRequest}
-                >
+                <Button variant="contained" color="error" onClick={rejectRequest}>
                   Delete
                 </Button>
               </Stack>
@@ -437,7 +382,7 @@ const RequestSingle = () => {
         <Loading />
       )}
     </Stack>
-  );
-};
+  )
+}
 
-export default RequestSingle;
+export default RequestSingle
