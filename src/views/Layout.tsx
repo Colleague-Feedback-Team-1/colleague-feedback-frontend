@@ -86,25 +86,23 @@ const Layout = () => {
   };
 
   const renderDrawer = () => {
-    if (user?.description === "HR") {
-      return (
-        <Stack justifyContent={"flex-end"}>
-          {drawerList.map((item) => {
-            const { text, icon, link } = item;
-            return (
-              <Link to={link} key={text}>
-                <ListItem key={text} divider>
-                  <IconButton sx={{ color: "white", paddingRight: "0.7em" }}>
-                    {icon}
-                  </IconButton>
-                  <Typography>{text}</Typography>
-                </ListItem>
-              </Link>
-            );
-          })}
-        </Stack>
-      );
-    }
+    return (
+      <Stack justifyContent={"flex-end"}>
+        {drawerList.map((item) => {
+          const { text, icon, link } = item;
+          return (
+            <Link to={link} key={text}>
+              <ListItem key={text} divider>
+                <IconButton sx={{ color: "white", paddingRight: "0.7em" }}>
+                  {icon}
+                </IconButton>
+                <Typography>{text}</Typography>
+              </ListItem>
+            </Link>
+          );
+        })}
+      </Stack>
+    );
   };
 
   /* Open and Close function for menu under profile avatar */
