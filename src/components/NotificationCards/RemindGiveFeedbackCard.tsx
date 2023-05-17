@@ -12,14 +12,18 @@ type RemindGiveFeedbackCardProps = {
 };
 
 const RemindGiveFeedbackCard = ({ noti }: RemindGiveFeedbackCardProps) => {
-  let today = getTodayDate();
   const { user } = useContext<UserContextProps>(UserContext);
+  let today = getTodayDate();
   const { adminNoti } = useContext<UserContextProps>(UserContext);
 
   return (
     <Card sx={CardStyle(noti.date === today)}>
       <CardHeader
-        avatar={<Avatar src={ExoveLogo} />}
+        action={
+          <Link to={`/requests/${noti.requestid}`}>
+            <Button variant="contained">View request</Button>
+          </Link>
+        }
         title={
           <Typography>
             {user?.description === "HR" && adminNoti ? (
@@ -47,12 +51,8 @@ const RemindGiveFeedbackCard = ({ noti }: RemindGiveFeedbackCardProps) => {
             )}
           </Typography>
         }
+        avatar={<Avatar src={ExoveLogo} />}
         subheader={CardSubheader(noti.date)}
-        action={
-          <Link to={`/requests/${noti.requestid}`}>
-            <Button variant="contained">View request</Button>
-          </Link>
-        }
       ></CardHeader>
     </Card>
   );
