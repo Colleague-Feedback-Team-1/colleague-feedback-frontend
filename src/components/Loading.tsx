@@ -5,7 +5,7 @@ const Loading = () => {
     <Stack alignItems={"center"}>
       <CircularProgress size={50} color="success" />
       <Typography p={3} variant="h5">
-        Loading data...
+        Loading...
       </Typography>
     </Stack>
   );
