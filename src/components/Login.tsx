@@ -5,9 +5,11 @@ import UserContext from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import ExoveLogo from "../assets/ExoveLogo.png";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
+  const { t } = useTranslation();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -39,7 +41,9 @@ const Login = () => {
       })
       .catch((error) => {
         console.error("Authentication failed:", error);
-        toast.error("Your username or password is incorrect. Please try again.");
+        toast.error(
+          "Your username or password is incorrect. Please try again."
+        );
       });
   };
 
@@ -102,7 +106,7 @@ const Login = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {t("login.sign")}
             </Button>
             <Typography variant="body2">
               Contact the HR to get your account registed, if you do not have
