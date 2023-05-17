@@ -15,7 +15,6 @@ interface NotificationBoardProps {
 }
 
 const NotificationBoard = ({ data, adminNoti }: NotificationBoardProps) => {
-  console.log(data);
   const renderNotifications = () => {
     return data.map((noti: Notification) => {
       switch (noti.type) {

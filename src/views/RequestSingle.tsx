@@ -17,6 +17,7 @@ import { Employee, Request, UserContextProps } from "../types/types";
 import Loading from "../components/Loading";
 import UserContext from "../context/UserContext";
 import { getTodayDate } from "../utils/formatDate";
+import { toast } from "react-toastify";
 
 const modalStyle = {
   position: "fixed",
@@ -108,7 +109,6 @@ const RequestSingle = () => {
           `http://localhost:4500/api/review-requests/delete/${requestData?._id}`
         )
         .then((res) => {
-          console.log(res);
           handleModalClose();
           navigate("/");
         });
@@ -135,8 +135,7 @@ const RequestSingle = () => {
           "http://localhost:4500/api/notifications/insert-notification",
           notification
         )
-        .then((res) => console.log(res));
-      console.log(notification);
+        .then((res) => toast.success("Request rejected"));
     }, 1000);
   };
 
@@ -151,7 +150,12 @@ const RequestSingle = () => {
             <LinearProgress
               variant="determinate"
               value={value}
-              sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+              sx={{
+                width: "100%",
+                height: "20px",
+                borderRadius: "10px",
+                margin: "10px 0 15px 0",
+              }}
               color="error"
             />
             <Button variant="outlined" disabled>
@@ -165,7 +169,12 @@ const RequestSingle = () => {
             <LinearProgress
               variant="determinate"
               value={value}
-              sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+              sx={{
+                width: "100%",
+                height: "20px",
+                borderRadius: "10px",
+                margin: "10px 0 15px 0",
+              }}
               color="success"
             />
             <Link to={`/chart/${params.requestId}`}>

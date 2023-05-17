@@ -25,12 +25,8 @@ function FeedbackSubmission() {
   const [userRoleOnRequest, setUserRoleOnRequest] = useState<
     "reviewee" | "reviewer" | "manager" | null
   >(null);
-
-  console.log("User role: ", userRoleOnRequest);
-
   // check role
   const checkRole = () => {
-    console.log("running check role");
     if (user?._id === requestData?.employeeid) {
       setUserRoleOnRequest("reviewee");
     } else if (user?._id === requestData?.assignedManagerid) {
@@ -103,8 +99,7 @@ function FeedbackSubmission() {
           "http://localhost:4500/api/notifications/insert-notification",
           notification
         )
-        .then((res) => console.log(res));
-      console.log("Form submitted successfully");
+        .then((res) => toast.success("Feedback submitted successfully"));
       navigate("/");
     } catch (error) {
       console.error("Error submitting form:", error);
