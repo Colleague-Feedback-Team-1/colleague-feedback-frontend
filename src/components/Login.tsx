@@ -1,13 +1,24 @@
-import { Button, Typography, TextField, Box } from "@mui/material";
+import {
+  Button,
+  Typography,
+  TextField,
+  Box,
+  Grid,
+  FormControlLabel,
+  Checkbox,
+  Link,
+} from "@mui/material";
 import axios from "axios";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import ExoveLogo from "../assets/ExoveLogo.png";
-import { toast } from "react-toastify";
-
+import { useTranslation } from "react-i18next";
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
+  console.log("Logged in User: ", user);
+  const { t } = useTranslation();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -18,20 +29,18 @@ const Login = () => {
     axios
       .post("http://localhost:5600/auth", loginData, { withCredentials: true })
       .then(async (res) => {
+        console.log(res.data);
         // Fetch user data from the getSession cookie function
         try {
-          const userDataResponse = await axios.get(
-            "http://localhost:4500/api/employees/verify",
-            {
-              withCredentials: true,
-            }
-          );
+          const userDataResponse = await axios.get("http://localhost:4500/api/employees/verify", {
+            withCredentials: true,
+          });
           setUser(userDataResponse.data);
           if (!user) {
+            console.log("User has logged in");
             localStorage.setItem("loggedIn", "true");
-            toast.success("Login successfully");
           } else {
-            toast.error("Login failed");
+            console.log("Please log in to continue");
           }
         } catch (error) {
           console.error("Failed to fetch user data:", error);
@@ -39,13 +48,12 @@ const Login = () => {
       })
       .catch((error) => {
         console.error("Authentication failed:", error);
-        toast.error("Your username or password is incorrect. Please try again.");
       });
-  };
+  };  
 
   return (
     <>
-      {user === null ? (
+      {user===null ? (
         <Box
           sx={{
             marginTop: 8,
@@ -67,7 +75,7 @@ const Login = () => {
           />
 
           <Typography component="h1" variant="h5">
-            Sign in to use the app
+            {t("login.title")}
           </Typography>
           <Box
             component="form"
@@ -95,23 +103,27 @@ const Login = () => {
               id="password"
               autoComplete="current-password"
             />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
             <Button
-              disableFocusRipple
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {t("login.sign")}
             </Button>
-            <Typography variant="body2">
-              Contact the HR to get your account registed, if you do not have
-              one.
-            </Typography>
+            <Grid container>
+              <Grid item>
+                <Link variant="body2">{"Don't have an account? Sign Up"}</Link>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
       ) : (
-        <Navigate to={"/dashboard"} replace />
+           <Navigate to={"/dashboard"} replace />
       )}
     </>
   );
