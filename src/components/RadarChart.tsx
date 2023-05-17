@@ -77,7 +77,7 @@ const RadarChartComponent: React.FC<RadarChartProps> = ({ data }) => {
           <Legend />
         </RadarChart>
       </ResponsiveContainer>
-      <ResponsiveContainer width="100%" height={250}>
+      {/* <ResponsiveContainer width="100%" height={250}>
         <BarChart data={data}>
           <CartesianGrid />
           <XAxis dataKey="sectionName" />
@@ -88,7 +88,7 @@ const RadarChartComponent: React.FC<RadarChartProps> = ({ data }) => {
           <Bar dataKey="reviewer" fill="blue" />
           <Bar dataKey="reviewee" fill="green" />
         </BarChart>
-      </ResponsiveContainer>
+      </ResponsiveContainer> */}
     </>
   );
 };

@@ -8,7 +8,6 @@ const ProtectedRoute = () => {
   const { user, setUser } = useContext<UserContextProps>(UserContext);
 
   if (user==null) {
-    toast.error("You need to login first!");
     return <Navigate to={"/login"} replace />;
   }
   return <Outlet />;

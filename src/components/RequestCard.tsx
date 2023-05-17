@@ -19,18 +19,18 @@ const RequestCard: React.FC<Request> = (prop) => {
   ).length;
   return (
     <Card
-      sx={{ backgroundColor: "#4CA85A", color: "white", minWidth: "260px" }}
+      sx={{
+        backgroundColor: "#4CA85A",
+        color: "white",
+        minWidth: "260px",
+        padding: "4px 0",
+      }}
     >
-      <CardHeader
-        title={`ID ${prop._id.slice(0, 5)}...${prop._id.slice(-5)}`}
-      ></CardHeader>
-      <CardContent sx={{minHeight:'70px'}}>
-        <Typography fontWeight={"bold"}>
-          Reviewee: {prop.employeeName}
-        </Typography>
+      <CardContent sx={{ minHeight: "70px" }}>
+        <Typography variant="h6">{prop.employeeName}</Typography>
         {prop.confirmedByHR ? (
           <Stack>
-            <Stack direction={"row"}>
+            <Stack direction={"row"} spacing={0.5}>
               <CheckCircleIcon color="success" />
               <Typography>Confirmed by HR</Typography>
             </Stack>
@@ -39,7 +39,7 @@ const RequestCard: React.FC<Request> = (prop) => {
             </Typography>
           </Stack>
         ) : (
-          <Stack direction={"row"}>
+          <Stack direction={"row"} spacing={0.5}>
             <BlockIcon color="disabled" />
             <Typography>Not yet confirmed by HR</Typography>
           </Stack>

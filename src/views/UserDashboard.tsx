@@ -19,13 +19,6 @@ const UserDashboard = () => {
   const { user } = useContext<UserContextProps>(UserContext);
   const [simpleView, setSimpleView] = useState<boolean>(false);
 
-  // Date display
-  const date = new Date().toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
   // Change the view
   const handleChangeView = () => {
     if (simpleView === false) {
@@ -55,12 +48,8 @@ const UserDashboard = () => {
           direction={"row"}
           alignItems={"center"}
           justifyContent={"space-between"}
-          paddingBottom={"50px"}
         >
-          <Box>
-            <Typography variant="h3">Hello, {user!.displayName}</Typography>
-            <Typography variant="h6">Today is {date}</Typography>
-          </Box>
+          <Typography variant="h4">Dashboard</Typography>
           <Link to={"/requests/createNewRequest"}>
             <Button variant="contained" size="large" color="success">
               Create New Request
@@ -68,7 +57,7 @@ const UserDashboard = () => {
           </Link>
         </Stack>
         {user?.description === "HR" ? (
-          <FormGroup>
+          <FormGroup sx={{ padding: "2rem 0", maxWidth: "150px" }}>
             <FormControlLabel
               control={
                 <Switch checked={simpleView} onChange={handleChangeView} />

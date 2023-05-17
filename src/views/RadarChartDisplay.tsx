@@ -127,7 +127,7 @@ const RadarChartDisplay = () => {
       }
       createChartData();
       setIsLoading(false);
-    }, 3000);
+    }, 4000);
   }, [reviewerData]);
 
   return (
