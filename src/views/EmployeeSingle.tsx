@@ -5,11 +5,8 @@ import axios from "axios";
 import {
   Card,
   CardMedia,
-  CardHeader,
-  Avatar,
   Stack,
   Typography,
-  Box,
 } from "@mui/material";
 import ExoveEmployee from "../assets/Exove-employee.png";
 import Loading from "../components/Loading";
@@ -28,7 +25,6 @@ const EmployeeSingle = () => {
         .get(`http://localhost:4500/api/employees/${params.employeeId}`)
         .then((res) => {
           setEmployee(res.data);
-          console.log(res.data)
         });
       setIsLoading(false);
     }, 1000);

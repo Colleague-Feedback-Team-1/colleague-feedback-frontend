@@ -4,7 +4,6 @@ import {
   Box,
   IconButton,
   Typography,
-  Badge,
   Drawer,
   List,
   ListItem,
@@ -15,7 +14,6 @@ import {
   MenuItem,
   Avatar,
 } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { useState, useContext } from "react";
@@ -25,20 +23,24 @@ import SearchBar from "../components/SearchBar";
 import ExoveLogoWhite from "../assets/ExoveLogoWhite.png";
 import UserContext from "../context/UserContext";
 import axios from "axios";
-import { useTranslation } from "react-i18next";
-import LanguageSelector from "../components/LanguageSelector";
+import { toast } from "react-toastify";
+import NotificationBell from "../components/NotificationBell";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
-  const { t } = useTranslation();
 
   const drawerList = [
     {
       text: "Dashboard",
       icon: <BarChartIcon />,
       link: "/dashboard",
+    },
+    {
+      text: "Notifications",
+      icon: <NotificationsIcon />,
+      link: "/notification",
     },
   ];
   const adminDrawerList = [
@@ -48,9 +50,9 @@ const Layout = () => {
       link: "/dashboard",
     },
     {
-      text: "Users",
-      icon: <AccountCircleIcon />,
-      link: "/request-dashboard",
+      text: "Notifications",
+      icon: <NotificationsIcon />,
+      link: "/notification",
     },
   ];
 
@@ -106,9 +108,8 @@ const Layout = () => {
   const handleLogOut = () => {
     setTimeout(() => {
       axios.post("http://localhost:4500/api/employees/logout").then((res) => {
-        console.log(res.data);
-        console.log("Log out successfully.");
         setUser(null);
+        toast.success("Log out successfully");
       });
     }, 1000);
   };
@@ -154,12 +155,7 @@ const Layout = () => {
                   sx={{ alignItems: "center", justifyContent: "right" }}
                 >
                   <SearchBar />
-                  <IconButton size="large" color="inherit">
-                    <Badge badgeContent={5} color="error">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
-                  <LanguageSelector/>
+                  <NotificationBell />
                   <IconButton
                     size="large"
                     color="inherit"
@@ -173,32 +169,40 @@ const Layout = () => {
                   </IconButton>
                 </Stack>
               ) : (
-                <Typography variant="h5">{t("Layout.cFeedback")}</Typography>
+                <Typography variant="h5">COLLEAGUE FEEDBACK</Typography>
               )}
             </Box>
 
             {/* Menu open when click in IconButton */}
             <Menu anchorEl={anchorEl} open={openMenu} onClose={handleClose}>
               <Link to={`/employees/${user?._id}`} {...user}>
-                <MenuItem>{t("Layout.profile")}</MenuItem>
+                <MenuItem>Profile</MenuItem>
               </Link>
-              <MenuItem onClick={handleLogOut}>{t("Layout.logout")}</MenuItem>
+              <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
       </Stack>
 
       {/* Drawer in the left side of the screen */}
-      <Drawer variant="permanent" anchor="left">
-        <Box
-          p={2}
-          width={"170px"}
-          minHeight={"89.6vh"}
-          sx={{ marginTop: "64px", backgroundColor: "#9b51e0", color: "white" }}
-        >
-          <List>{renderDrawer()}</List>
-        </Box>
-      </Drawer>
+      {user !== null ? (
+        <Drawer variant="permanent" anchor="left">
+          <Box
+            p={2}
+            minHeight={"87.3vh"}
+            sx={{
+              marginTop: "64px",
+              backgroundColor: "#9b51e0",
+              color: "white",
+              overflow: "hidden",
+            }}
+          >
+            <List>{renderDrawer()}</List>
+          </Box>
+        </Drawer>
+      ) : (
+        <></>
+      )}
 
       <Main />
     </>
