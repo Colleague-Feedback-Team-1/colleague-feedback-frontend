@@ -36,7 +36,6 @@ const useNotifications = (): UseNotificationsProps => {
       setAdminNoti(true);
     }
   };
-  checkTodayNoti();
   useEffect(() => {
     const apiUrl = "http://localhost:4500/api/notifications/";
     if (user?.description === "HR" && adminNoti) {
@@ -60,10 +59,12 @@ const useNotifications = (): UseNotificationsProps => {
     const timer = setTimeout(() => {
       setReloadCount((prevCount) => prevCount + 1);
     }, 30000); // 0.5 minutes
-
     return () => clearTimeout(timer);
   }, [reloadCount]);
 
+  useEffect(() => {
+    checkTodayNoti();
+  }, []);
   const forceReloadNotification = () => {
     setReloadCount((prevCount) => prevCount + 1);
   };

@@ -19,13 +19,6 @@ const UserDashboard = () => {
   const { user } = useContext<UserContextProps>(UserContext);
   const [simpleView, setSimpleView] = useState<boolean>(false);
 
-  // Date display
-  const date = new Date().toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
   // Change the view
   const handleChangeView = () => {
     if (simpleView === false) {
@@ -57,10 +50,7 @@ const UserDashboard = () => {
           justifyContent={"space-between"}
           paddingBottom={"50px"}
         >
-          <Box>
-            <Typography variant="h3">Hello, {user!.displayName}</Typography>
-            <Typography variant="h6">Today is {date}</Typography>
-          </Box>
+          <Typography variant="h4">DASHBOARD</Typography>
           <Link to={"/requests/createNewRequest"}>
             <Button variant="contained" size="large" color="success">
               Create New Request
