@@ -1,10 +1,11 @@
 import { Typography, Card, CardHeader, Avatar, Button } from "@mui/material";
-import { Notification } from "../../types/types";
+import { Notification, UserContextProps } from "../../types/types";
 import { getTodayDate } from "../../utils/formatDate";
 import { CardStyle, CardSubheader } from "./constant";
-import useNotifications from "../../utils/useNotifications";
 import ExoveLogo from "../../assets/ExoveLogoSquareBlack.jpeg";
 import { Link } from "react-router-dom";
+import UserContext from "../../context/UserContext";
+import { useContext } from "react";
 
 type RemindSelfReviewCardProps = {
   noti: Notification;
@@ -12,8 +13,8 @@ type RemindSelfReviewCardProps = {
 
 const RemindSelfReviewCard = ({ noti }: RemindSelfReviewCardProps) => {
   let today = getTodayDate();
-
-  const { adminNoti } = useNotifications();
+  const { user } = useContext<UserContextProps>(UserContext);
+  const { adminNoti } = useContext<UserContextProps>(UserContext);
 
   return (
     <Card sx={CardStyle(noti.date === today)}>
@@ -21,7 +22,7 @@ const RemindSelfReviewCard = ({ noti }: RemindSelfReviewCardProps) => {
         avatar={<Avatar src={ExoveLogo} />}
         title={
           <Typography>
-            {adminNoti ? (
+            {user?.description === "HR" && adminNoti ? (
               <b>
                 [Reminder sent] A reminder has been sent to <br />
                 <span style={{ color: "#9b51e0" }}>

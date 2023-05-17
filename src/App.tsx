@@ -22,6 +22,8 @@ import AllNotifications from "./views/AllNotifications";
 
 const App = () => {
   const [user, setUser] = useState<Employee | null>(null);
+  const [adminNoti, setAdminNoti] = useState<boolean>(false);
+  const [todayNoti, setTodayNoti] = useState<number>(0);
   useEffect(() => {
     // Check if the loggedIn flag is set in the local storage
     const loggedIn = localStorage.getItem("loggedIn");
@@ -41,7 +43,16 @@ const App = () => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        adminNoti,
+        setAdminNoti,
+        todayNoti,
+        setTodayNoti,
+      }}
+    >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div className="App">
           <Routes>
