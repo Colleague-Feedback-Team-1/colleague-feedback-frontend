@@ -11,13 +11,10 @@ import EmployeeSingle from "./views/EmployeeSingle";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ConfirmRequest from "./views/ConfirmRequest";
 import axios from "axios";
-import i18next from '../src/i18next/config'
-import { I18nextProvider } from 'react-i18next'
 import CreateNewRequest from "./views/CreateNewRequest";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import FeedbackSubmission from "./views/FeedbackSubmission";
-import RequestDashboard from './components/RequestDataGrid'
 import RadarChartDisplay from "./views/RadarChartDisplay";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -46,7 +43,6 @@ const App = () => {
   }, []);
 
   return (
-
     <UserContext.Provider
       value={{
         user,
@@ -57,8 +53,6 @@ const App = () => {
         setTodayNoti,
       }}
     >
-      <I18nextProvider i18n={i18next}>
-
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div className="App">
           <Routes>
@@ -88,10 +82,6 @@ const App = () => {
                   path="/submission-form/:requestId"
                   element={<FeedbackSubmission />}
                 ></Route>
-                
-                 <Route path="/request-dashboard" 
-                    element={<RequestDashboard />}
-                 ></Route>
 
                 <Route
                   path="/notification"
@@ -109,8 +99,6 @@ const App = () => {
         {/* Toast container, autoclose after 2secs */}
         <ToastContainer autoClose={2000} />
       </LocalizationProvider>
-         </I18nextProvider>
-
     </UserContext.Provider>
   );
 };

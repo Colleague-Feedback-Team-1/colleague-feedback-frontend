@@ -21,11 +21,8 @@ import EmployeeCard from "../components/EmployeeCard";
 import UserContext from "../context/UserContext";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import { toast } from "react-toastify";
 import { getTodayDate } from "../utils/formatDate";
-import { useTranslation } from "react-i18next";
-
 
 const modalStyle = {
   position: "fixed",
@@ -50,7 +47,6 @@ const CreateNewRequest = () => {
   const [openModal, setOpenModal] = useState(false);
   const { user } = useContext<UserContextProps>(UserContext);
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const [dueDate, setDueDate] = useState<string | undefined>("");
 
   useEffect(() => {
@@ -202,10 +198,11 @@ const CreateNewRequest = () => {
       return (
         <>
           <Typography>
-            
-            {t("CreateNewRequest.confirmedEveryone")}</Typography>
+            After you create this request, it needs to be confirmed by HR before
+            everyone can give feedbacks
+          </Typography>
           <Button variant="contained" onClick={handleModalOpen}>
-            {t("CreateNewRequest.thisRequest")}
+            Create this request
           </Button>
         </>
       );
@@ -213,9 +210,10 @@ const CreateNewRequest = () => {
       return (
         <>
           <Typography>
-            {t("CreateNewRequest.dueRequest")}</Typography>
+            Please choose a due date and 5 reviewers for this request!
+          </Typography>
           <Button variant="outlined" disabled>
-            {t("CreateNewRequest.thisRequest")}
+            Create this request
           </Button>
         </>
       );
@@ -293,7 +291,7 @@ const CreateNewRequest = () => {
           }}
         >
           <Typography variant="h3" pb={"50px"}>
-           {t("CreateNewRequest.newRequest")}
+            CREATE NEW REQUEST
           </Typography>
           <Stack
             flexGrow={1}
@@ -301,7 +299,7 @@ const CreateNewRequest = () => {
             justifyContent={"space-between"}
           >
             <Stack>
-              <Typography variant="h4">{t("CreateNewRequest.reviewee")}</Typography>
+              <Typography variant="h4">Reviewee:</Typography>
               {
                 <EmployeeCard
                   employeeid={revieweeList!._id}
@@ -311,7 +309,7 @@ const CreateNewRequest = () => {
               }
             </Stack>
             <Stack flexGrow={3}>
-              <Typography variant="h4">{t("CreateNewRequest.dueDate")}</Typography>
+              <Typography variant="h4">Due date:</Typography>
               <DatePicker
                 value={dueDate}
                 onChange={(e: any) => handleChangeTimePicker(e)}
@@ -321,7 +319,7 @@ const CreateNewRequest = () => {
           </Stack>
           <Stack flexGrow={4}>
             <Typography variant="h4">
-            {t("CreateNewRequest.reviewers")}({reviewerList?.length}/5)
+              Reviewers: ({reviewerList?.length}/5)
             </Typography>
             <Stack
               direction={"row"}
@@ -335,7 +333,7 @@ const CreateNewRequest = () => {
                   return renderReviewerCard(reviewer);
                 })
               ) : (
-                <Typography>{t("CreateNewRequest.chooseReviewer")}</Typography>
+                <Typography>Choose a reviewer below</Typography>
               )}
             </Stack>
           </Stack>
@@ -368,7 +366,7 @@ const CreateNewRequest = () => {
             sx={modalStyle}
           >
             <>
-              <Typography variant="h2">{t("CreateNewRequest.sure")}</Typography>
+              <Typography variant="h2">Are you sure?</Typography>
               <Stack
                 direction={"row"}
                 mt={3}
@@ -380,14 +378,14 @@ const CreateNewRequest = () => {
                   color="error"
                   onClick={handleModalClose}
                 >
-                  {t("CreateNewRequest.checkAgain")}
+                  No, let me check again
                 </Button>
                 <Button
                   variant="contained"
                   color="success"
                   onClick={createRequest}
                 >
-                 {t("CreateNewRequest.createRequest")} 
+                  Yes, create this request
                 </Button>
               </Stack>
             </>
