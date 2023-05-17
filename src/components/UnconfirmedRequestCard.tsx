@@ -9,16 +9,16 @@ import {
 import { Stack } from "@mui/system";
 import { Request } from "../types/types";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
+  const { t } = useTranslation();
   // convert the time from the time converter to the format that MongoDB accept
   const formatDate = (date: string) => {
     let outputDate = new Date(date).toLocaleDateString();
     return outputDate;
   };
 
- 
-  
   return (
     <Card sx={{ backgroundColor: "#ff6900", color: "white" }}>
       <CardHeader
@@ -26,9 +26,17 @@ const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
       />
       <CardContent>
         <Stack>
-          <Typography>Reviewee: {prop.employeeName}</Typography>
-          <Typography>Reviewer: {prop.reviewers.length}</Typography>
-          <Typography>Due date: {formatDate(prop.dateRequested!)}</Typography>
+          <Typography>
+            {" "}
+            {t("UnconfirmedRequestCard.reviewee")}: {prop.employeeName}
+          </Typography>
+          <Typography>
+            {t("UnconfirmedRequestCard.reviewer")}: {prop.reviewers.length}
+          </Typography>
+          <Typography>
+            {t("UnconfirmedRequestCardDueDate.dueDate")}:{" "}
+            {formatDate(prop.dateRequested!)}
+          </Typography>
         </Stack>
       </CardContent>
       <CardActions sx={{ width: "100%", bottom: 0, position: "relative" }}>
@@ -36,10 +44,14 @@ const UnconfirmedRequestCard: React.FC<Request> = (prop) => {
           to={`/requests/${prop._id}`}
           style={{ textDecoration: "none", paddingRight: "13px" }}
         >
-          <Button variant="contained">View</Button>
+          <Button variant="contained">
+            {t("UnconfirmedRequestCardView.view")}
+          </Button>
         </Link>
 
-        <Button variant="contained">Quick remind</Button>
+        <Button variant="contained">
+          {t("UnconfirmedRequestCard.remind")}
+        </Button>
       </CardActions>
     </Card>
   );

@@ -5,33 +5,17 @@ import {
   Button,
   Card,
   LinearProgress,
-  Modal,
 } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Employee, Request, UserContextProps } from "../types/types";
 import Loading from "../components/Loading";
 import UserContext from "../context/UserContext";
-import { getTodayDate } from "../utils/formatDate";
-import { toast } from "react-toastify";
-
-const modalStyle = {
-  position: "fixed",
-  backgroundColor: "#9b51e0",
-  boxShadow: 24,
-  p: 4,
-  color: "white",
-  textAlign: "center",
-  borderRadius: "30px",
-  alignItem: "center",
-  margin: "80px auto auto auto",
-  width: "60%",
-  height: "min-content",
-};
+import { useTranslation } from "react-i18next";
 
 const RequestSingle = () => {
   const params = useParams();
@@ -39,12 +23,10 @@ const RequestSingle = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [managerData, setManagerData] = useState<Employee | null>();
   const { user } = useContext<UserContextProps>(UserContext);
+  const { t } = useTranslation();
   const [userRoleOnRequest, setUserRoleOnRequest] = useState<
     "reviewee" | "reviewer" | "manager" | null
   >(null);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-
-  const navigate = useNavigate();
 
   const feedbackSubmitted = requestData?.reviewers.filter(
     (reviewer: any) => reviewer.feedbackSubmitted
@@ -53,11 +35,6 @@ const RequestSingle = () => {
   const formatDate = (date: string) => {
     let outputDate = new Date(date).toLocaleString();
     return outputDate;
-  };
-
-  // fix bug, so that everytime params.requestId change, all the state reload.
-  const refreshData = () => {
-    setUserRoleOnRequest(null);
   };
 
   // fetch data for the manager from requestData.assignedManagerid
@@ -77,9 +54,13 @@ const RequestSingle = () => {
 
   // check role
   const checkRole = () => {
-    if (user?._id === requestData?.employeeid) {
+    if (user?._id == requestData?.employeeid) {
+      console.log("You are the reviewee of this request! You can self review.");
       setUserRoleOnRequest("reviewee");
-    } else if (user?._id === requestData?.assignedManagerid) {
+    } else if (user?._id == requestData?.assignedManagerid) {
+      console.log(
+        "You are the manager of this request! You can give review and see the result"
+      );
       setUserRoleOnRequest("manager");
     } else {
       requestData?.reviewers.map((reviewer) => {
@@ -87,102 +68,46 @@ const RequestSingle = () => {
           user?._id === reviewer.reviewerid &&
           reviewer.feedbackSubmitted === false
         ) {
+          console.log(
+            "You are one the reviewer of this request! You can give review."
+          );
           setUserRoleOnRequest("reviewer");
         }
       });
     }
   };
 
-  // function to reject the request (and delete it)
-  const handleModalClose = () => {
-    setOpenDeleteModal(false);
-  };
-
-  const openModal = () => {
-    setOpenDeleteModal(true);
-  };
-
-  const rejectRequest = async () => {
-    setTimeout(() => {
-      axios
-        .delete(
-          `http://localhost:4500/api/review-requests/delete/${requestData?._id}`
-        )
-        .then((res) => {
-          handleModalClose();
-          navigate("/");
-        });
-      let today = getTodayDate();
-      const notification = {
-        type: "denied-by-admin",
-        date: today,
-        receiver: [
-          {
-            receiverid: requestData?.employeeid,
-            receiverName: requestData?.employeeName,
-          },
-        ],
-        sender: [
-          {
-            senderid: "Admin",
-            senderName: "Admin",
-          },
-        ],
-        requestid: null,
-      };
-      axios
-        .post(
-          "http://localhost:4500/api/notifications/insert-notification",
-          notification
-        )
-        .then((res) => toast.success("Request rejected"));
-    }, 1000);
-  };
-
   // render feedback received slider
-  const renderSliderAndChart = () => {
+  const renderSlider = () => {
     const value =
       (feedbackSubmitted?.length! / requestData?.reviewers.length!) * 100;
-    if (user?.description === "HR") {
-      if (value < 80) {
-        return (
-          <>
-            <LinearProgress
-              variant="determinate"
-              value={value}
-              sx={{
-                width: "100%",
-                height: "20px",
-                borderRadius: "10px",
-                margin: "10px 0 15px 0",
-              }}
-              color="error"
-            />
-            <Button variant="outlined" disabled>
-              Not enough feedbacks to generate chart
-            </Button>
-          </>
-        );
-      } else {
-        return (
-          <>
-            <LinearProgress
-              variant="determinate"
-              value={value}
-              sx={{
-                width: "100%",
-                height: "20px",
-                borderRadius: "10px",
-                margin: "10px 0 15px 0",
-              }}
-              color="success"
-            />
-            <Link to={`/chart/${params.requestId}`}>
-              <Button variant="contained">Generate chart</Button>
-            </Link>
-          </>
-        );
-      }
+    console.log("Slider value: ", value);
+    if (value < 80) {
+      return (
+        <>
+          <LinearProgress
+            variant="determinate"
+            value={value}
+            sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+            color="error"
+          />
+            <Button variant="outlined" disabled>{t("RequestSingle.gfChart")}</Button>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <LinearProgress
+            variant="determinate"
+            value={value}
+            sx={{ width: "70%", height: "20px", borderRadius: "10px" }}
+            color="success"
+          />
+          <Link to={`/chart/${params.requestId}`}>
+            <Button variant="contained">{t("RequestSingle.gChart")}</Button>
+          </Link>
+        </>
+      );
     }
   };
 
@@ -194,8 +119,6 @@ const RequestSingle = () => {
 
   /* Fetch data of the request */
   useEffect(() => {
-    refreshData();
-    setIsLoading(true);
     setTimeout(() => {
       axios
         .get(
@@ -218,27 +141,26 @@ const RequestSingle = () => {
         return (
           <>
             <Typography variant="body1">
-              HR can click the "Confirm this request" to assign an manager and
-              then confirm this request.
+            {t("RequestSingle.assignManager")}
             </Typography>
             <Stack direction={"row"} justifyContent={"space-between"}>
               <Stack spacing={2} direction={"row"}>
-                <Button variant="contained" color="error" onClick={openModal}>
-                  Reject this request
+                <Button variant="contained" color="error">
+                {t("RequestSingle.rejectRequest")} 
                 </Button>
                 <Link to={`/requests/${params.requestId}/confirm`}>
                   <Button
                     variant="contained"
                     color="success" /* onClick={handleConfirm} */
                   >
-                    Confirm this request
+                   {t("RequestSingle.confirmRequest")} 
                   </Button>
                 </Link>
               </Stack>
 
               <Link to={"/dashboard"}>
                 <Button variant="contained" color="info">
-                  Back to dashboard
+                {t("RequestSingle.toDashboard")} 
                 </Button>
               </Link>
             </Stack>
@@ -254,28 +176,25 @@ const RequestSingle = () => {
           <>
             <Stack direction={"row"} spacing={2}>
               <Link to={"/dashboard"}>
-                <Button variant="contained">Back to dashboard</Button>
+                <Button variant="contained">{t("RequestSingle.toDashboard")}</Button>
               </Link>
               <Link to={`/submission-form/${params.requestId}`}>
                 <Button variant="contained" color="success">
-                  Self Review
+                {t("RequestSingle.review")} 
                 </Button>
               </Link>
             </Stack>
           </>
         );
-      } else if (
-        userRoleOnRequest === "reviewer" ||
-        userRoleOnRequest === "manager"
-      ) {
+      } else if (userRoleOnRequest !== null) {
         return (
           <Stack direction={"row"} spacing={2}>
             <Link to={"/dashboard"}>
-              <Button variant="contained">Back to dashboard</Button>
+              <Button variant="contained">{t("RequestSingle.toDashboard")}</Button>
             </Link>
             <Link to={`/submission-form/${params.requestId}`}>
               <Button variant="contained" color="success">
-                Give feedback (as {userRoleOnRequest})
+              {t("RequestSingle.giveFeedback")} ({t("RequestSingle.as")} {userRoleOnRequest})
               </Button>
             </Link>
           </Stack>
@@ -284,7 +203,7 @@ const RequestSingle = () => {
         return (
           <Stack direction={"row"} spacing={2}>
             <Link to={"/dashboard"}>
-              <Button variant="contained">Back to dashboard</Button>
+              <Button variant="contained">{t("RequestSingle.toDashboard")}</Button>
             </Link>
           </Stack>
         );
@@ -295,16 +214,12 @@ const RequestSingle = () => {
   return (
     <Stack sx={{ textAlign: "left", paddingBottom: "30px" }}>
       {isLoading === false ? (
-        <Card
-          sx={{
-            padding: "20px",
-            backgroundColor: "#ffdbeb",
-            overflowX: "auto",
-          }}
-        >
+        <Card sx={{ padding: "20px", backgroundColor: "#ffdbeb" }}>
           <Stack direction={"row"} spacing={10}>
             <Box paddingBottom={"50px"} component={"div"}>
-              <Typography variant="h3"></Typography>
+              <Typography variant="h3">
+              {t("RequestSingle.requestID")} {`...${requestData?._id.slice(-7)}`}
+              </Typography>
 
               {requestData?.confirmedByHR ? (
                 <Stack
@@ -314,8 +229,7 @@ const RequestSingle = () => {
                 >
                   <CheckCircleIcon color="success" />
                   <Typography variant="body2">
-                    This request has been confirmed, reviewers can start giving
-                    feedback now.
+                  {t("RequestSingle.requestConfirmed")} 
                   </Typography>
                 </Stack>
               ) : (
@@ -323,54 +237,47 @@ const RequestSingle = () => {
               )}
 
               <Typography variant="body1">
-                <b>Created At: </b>
+                <b>{t("RequestSingle.created")}</b>
                 {formatDate(requestData?.createdAt!)}
               </Typography>
               <Typography variant="body1">
-                <b>Due date: </b>
+                <b>{t("RequestSingle.date")}</b>
                 {formatDate(requestData?.dateRequested!)}
               </Typography>
               <Typography variant="body1">
-                <b>Status: </b>
+                <b>{t("RequestSingle.status")} </b>
                 {requestData!.confirmedByHR ? (
-                  <span style={{ color: "green" }}>Confirmed by HR</span>
+                  <span style={{ color: "green" }}>{t("RequestSingle.confirmed")}</span>
                 ) : (
-                  <span style={{ color: "red" }}>Not confirmed</span>
+                  <span style={{ color: "red" }}>{t("RequestSingle.notConfirmed")}</span>
                 )}
               </Typography>
               <Typography variant="body1">
-                <b>Self review: </b>
+                <b>{t("RequestSingle.selfReview")} </b>
                 {requestData!.selfReview ? (
-                  <span style={{ color: "green" }}>Yes</span>
+                  <span style={{ color: "green" }}>{t("RequestSingle.yes")}</span>
                 ) : (
-                  <span style={{ color: "red" }}>No</span>
+                  <span style={{ color: "red" }}>{t("RequestSingle.no")}</span>
                 )}
               </Typography>
               <Typography>
                 <b>
-                  Feedbacks received:
-                  {feedbackSubmitted!.length < 4 ? (
-                    <span
-                      style={{ color: "red" }}
-                    >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
-                  ) : (
-                    <span
-                      style={{ color: "green" }}
-                    >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
-                  )}
+                  {" "}
+                  {t("RequestSingle.feedbacks")}{" "}
+                  {`${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}
                 </b>
               </Typography>
-              {renderSliderAndChart()}
+              {renderSlider()}
             </Box>
 
             <Box paddingBottom={"50px"} component={"div"}>
               <Stack direction={"row"}>
                 <Box>
-                  <Typography variant="h4">Reviewee:</Typography>
+                  <Typography variant="h4">{t("RequestSingle.reviewee")}</Typography>
                   <EmployeeCard {...requestData!} />
                 </Box>
                 <Box component={"div"}>
-                  <Typography variant="h4">Project Manager:</Typography>
+                  <Typography variant="h4">{t("RequestSingle.manager")}</Typography>
                   {managerData ? (
                     <EmployeeCard
                       employeeid={managerData?._id}
@@ -379,12 +286,12 @@ const RequestSingle = () => {
                       selfReview={null}
                     />
                   ) : (
-                    <Typography>No manager assigned yet.</Typography>
+                    <Typography>{t("RequestSingle.noManager")}</Typography>
                   )}
                 </Box>
               </Stack>
 
-              <Typography variant="h4">Reviewers:</Typography>
+              <Typography variant="h4">{t("RequestSingle.reviewers")}</Typography>
               <Stack direction={"row"} flexWrap={"wrap"}>
                 {requestData!.reviewers.map((reviewer) => {
                   return <ReviewerCard {...reviewer} />;
@@ -394,44 +301,6 @@ const RequestSingle = () => {
           </Stack>
 
           {renderCardAction()}
-          <Modal
-            open={openDeleteModal}
-            onClose={handleModalClose}
-            keepMounted
-            sx={modalStyle}
-          >
-            <>
-              <Typography variant="h3">
-                Are you sure to delete request "
-                {`...${requestData?._id.slice(-7)}`}"?
-              </Typography>
-              <Typography variant="body1">
-                This item will be deleted immediately. You can't undo this
-                action.{" "}
-              </Typography>
-              <Stack
-                direction={"row"}
-                mt={3}
-                spacing={2}
-                sx={{ alignItems: "center", justifyContent: "center" }}
-              >
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleModalClose}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={rejectRequest}
-                >
-                  Delete
-                </Button>
-              </Stack>
-            </>
-          </Modal>
         </Card>
       ) : (
         <Loading />

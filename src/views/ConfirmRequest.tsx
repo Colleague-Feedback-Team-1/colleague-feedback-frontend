@@ -14,26 +14,27 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Loading from "../components/Loading";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Employee, Receiver, Request, Reviewer } from "../types/types";
+import { Employee, Request, UserContextProps } from "../types/types";
 import EmployeeCard from "../components/EmployeeCard";
 import ReviewerCard from "../components/ReviewerCard";
-import { toast } from "react-toastify";
-import { getTodayDate } from "../utils/formatDate";
+import UserContext from "../context/UserContext";
+import { useTranslation } from "react-i18next";
 
 const modalStyle = {
-  position: "fixed",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "25%",
+  height: "25%",
   backgroundColor: "#9b51e0",
   boxShadow: 24,
   p: 4,
   color: "white",
   textAlign: "center",
   borderRadius: "30px",
-  alignItem: "center",
-  margin: "80px auto auto auto",
-  width: "60%",
-  height: "min-content",
 };
 
 const ConfirmRequest = () => {
@@ -44,8 +45,11 @@ const ConfirmRequest = () => {
   const [managerList, setManagerList] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+  const { user } = useContext<UserContextProps>(UserContext);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
+  
   useEffect(() => {
     axios
       .get("http://localhost:4500/api/employees/all-employees")
@@ -57,6 +61,7 @@ const ConfirmRequest = () => {
         `http://localhost:4500/api/review-requests/by-requestid/${params.requestId}`
       )
       .then((res) => {
+        console.log(res.data);
         setRequestData(res.data);
         setIsLoading(false);
       });
@@ -75,72 +80,16 @@ const ConfirmRequest = () => {
     };
 
     setTimeout(() => {
-      // first create a confirmed-by-admin noti
-      let today = getTodayDate();
-      const notification1 = {
-        type: "confirmed-by-admin",
-        date: today,
-        receiver: [
-          {
-            receiverid: requestData?.employeeid,
-            receiverName: requestData?.employeeName,
-          },
-        ],
-        sender: [
-          {
-            senderid: "Admin",
-            senderName: "Admin",
-          },
-        ],
-        requestid: requestData?._id,
-      };
-      axios
-        .post(
-          "http://localhost:4500/api/notifications/insert-notification",
-          notification1
-        )
-        .then((res) => toast.success("Confirmed request successfully"));
-      // then create a ask-for-feedback noti
-      let receiverList: Receiver[] = [];
-      requestData?.reviewers.forEach((reviewer: Reviewer) => {
-        receiverList.push({
-          receiverid: reviewer.reviewerid,
-          receiverName: reviewer.reviewerName,
-        });
-      });
-      receiverList.push({
-        receiverid: managerList[0]._id,
-        receiverName: managerList[0].displayName,
-      });
-      const notification2 = {
-        type: "ask-for-feedback",
-        date: today,
-        receiver: receiverList,
-        sender: [
-          {
-            senderid: requestData?.employeeid,
-            senderName: requestData?.employeeName,
-          },
-        ],
-        requestid: requestData?._id,
-      };
-      axios
-        .post(
-          "http://localhost:4500/api/notifications/insert-notification",
-          notification2
-        )
-        .then((res) => toast.success("Failed to fetch your requests"));
       axios
         .patch(
           `http://localhost:4500/api/review-requests/update-manager/${params.requestId}`,
           confirmBody
         )
         .then((res) => {
+          console.log(res);
           setOpenModal(false);
-          toast.success("Confirm request successfully");
           navigate("/");
-        })
-        .catch((error) => toast.error(error));
+        });
     }, 1000);
   };
 
@@ -173,6 +122,7 @@ const ConfirmRequest = () => {
     if (filterUser === "") {
     } else {
       return employeeList!
+        .filter((employee: Employee) => employee._id !== user?._id)
         .filter((employee: Employee) => {
           return employee.displayName
             .toLowerCase()
@@ -219,7 +169,7 @@ const ConfirmRequest = () => {
             </Avatar>
           }
           title={prop.displayName}
-          subheader={`${prop.mail.slice(0, 15)}...`}
+          subheader={`${prop.mail.slice(0,15)}...`}
           action={renderCardAction({ ...prop })}
         />
       </Card>
@@ -232,22 +182,22 @@ const ConfirmRequest = () => {
         <Card
           sx={{
             padding: "20px",
-            backgroundColor: "#ffdbeb",
+            backgroundColor: "#00d084",
             minHeight: "75vh",
           }}
         >
           <Typography variant="h3" pb={"50px"}>
-            CONFIRMING REQUEST #
+          {t("ComfirmedRequest.cRequest")}
             {`${requestData!._id.slice(0, 5)}...${requestData!._id.slice(-3)}`}
           </Typography>
-          <Stack direction={"row"} paddingBottom={"50px"} spacing={10}>
+          <Stack direction={"row"} paddingBottom={"50px"}>
             <Stack flexGrow={1}>
-              <Typography variant="h4">Reviewee:</Typography>
+              <Typography variant="h4">{t("ComfirmedRequest.reviewee")}</Typography>
               <EmployeeCard {...requestData!} />
             </Stack>
             <Stack flexGrow={4}>
-              <Typography variant="h4">Reviewers:</Typography>
-              <Stack direction={"row"} flexWrap={"wrap"}>
+              <Typography variant="h4">{t("ComfirmedRequest.reviewers")}</Typography>
+              <Stack direction={"row"}>
                 {requestData!.reviewers.map((reviewer) => {
                   return <ReviewerCard {...reviewer} />;
                 })}
@@ -258,7 +208,7 @@ const ConfirmRequest = () => {
           <Stack paddingBottom={"50px"} direction={"row"}>
             <Stack flexGrow={1} width={"40vw"}>
               <Typography variant="h4">
-                Assigning Project Manager ({managerList.length}/1):
+              {t("ComfirmedRequest.apManager")} ({managerList.length}/1):
               </Typography>
               <Stack
                 direction={"row"}
@@ -272,7 +222,7 @@ const ConfirmRequest = () => {
               </Stack>
             </Stack>
             <Stack sx={{ width: "60vw" }}>
-              <Typography variant="h4">Search for an employee:</Typography>
+              <Typography variant="h4">{t("ComfirmedRequest.searchEmployee")}</Typography>
               <TextField
                 id="search-bar"
                 label="Search"
@@ -286,7 +236,7 @@ const ConfirmRequest = () => {
                 alignItems={"center"}
                 justifyContent={"flex-start"}
                 height={"200px"}
-                sx={{ overflowY: "auto" }}
+                sx={{ overflowY: "scroll" }}
               >
                 {renderAllEmployees()}
               </Stack>
@@ -298,13 +248,13 @@ const ConfirmRequest = () => {
               color="success"
               onClick={handleModalOpen}
             >
-              Confirm this request
+             {t("ComfirmedRequest.confirmRequest")} 
             </Button>
           ) : (
             <>
-              <Typography>Please choose one Project Manager first!</Typography>
+              <Typography>{t("ComfirmedRequest.selectManager")}</Typography>
               <Button variant="outlined" disabled onClick={handleModalOpen}>
-                Confirm this request
+              {t("ComfirmedRequest.confirmedRequest2")} 
               </Button>
             </>
           )}
@@ -316,7 +266,7 @@ const ConfirmRequest = () => {
             sx={modalStyle}
           >
             <>
-              <Typography variant="h2">Are you sure?</Typography>
+              <Typography variant="h2">{t("ComfirmedRequest.sure")}</Typography>
               <Stack
                 direction={"row"}
                 mt={3}
@@ -328,14 +278,14 @@ const ConfirmRequest = () => {
                   color="error"
                   onClick={handleModalClose}
                 >
-                  No, let me check again
+                 {t("ComfirmedRequest.checkAgain")} 
                 </Button>
                 <Button
                   variant="contained"
                   color="success"
                   onClick={handleConfirm}
                 >
-                  Yes, confirm this request
+                 {t("ComfirmedRequest.confirmRequest2")} 
                 </Button>
               </Stack>
             </>

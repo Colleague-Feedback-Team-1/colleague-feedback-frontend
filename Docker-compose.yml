@@ -1,5 +1,0 @@
-services:
-  frontend:
-    image: ilyaponomarenko/colleague-feedback-frontend:main-frontend
-    ports:
-      - 3000:3000
