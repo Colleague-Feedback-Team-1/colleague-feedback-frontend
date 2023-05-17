@@ -9,3 +9,12 @@ export const getTodayDate = () => {
   const formattedDate = `${year}-${month}-${day}`;
   return formattedDate; // outputs something like "2023-05-10"
 };
+
+export const formatDate = (string: string) => {
+  const date = new Date(string);
+  return date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};

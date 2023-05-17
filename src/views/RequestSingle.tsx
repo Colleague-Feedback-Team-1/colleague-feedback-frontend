@@ -16,8 +16,9 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Employee, Request, UserContextProps } from "../types/types";
 import Loading from "../components/Loading";
 import UserContext from "../context/UserContext";
-import { getTodayDate } from "../utils/formatDate";
+import { formatDate, getTodayDate } from "../utils/formatDate";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const modalStyle = {
   position: "fixed",
@@ -43,17 +44,12 @@ const RequestSingle = () => {
     "reviewee" | "reviewer" | "manager" | null
   >(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const feedbackSubmitted = requestData?.reviewers.filter(
     (reviewer: any) => reviewer.feedbackSubmitted
   );
-
-  const formatDate = (date: string) => {
-    let outputDate = new Date(date).toLocaleString();
-    return outputDate;
-  };
 
   // fix bug, so that everytime params.requestId change, all the state reload.
   const refreshData = () => {
@@ -159,7 +155,7 @@ const RequestSingle = () => {
               color="error"
             />
             <Button variant="outlined" disabled>
-              Not enough feedbacks to generate chart
+              {t("RequestSingle.generateChart")}
             </Button>
           </>
         );
@@ -178,7 +174,9 @@ const RequestSingle = () => {
               color="success"
             />
             <Link to={`/chart/${params.requestId}`}>
-              <Button variant="contained">Generate chart</Button>
+              <Button variant="contained">
+                {t("RequestSingle.generateChart")}
+              </Button>
             </Link>
           </>
         );
@@ -208,7 +206,7 @@ const RequestSingle = () => {
           }
           setIsLoading(false);
         });
-    }, 2000);
+    }, 1000);
   }, [params.requestId]);
 
   // check the confirm status and user priviledge to render the action buttons
@@ -218,27 +216,26 @@ const RequestSingle = () => {
         return (
           <>
             <Typography variant="body1">
-              HR can click the "Confirm this request" to assign an manager and
-              then confirm this request.
+              {t("RequestSingle.assignManager")}
             </Typography>
             <Stack direction={"row"} justifyContent={"space-between"}>
               <Stack spacing={2} direction={"row"}>
                 <Button variant="contained" color="error" onClick={openModal}>
-                  Reject this request
+                  {t("RequestSingle.rejectRequest")}
                 </Button>
                 <Link to={`/requests/${params.requestId}/confirm`}>
                   <Button
                     variant="contained"
                     color="success" /* onClick={handleConfirm} */
                   >
-                    Confirm this request
+                    {t("RequestSingle.confirmRequest")}
                   </Button>
                 </Link>
               </Stack>
 
               <Link to={"/dashboard"}>
                 <Button variant="contained" color="info">
-                  Back to dashboard
+                  {t("RequestSingle.toDashboard")}
                 </Button>
               </Link>
             </Stack>
@@ -254,11 +251,13 @@ const RequestSingle = () => {
           <>
             <Stack direction={"row"} spacing={2}>
               <Link to={"/dashboard"}>
-                <Button variant="contained">Back to dashboard</Button>
+                <Button variant="contained">
+                  {t("RequestSingle.toDashboard")}
+                </Button>
               </Link>
               <Link to={`/submission-form/${params.requestId}`}>
                 <Button variant="contained" color="success">
-                  Self Review
+                  {t("RequestSingle.selfReview")}
                 </Button>
               </Link>
             </Stack>
@@ -271,11 +270,15 @@ const RequestSingle = () => {
         return (
           <Stack direction={"row"} spacing={2}>
             <Link to={"/dashboard"}>
-              <Button variant="contained">Back to dashboard</Button>
+              <Button variant="contained">
+                {t("RequestSingle.toDashboard")}
+              </Button>
             </Link>
             <Link to={`/submission-form/${params.requestId}`}>
               <Button variant="contained" color="success">
-                Give feedback (as {userRoleOnRequest})
+                {t("RequestSingle.giveFeedback", {
+                  userRole: userRoleOnRequest,
+                })}
               </Button>
             </Link>
           </Stack>
@@ -284,7 +287,9 @@ const RequestSingle = () => {
         return (
           <Stack direction={"row"} spacing={2}>
             <Link to={"/dashboard"}>
-              <Button variant="contained">Back to dashboard</Button>
+              <Button variant="contained">
+                {t("RequestSingle.toDashboard")}
+              </Button>
             </Link>
           </Stack>
         );
@@ -298,7 +303,7 @@ const RequestSingle = () => {
         <Card
           sx={{
             padding: "20px",
-            backgroundColor: "#ffdbeb",
+            backgroundColor: "#f2f2f2",
             overflowX: "auto",
           }}
         >
@@ -314,8 +319,7 @@ const RequestSingle = () => {
                 >
                   <CheckCircleIcon color="success" />
                   <Typography variant="body2">
-                    This request has been confirmed, reviewers can start giving
-                    feedback now.
+                    {t("RequestSingle.requestConfirmed")}
                   </Typography>
                 </Stack>
               ) : (
@@ -323,32 +327,38 @@ const RequestSingle = () => {
               )}
 
               <Typography variant="body1">
-                <b>Created At: </b>
+                <b>{t("RequestSingle.created")}</b>
                 {formatDate(requestData?.createdAt!)}
               </Typography>
               <Typography variant="body1">
-                <b>Due date: </b>
+                <b>{t("RequestSingle.date")}</b>
                 {formatDate(requestData?.dateRequested!)}
               </Typography>
               <Typography variant="body1">
-                <b>Status: </b>
+                <b>{t("RequestSingle.status")} </b>
                 {requestData!.confirmedByHR ? (
-                  <span style={{ color: "green" }}>Confirmed by HR</span>
+                  <span style={{ color: "green" }}>
+                    {t("RequestSingle.confirmed")}
+                  </span>
                 ) : (
-                  <span style={{ color: "red" }}>Not confirmed</span>
+                  <span style={{ color: "red" }}>
+                    {t("RequestSingle.notConfirmed")}
+                  </span>
                 )}
               </Typography>
               <Typography variant="body1">
-                <b>Self review: </b>
+                <b>{t("RequestSingle.review")}</b>
                 {requestData!.selfReview ? (
-                  <span style={{ color: "green" }}>Yes</span>
+                  <span style={{ color: "green" }}>
+                    {t("RequestSingle.yes")}
+                  </span>
                 ) : (
-                  <span style={{ color: "red" }}>No</span>
+                  <span style={{ color: "red" }}>{t("RequestSingle.no")}</span>
                 )}
               </Typography>
               <Typography>
                 <b>
-                  Feedbacks received:
+                  {t("RequestSingle.feedbacks")}
                   {feedbackSubmitted!.length < 4 ? (
                     <span
                       style={{ color: "red" }}
@@ -366,11 +376,15 @@ const RequestSingle = () => {
             <Box paddingBottom={"50px"} component={"div"}>
               <Stack direction={"row"}>
                 <Box>
-                  <Typography variant="h4">Reviewee:</Typography>
+                  <Typography variant="h4">
+                    {t("RequestSingle.reviewee")}
+                  </Typography>
                   <EmployeeCard {...requestData!} />
                 </Box>
                 <Box component={"div"}>
-                  <Typography variant="h4">Project Manager:</Typography>
+                  <Typography variant="h4">
+                    {t("RequestSingle.manager")}
+                  </Typography>
                   {managerData ? (
                     <EmployeeCard
                       employeeid={managerData?._id}
@@ -379,12 +393,14 @@ const RequestSingle = () => {
                       selfReview={null}
                     />
                   ) : (
-                    <Typography>No manager assigned yet.</Typography>
+                    <Typography>{t("RequestSingle.noManager")}</Typography>
                   )}
                 </Box>
               </Stack>
 
-              <Typography variant="h4">Reviewers:</Typography>
+              <Typography variant="h4">
+                {t("RequestSingle.reviewers")}
+              </Typography>
               <Stack direction={"row"} flexWrap={"wrap"}>
                 {requestData!.reviewers.map((reviewer) => {
                   return <ReviewerCard {...reviewer} />;
@@ -402,12 +418,10 @@ const RequestSingle = () => {
           >
             <>
               <Typography variant="h3">
-                Are you sure to delete request "
-                {`...${requestData?._id.slice(-7)}`}"?
+                {t("RequestSingle.deleteRequest")}
               </Typography>
               <Typography variant="body1">
-                This item will be deleted immediately. You can't undo this
-                action.{" "}
+                {t("RequestSingle.deleteImmediately")}
               </Typography>
               <Stack
                 direction={"row"}
@@ -420,14 +434,14 @@ const RequestSingle = () => {
                   color="success"
                   onClick={handleModalClose}
                 >
-                  Cancel
+                  {t("RequestSingle.cancel")}
                 </Button>
                 <Button
                   variant="contained"
                   color="error"
                   onClick={rejectRequest}
                 >
-                  Delete
+                  {t("RequestSingle.delete")}
                 </Button>
               </Stack>
             </>

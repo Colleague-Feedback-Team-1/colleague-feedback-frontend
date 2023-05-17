@@ -85,7 +85,7 @@ const Login = () => {
               required
               fullWidth
               id="username"
-              label="Username"
+              label={t("login.username")}
               name="username"
               autoComplete="username"
               autoFocus
@@ -95,7 +95,7 @@ const Login = () => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={t("login.password")}
               type="password"
               id="password"
               autoComplete="current-password"

@@ -23,20 +23,22 @@ import { toast } from "react-toastify";
 import LanguageSelector from "../components/LanguageSelector";
 import ExoveLogo from "../assets/Exove-employee.png";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useTranslation } from "react-i18next";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const drawerList = [
     {
-      text: "Dashboard",
+      text: t("Layout.dashboard"),
       icon: <BarChartIcon />,
       link: "/dashboard",
     },
     {
-      text: "Notifications",
+      text: t("Layout.notifications"),
       icon: <NotificationsIcon />,
       link: "/notification",
     },
@@ -45,7 +47,9 @@ const Layout = () => {
   const renderUser = () => {
     return (
       /* Search bar and menu on the right will be shown to login user only */
-      <Stack>
+      <Stack direction={"row"}>
+        <LanguageSelector />
+
         {user ? (
           <Stack
             alignItems={"center"}
@@ -62,25 +66,28 @@ const Layout = () => {
             </IconButton>
             <Menu anchorEl={anchorEl} open={openMenu} onClose={handleClose}>
               <Link to={`/employees/${user?._id}`} {...user}>
-                <MenuItem>Profile</MenuItem>
+                <MenuItem>{t("Layout.profile")}</MenuItem>
               </Link>
-              <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
+              <MenuItem onClick={handleLogOut}>{t("Layout.logout")}</MenuItem>
             </Menu>
           </Stack>
         ) : (
-          <Stack
-            alignItems={"center"}
-            direction={"row"}
-            justifyContent={"center"}
-          >
-            <Typography>User</Typography>
-            <IconButton size="large" color="inherit" onClick={handleClick}>
-              <Avatar
-                src={ExoveLogo}
-                sx={{ bgcolor: "#fcb900", width: "30px", height: "30px" }}
-              ></Avatar>
-            </IconButton>
-          </Stack>
+          <>
+            <LanguageSelector />
+            <Stack
+              alignItems={"center"}
+              direction={"row"}
+              justifyContent={"center"}
+            >
+              <Typography>{t("Layout.user")}</Typography>
+              <IconButton size="large" color="inherit" onClick={handleClick}>
+                <Avatar
+                  src={ExoveLogo}
+                  sx={{ bgcolor: "#fcb900", width: "30px", height: "30px" }}
+                ></Avatar>
+              </IconButton>
+            </Stack>
+          </>
         )}
       </Stack>
     );
@@ -144,20 +151,22 @@ const Layout = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Link to={"/"}>
-                <IconButton disableRipple>
-                  <img
-                    src={ExoveLogoWhite}
-                    alt="Exove company logo"
-                    style={{
-                      width: "138px",
-                      height: "30px",
-                      backgroundColor: "none",
-                    }}
-                  />
-                </IconButton>
-              </Link>
-              <LanguageSelector />
+              <Stack direction={"row"} alignItems={"center"}>
+                <Link to={"/"}>
+                  <IconButton disableRipple>
+                    <img
+                      src={ExoveLogoWhite}
+                      alt="Exove company logo"
+                      style={{
+                        width: "138px",
+                        height: "30px",
+                        backgroundColor: "none",
+                      }}
+                    />
+                  </IconButton>
+                </Link>
+              </Stack>
+
               {renderUser()}
             </Stack>
           </Toolbar>

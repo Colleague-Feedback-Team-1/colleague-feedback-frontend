@@ -12,6 +12,7 @@ import { getTodayDate } from "../utils/formatDate";
 import { toast } from "react-toastify";
 import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useTranslation } from "react-i18next";
 
 const modalStyle = {
   position: "fixed",
@@ -41,6 +42,7 @@ const RequestDataGrid = () => {
 
   const navigate = useNavigate();
   let today = getTodayDate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setTimeout(() => {
@@ -201,7 +203,7 @@ const RequestDataGrid = () => {
             to={`/requests/${params.row._id}`}
             style={{ textDecoration: "none", paddingRight: "13px" }}
           >
-            <Button variant="contained">View</Button>
+            <Button variant="contained">{t("RequestDataGrid.view")}</Button>
           </Link>
           <IconButton
             onClick={() => showReminderModal(params.row._id)}
@@ -212,24 +214,28 @@ const RequestDataGrid = () => {
         </Stack>
       ),
     },
-    { field: "employeeName", headerName: "Reviewee", width: 120 },
+    {
+      field: "employeeName",
+      headerName: t("RequestDataGrid.reviewee").toString(),
+      width: 120,
+    },
     {
       field: "confirmedByHR",
-      headerName: "Confirmed",
+      headerName: t("RequestDataGrid.confirm").toString(),
       width: 120,
       type: "boolean",
       renderCell: booleanCellRenderer,
     },
     {
       field: "selfReview",
-      headerName: "Self Review",
+      headerName: t("RequestDataGrid.selfReview").toString(),
       width: 120,
       type: "boolean",
       renderCell: booleanCellRenderer,
     },
     {
       field: "feedbackReceived",
-      headerName: "Feedback",
+      headerName: t("RequestDataGrid.feedback").toString(),
       width: 100,
       valueGetter: (params: GridValueGetterParams) => {
         const feedbackSubmitted = params.row.reviewers.filter(
@@ -240,7 +246,7 @@ const RequestDataGrid = () => {
     },
     {
       field: "assignedManagerName",
-      headerName: "Manager",
+      headerName: t("RequestDataGrid.manager").toString(),
       width: 100,
       renderCell: (params) => {
         return params.row.assignedManagerName.split(" ")[0];
@@ -248,7 +254,7 @@ const RequestDataGrid = () => {
     },
     {
       field: "reviewers",
-      headerName: "Reviewers",
+      headerName: t("RequestDataGrid.reviewer").toString(),
       width: 300,
       valueGetter: (params: GridValueGetterParams) => {
         const allReviewerNames = params.row.reviewers
@@ -260,7 +266,7 @@ const RequestDataGrid = () => {
 
     {
       field: "dateRequested",
-      headerName: "Due Date",
+      headerName: t("RequestDataGrid.dueDate").toString(),
       sortable: false,
       width: 150,
       renderCell: (params) => {
@@ -287,7 +293,7 @@ const RequestDataGrid = () => {
           color="error"
           onClick={() => handleDeleteModal(params.row._id)}
         >
-          Delete
+          {t("RequestDataGrid.delete")}
         </Button>
       ),
     },
@@ -322,10 +328,10 @@ const RequestDataGrid = () => {
       >
         <>
           <Typography variant="h4">
-            Are you sure to delete this request?
+            {t("RequestDataGrid.deleteRequest")}
           </Typography>
           <Typography variant="body1">
-            This item will be deleted immediately. You can't undo this action.{" "}
+            {t("RequestDataGrid.deleteImmediately")}
           </Typography>
           <Stack
             direction={"row"}
@@ -334,7 +340,7 @@ const RequestDataGrid = () => {
             sx={{ alignItems: "center", justifyContent: "center" }}
           >
             <Button variant="contained" onClick={handleModalClose}>
-              Cancel
+              {t("RequestDataGrid.cancel")}
             </Button>
             <Button
               variant="contained"
@@ -342,7 +348,7 @@ const RequestDataGrid = () => {
               onClick={() => deleteRequest(deletingRequestId)}
               endIcon={<DeleteIcon />}
             >
-              Delete
+              {t("RequestDataGrid.delete")}
             </Button>
           </Stack>
         </>
@@ -358,23 +364,23 @@ const RequestDataGrid = () => {
         <>
           <Stack spacing={3}>
             <Typography variant="h3">
-              A reminder notification will be sent to:
+              {t("RequestDataGrid.reminderNoti")}
             </Typography>
             {remindingReviewers.map((reviewer) => {
               return (
                 <Typography variant="h5" key={reviewer.receiverid}>
-                  ▪ {reviewer.receiverName} (reviewer)
+                  ▪ {reviewer.receiverName} ({t("RequestDataGrid.reviewer")})
                 </Typography>
               );
             })}
             {remindingSelfReview.map((reviewer) => {
               return (
                 <Typography variant="h5" key={reviewer.receiverid}>
-                  ▪ {reviewer.receiverName} (self-review)
+                  ▪ {reviewer.receiverName} ({t("RequestDataGrid.selfReview")})
                 </Typography>
               );
             })}
-            <Typography variant="h3">Are you sure?</Typography>
+            <Typography variant="h3">{t("ConfirmedRequest.sure")}</Typography>
           </Stack>
 
           <Stack
@@ -388,10 +394,10 @@ const RequestDataGrid = () => {
               color="secondary"
               onClick={handleModalClose}
             >
-              Cancel
+              {t("RequestDataGrid.cancel")}
             </Button>
             <Button variant="contained" color="success" onClick={sendReminder}>
-              Send notification
+              {t("RequestDataGrid.sendNoti")}
             </Button>
           </Stack>
         </>

@@ -12,11 +12,14 @@ import { Stack } from "@mui/system";
 import { Request } from "../types/types";
 import { Link } from "react-router-dom";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const RequestCard: React.FC<Request> = (prop) => {
   const givenFeedback = prop.reviewers.filter(
     (reviewer) => reviewer.feedbackSubmitted
   ).length;
+  const { t } = useTranslation();
+
   return (
     <Card
       sx={{
@@ -31,17 +34,18 @@ const RequestCard: React.FC<Request> = (prop) => {
         {prop.confirmedByHR ? (
           <Stack>
             <Stack direction={"row"} spacing={0.5}>
+              <Typography>{t("RequestCard.confirmed")}</Typography>
               <CheckCircleIcon color="success" />
-              <Typography>Confirmed by HR</Typography>
             </Stack>
             <Typography>
-              Feedback: {givenFeedback}/{prop.reviewers.length}
+              {t("RequestCard.feedback")}: {givenFeedback}/
+              {prop.reviewers.length}
             </Typography>
           </Stack>
         ) : (
           <Stack direction={"row"} spacing={0.5}>
-            <BlockIcon color="disabled" />
-            <Typography>Not yet confirmed by HR</Typography>
+            <Typography>{t("RequestCard.notConfirmed")}</Typography>
+            <BlockIcon color="error" />
           </Stack>
         )}
       </CardContent>
@@ -58,10 +62,8 @@ const RequestCard: React.FC<Request> = (prop) => {
             to={`/requests/${prop._id}`}
             style={{ textDecoration: "none", paddingRight: "13px" }}
           >
-            <Button variant="contained">View</Button>
+            <Button variant="contained">{t("RequestCard.view")}</Button>
           </Link>
-
-          <Button variant="contained">Quick remind</Button>
         </Stack>
       </CardActions>
     </Card>

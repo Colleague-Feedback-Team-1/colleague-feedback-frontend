@@ -14,10 +14,12 @@ import { Link } from "react-router-dom";
 import type {} from "@mui/x-data-grid/themeAugmentation";
 import RequestDataGrid from "../components/RequestDataGrid";
 import RequestSimpleView from "../components/RequestSimpleView";
+import { useTranslation } from "react-i18next";
 
 const UserDashboard = () => {
   const { user } = useContext<UserContextProps>(UserContext);
   const [simpleView, setSimpleView] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   // Change the view
   const handleChangeView = () => {
@@ -49,10 +51,10 @@ const UserDashboard = () => {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <Typography variant="h4">Dashboard</Typography>
+          <Typography variant="h4">{t("UserDashboard.title")}</Typography>
           <Link to={"/requests/createNewRequest"}>
             <Button variant="contained" size="large" color="success">
-              Create New Request
+              {t("UserDashboard.newRequest")}
             </Button>
           </Link>
         </Stack>
@@ -62,7 +64,7 @@ const UserDashboard = () => {
               control={
                 <Switch checked={simpleView} onChange={handleChangeView} />
               }
-              label="Simple view"
+              label={t("UserDashboard.simpleView")}
             />
           </FormGroup>
         ) : (
