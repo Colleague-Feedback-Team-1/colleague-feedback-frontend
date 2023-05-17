@@ -5,8 +5,7 @@ import { UserContextProps, Request } from "../types/types";
 import axios from "axios";
 import RequestCard from "../components/RequestCard";
 import Loading from "../components/Loading";
-import { toast } from 'react-toastify'
-
+import { toast } from "react-toastify";
 
 const RequestSimpleView = () => {
   const { user } = useContext<UserContextProps>(UserContext);
@@ -43,8 +42,8 @@ const RequestSimpleView = () => {
         <Loading />
       ) : (
         <>
-          <Box paddingBottom={"50px"}>
-            <Typography variant="h4">Your feedback requests:</Typography>
+          <Box paddingBottom={"1rem"}>
+            <Typography variant="h5">Your feedback requests</Typography>
             <Stack
               direction={"row"}
               spacing={"2px"}
@@ -62,9 +61,9 @@ const RequestSimpleView = () => {
             </Stack>
           </Box>
 
-          <Box paddingBottom={"50px"}>
-            <Typography variant="h4">
-              Your co-worker needs your feedback:{" "}
+          <Box>
+            <Typography variant="h5">
+              Your co-worker needs your feedback{" "}
             </Typography>
             <Stack
               direction={"row"}

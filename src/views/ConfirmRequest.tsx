@@ -24,7 +24,6 @@ import { getTodayDate } from "../utils/formatDate";
 
 const modalStyle = {
   position: "fixed",
-  backgroundColor: "#9b51e0",
   boxShadow: 24,
   p: 4,
   color: "white",
@@ -325,7 +324,7 @@ const ConfirmRequest = () => {
               >
                 <Button
                   variant="contained"
-                  color="error"
+                  color="secondary"
                   onClick={handleModalClose}
                 >
                   No, let me check again

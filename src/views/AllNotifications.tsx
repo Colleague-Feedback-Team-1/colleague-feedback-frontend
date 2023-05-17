@@ -21,13 +21,9 @@ const AllNotifications = () => {
 
   const renderMenu = () => {
     return (
-      <Stack p={"30px"}>
-        <Stack
-          direction={"row"}
-          justifyContent={"space-between"}
-          padding={"10px 0"}
-        >
-          <Typography variant="h2" textAlign={"left"}>
+      <Stack>
+        <Stack direction={"row"} justifyContent={"space-between"}>
+          <Typography variant="h4" textAlign={"left"}>
             All notifications ({notiData.length})
           </Typography>
           <Box>
@@ -60,7 +56,6 @@ const AllNotifications = () => {
           sx={{
             width: "80%",
             padding: "15px",
-            backgroundColor: "#ffdbeb",
             margin: "auto",
           }}
         >

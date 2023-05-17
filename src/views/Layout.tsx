@@ -7,8 +7,6 @@ import {
   Drawer,
   List,
   ListItem,
-  ListItemIcon,
-  ListItemText,
   Stack,
   Menu,
   MenuItem,
@@ -22,19 +20,14 @@ import ExoveLogoWhite from "../assets/ExoveLogoWhite.png";
 import UserContext from "../context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-import NotificationBell from "../components/NotificationBell";
+import ExoveLogo from "../assets/Exove-employee.png";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const Layout = () => {
   const { user, setUser } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
-  console.log(openMenu);
-  // Date display
-  const date = new Date().toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+
   const drawerList = [
     {
       text: "Dashboard",
@@ -43,12 +36,12 @@ const Layout = () => {
     },
     {
       text: "Notifications",
-      icon: <NotificationBell />,
+      icon: <NotificationsIcon />,
       link: "/notification",
     },
   ];
 
-  const renderATest = () => {
+  const renderUser = () => {
     return (
       /* Search bar and menu on the right will be shown to login user only */
       <Stack>
@@ -74,7 +67,19 @@ const Layout = () => {
             </Menu>
           </Stack>
         ) : (
-          <Typography variant="h5">COLLEAGUE FEEDBACK</Typography>
+          <Stack
+            alignItems={"center"}
+            direction={"row"}
+            justifyContent={"center"}
+          >
+            <Typography>User</Typography>
+            <IconButton size="large" color="inherit" onClick={handleClick}>
+              <Avatar
+                src={ExoveLogo}
+                sx={{ bgcolor: "#fcb900", width: "30px", height: "30px" }}
+              ></Avatar>
+            </IconButton>
+          </Stack>
         )}
       </Stack>
     );
@@ -153,8 +158,7 @@ const Layout = () => {
                   />
                 </IconButton>
               </Link>
-              <Typography>{date}</Typography>
-              {renderATest()}
+              {renderUser()}
             </Stack>
           </Toolbar>
 

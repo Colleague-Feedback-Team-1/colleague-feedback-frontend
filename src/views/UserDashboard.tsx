@@ -48,9 +48,8 @@ const UserDashboard = () => {
           direction={"row"}
           alignItems={"center"}
           justifyContent={"space-between"}
-          paddingBottom={"50px"}
         >
-          <Typography variant="h4">DASHBOARD</Typography>
+          <Typography variant="h4">Dashboard</Typography>
           <Link to={"/requests/createNewRequest"}>
             <Button variant="contained" size="large" color="success">
               Create New Request
@@ -58,7 +57,7 @@ const UserDashboard = () => {
           </Link>
         </Stack>
         {user?.description === "HR" ? (
-          <FormGroup>
+          <FormGroup sx={{ padding: "2rem 0", maxWidth: "150px" }}>
             <FormControlLabel
               control={
                 <Switch checked={simpleView} onChange={handleChangeView} />

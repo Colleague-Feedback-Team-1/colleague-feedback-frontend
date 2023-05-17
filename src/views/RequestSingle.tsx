@@ -21,10 +21,10 @@ import { toast } from "react-toastify";
 
 const modalStyle = {
   position: "fixed",
-  backgroundColor: "#9b51e0",
+  backgroundColor: "white",
   boxShadow: 24,
   p: 4,
-  color: "white",
+  color: "black",
   textAlign: "center",
   borderRadius: "30px",
   alignItem: "center",
