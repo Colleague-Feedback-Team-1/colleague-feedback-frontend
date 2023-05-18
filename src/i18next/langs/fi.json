@@ -8,7 +8,7 @@
     "confirmedRequest2": "Vahvista tämä pyyntö",
     "confirmRequest": "Vahvista tämä pyyntö",
     "confirmRequest2": "Kyllä, vahvista tämä pyyntö",
-    "cRequest": "VAHVISTETAAN PYYNTÖ #",
+    "cRequest": "Vahvistetaan pyyntö #",
     "reviewee": "Arvioitava:",
     "reviewers": "Arvioijat:",
     "searchEmployee": "Etsi työntekijää:",
@@ -37,7 +37,7 @@
   },
   "language": "suomi",
   "Layout": {
-    "cFeedback": "TYÖTOVERIN PALAUTE",
+    "cFeedback": "Työtoverisin palaute",
     "dashboard": "Kojelauta",
     "logout": "Kirjaudu ulos",
     "notifications": "Ilmoitukset",
