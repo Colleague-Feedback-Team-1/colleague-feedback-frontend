@@ -21,7 +21,7 @@ interface RadarChartProps {
 const RadarChartComponent: React.FC<RadarChartProps> = ({ data }) => {
   return (
     <>
-      <ResponsiveContainer width="100%" height={750}>
+      <ResponsiveContainer width="100%" height={600}>
         <RadarChart
           data={data}
           margin={{ top: 20, right: 20, bottom: 20, left: 20 }}

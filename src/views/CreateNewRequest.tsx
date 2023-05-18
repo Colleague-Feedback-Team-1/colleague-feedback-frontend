@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 
 const modalStyle = {
   position: "fixed",
-  backgroundColor: "#9b51e0",
+  backgroundColor: "white",
   boxShadow: 24,
   p: 4,
   color: "white",

@@ -59,7 +59,7 @@ const UserDashboard = () => {
           </Link>
         </Stack>
         {user?.description === "HR" ? (
-          <FormGroup sx={{ padding: "2rem 0", maxWidth: "150px" }}>
+          <FormGroup sx={{ padding: "1rem 0", maxWidth: "150px" }}>
             <FormControlLabel
               control={
                 <Switch checked={simpleView} onChange={handleChangeView} />

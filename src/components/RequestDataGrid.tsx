@@ -3,7 +3,12 @@ import axios from "axios";
 import Loading from "./Loading";
 import { Receiver, Request, Reviewer } from "../types/types";
 import { Stack, Typography, Button, Modal, IconButton } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridValueGetterParams,
+  GridToolbar,
+} from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { Check } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -309,6 +314,7 @@ const RequestDataGrid = () => {
             columns={columns}
             rows={adminRequestList!}
             getRowId={(rows) => rows._id}
+            slots={{ toolbar: GridToolbar }}
             initialState={{
               pagination: {
                 paginationModel: {

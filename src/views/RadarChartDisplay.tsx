@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import RadarChartComponent from "../components/RadarChart";
-import { FeedbackSection } from "../types/types";
+import { FeedbackSection, Request } from "../types/types";
 import Loading from "../components/Loading";
 import { Typography } from "@mui/material";
 
@@ -15,6 +15,7 @@ const RadarChartDisplay = () => {
   const [totalData, setTotalData] = useState<FeedbackCustomType[]>([]);
   const [chartData, setChartData] = useState<any>([]);
   const [revieweeData, setRevieweeData] = useState<FeedbackCustomType[]>([]);
+  const [requestData, setRequestData] = useState<Request>();
   const [reviewerData, setReviewerData] = useState<FeedbackCustomType[]>([]);
   const [managerData, setManagerData] = useState<FeedbackCustomType[]>([]);
   const { requestId } = useParams<{ requestId: string }>();
@@ -40,12 +41,18 @@ const RadarChartDisplay = () => {
     },
   ];
   useEffect(() => {
+    axios
+      .get(
+        `http://localhost:4500/api/review-requests/by-requestid/${requestId}`
+      )
+      .then((res) => {
+        setRequestData(res.data);
+      });
     // fetch totalData (data that is not filtered)
     axios
       .get(`http://localhost:4500/api/feedback-data/${requestId}`)
       .then((res) => {
         const data = res.data;
-
         const formattedChartData = data.answersBySection
           .filter(
             (section: any) => section.sectionName !== "General evaluation"
@@ -136,7 +143,9 @@ const RadarChartDisplay = () => {
         <Loading />
       ) : (
         <>
-          <Typography variant="h3">Chart View</Typography>
+          <Typography variant="h4">
+            Feedback Result for {requestData?.employeeName}
+          </Typography>
           <RadarChartComponent data={chartData} />
         </>
       )}

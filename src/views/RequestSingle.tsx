@@ -25,7 +25,7 @@ const modalStyle = {
   backgroundColor: "white",
   boxShadow: 24,
   p: 4,
-  color: "black",
+  color: "white",
   textAlign: "center",
   borderRadius: "30px",
   alignItem: "center",
@@ -132,7 +132,7 @@ const RequestSingle = () => {
           notification
         )
         .then((res) => toast.success("Request rejected"));
-    }, 1000);
+    }, 500);
   };
 
   // render feedback received slider
@@ -304,15 +304,14 @@ const RequestSingle = () => {
           sx={{
             padding: "20px",
             backgroundColor: "hsl(0deg 5.71% 86.27% / 14.9%)",
-            boxShadow:"0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
-            borderRadius:"4px",
+            boxShadow:
+              "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+            borderRadius: "4px",
             overflowX: "auto",
           }}
         >
-          <Stack direction={"row"} spacing={10}>
-            <Box paddingBottom={"50px"} component={"div"}>
-              <Typography variant="h3"></Typography>
-
+          <Stack direction={"row"} spacing={20}>
+            <Box paddingBottom={"50px"} component={"div"} minWidth={"250px"}>
               {requestData?.confirmedByHR ? (
                 <Stack
                   direction={"row"}
@@ -329,54 +328,60 @@ const RequestSingle = () => {
               )}
 
               <Typography variant="body1">
-                <b>{t("RequestSingle.created")}</b>
-                {formatDate(requestData?.createdAt!)}
+                <label style={{ fontSize: "0.8rem" }}>
+                  {t("RequestSingle.created")}
+                </label>
+                <b> {formatDate(requestData?.createdAt!)}</b>
               </Typography>
               <Typography variant="body1">
-                <b>{t("RequestSingle.date")}</b>
-                {formatDate(requestData?.dateRequested!)}
+                <label style={{ fontSize: "0.8rem" }}>
+                  {t("RequestSingle.date")}
+                </label>
+                <b> {formatDate(requestData?.dateRequested!)}</b>
               </Typography>
               <Typography variant="body1">
-                <b>{t("RequestSingle.status")} </b>
+                <label style={{ fontSize: "0.8rem" }}>
+                  {t("RequestSingle.status")}{" "}
+                </label>
                 {requestData!.confirmedByHR ? (
-                  <span style={{ color: "green" }}>
+                  <b style={{ color: "green" }}>
                     {t("RequestSingle.confirmed")}
-                  </span>
+                  </b>
                 ) : (
-                  <span style={{ color: "red" }}>
+                  <b style={{ color: "red" }}>
                     {t("RequestSingle.notConfirmed")}
-                  </span>
+                  </b>
                 )}
               </Typography>
               <Typography variant="body1">
-                <b>{t("RequestSingle.review")}</b>
+                <label style={{ fontSize: "0.8rem" }}>
+                  {t("RequestSingle.review")}
+                </label>
                 {requestData!.selfReview ? (
-                  <span style={{ color: "green" }}>
-                    {t("RequestSingle.yes")}
-                  </span>
+                  <b style={{ color: "green" }}>{t("RequestSingle.yes")}</b>
                 ) : (
-                  <span style={{ color: "red" }}>{t("RequestSingle.no")}</span>
+                  <b style={{ color: "red" }}>{t("RequestSingle.no")}</b>
                 )}
               </Typography>
               <Typography>
-                <b>
+                <label style={{ fontSize: "0.8rem" }}>
                   {t("RequestSingle.feedbacks")}
-                  {feedbackSubmitted!.length < 4 ? (
-                    <span
-                      style={{ color: "red" }}
-                    >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
-                  ) : (
-                    <span
-                      style={{ color: "green" }}
-                    >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
-                  )}
-                </b>
+                </label>
+                {feedbackSubmitted!.length < 4 ? (
+                  <b
+                    style={{ color: "red" }}
+                  >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</b>
+                ) : (
+                  <b
+                    style={{ color: "green" }}
+                  >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</b>
+                )}
               </Typography>
               {renderSliderAndChart()}
             </Box>
 
             <Box paddingBottom={"50px"} component={"div"}>
-              <Stack direction={"row"}>
+              <Stack direction={"row"} paddingBottom={"2rem"}>
                 <Box>
                   <Typography variant="h4">
                     {t("RequestSingle.reviewee")}
@@ -395,7 +400,9 @@ const RequestSingle = () => {
                       selfReview={null}
                     />
                   ) : (
-                    <Typography>{t("RequestSingle.noManager")}</Typography>
+                    <Typography padding={"1rem 0 0 1rem"}>
+                      {t("RequestSingle.noManager")}
+                    </Typography>
                   )}
                 </Box>
               </Stack>
@@ -419,7 +426,7 @@ const RequestSingle = () => {
             sx={modalStyle}
           >
             <>
-              <Typography variant="h3">
+              <Typography variant="h5">
                 {t("RequestSingle.deleteRequest")}
               </Typography>
               <Typography variant="body1">

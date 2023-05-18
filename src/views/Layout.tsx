@@ -48,14 +48,13 @@ const Layout = () => {
     return (
       /* Search bar and menu on the right will be shown to login user only */
       <Stack direction={"row"}>
-        <LanguageSelector />
-
         {user ? (
           <Stack
             alignItems={"center"}
             direction={"row"}
             justifyContent={"center"}
           >
+            <LanguageSelector />
             <Typography>{user?.displayName}</Typography>
             <IconButton size="large" color="inherit" onClick={handleClick}>
               <Avatar
