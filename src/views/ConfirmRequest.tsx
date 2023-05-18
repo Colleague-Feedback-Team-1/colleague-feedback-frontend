@@ -128,7 +128,7 @@ const ConfirmRequest = () => {
           "http://localhost:4500/api/notifications/insert-notification",
           notification2
         )
-        .then((res) => toast.success("Failed to fetch your requests"));
+        .then((res) => toast.success("Notification posted"));
       axios
         .patch(
           `http://localhost:4500/api/review-requests/update-manager/${params.requestId}`,
@@ -136,7 +136,6 @@ const ConfirmRequest = () => {
         )
         .then((res) => {
           setOpenModal(false);
-          toast.success("Confirm request successfully");
           navigate("/");
         })
         .catch((error) => toast.error(error));
