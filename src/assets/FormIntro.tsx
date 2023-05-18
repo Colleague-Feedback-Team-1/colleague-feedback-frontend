@@ -1,9 +1,8 @@
 import { Typography, Box, List, ListItem, ListItemText } from '@mui/material'
-import React from 'react'
 
 const FormIntro = () => {
   return (
-    <Box mb={3}>
+    <Box mb={3} textAlign="left" sx={{ margin: '0 6rem' }}>
       <Typography variant="body1" paragraph>
         We collect colleague feedback yearly. This is an essential tool for developing as a
         professional for all of us, so please fill this form carefully. Especially open comments are
@@ -32,6 +31,28 @@ const FormIntro = () => {
         actively dig up who might have answered to whom, nor do we ever reveal that information to
         anyone.
       </Typography>
+      <Typography variant="h6">Grading guidance</Typography>
+      <Typography variant="body1" paragraph>
+        Consider the person’s performance as compared to your expectations.
+        The scale is as follows 1-5:
+      </Typography>
+      <List>
+        <ListItem disablePadding>
+          <ListItemText primary="1) Performing fully below your expectations in this area" />
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemText primary="2) Performing partially under your expectations in this area" />
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemText primary="3) Performing on the expected level in this area. This means there’s “nothing to complain” and you are content with the performance in this area." />
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemText primary="4) The performance is exceeding expectations partially in this area. This means in your view the person doing more than you think is rightly expected on the job type or level the person is currently working on." />
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemText primary="5) The performance is exceeding your expectations fully in this area. This means the person is performing on the next level and thus should be promoted to a higher level or to a more demanding role." />
+        </ListItem>
+      </List>
     </Box>
   )
 }
