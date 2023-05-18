@@ -369,7 +369,7 @@ const RequestDataGrid = () => {
       >
         <>
           <Stack spacing={3}>
-            <Typography variant="h3">
+            <Typography variant="h4">
               {t("RequestDataGrid.reminderNoti")}
             </Typography>
             {remindingReviewers.map((reviewer) => {
@@ -386,7 +386,7 @@ const RequestDataGrid = () => {
                 </Typography>
               );
             })}
-            <Typography variant="h3">{t("ConfirmedRequest.sure")}</Typography>
+            <Typography variant="h4">{t("ConfirmedRequest.sure")}</Typography>
           </Stack>
 
           <Stack

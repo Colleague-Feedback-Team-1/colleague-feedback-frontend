@@ -49,8 +49,9 @@ const CreateNewRequest = () => {
   const [openModal, setOpenModal] = useState(false);
   const { user } = useContext<UserContextProps>(UserContext);
   const navigate = useNavigate();
-  const [dueDate, setDueDate] = useState<string | undefined>("");
+  const [dueDate, setDueDate] = useState<string | undefined>(undefined);
   const { t } = useTranslation();
+  let today = getTodayDate();
 
   useEffect(() => {
     axios
@@ -276,20 +277,19 @@ const CreateNewRequest = () => {
         <Card
           sx={{
             padding: "20px",
-            minHeight: "75vh",
           }}
         >
-          <Typography variant="h3" pb={"50px"}>
+          <Typography variant="h4">
             {t("CreateNewRequest.newRequest")}
           </Typography>
           <Grid container alignItems="center" spacing={2}>
             <Grid item xs={12} sm={6}>
-              <Typography variant="h4">
+              <Typography variant="h5">
                 {t("CreateNewRequest.reviewee")}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Typography variant="h4">
+              <Typography variant="h5">
                 {t("CreateNewRequest.dueDate")}
               </Typography>
             </Grid>
@@ -309,7 +309,7 @@ const CreateNewRequest = () => {
             </Grid>
           </Grid>
           <Stack flexGrow={4}>
-            <Typography variant="h4">
+            <Typography variant="h5">
               {t("CreateNewRequest.reviewers")} ({reviewerList?.length}/5)
             </Typography>
             <Stack
@@ -358,7 +358,7 @@ const CreateNewRequest = () => {
             sx={modalStyle}
           >
             <>
-              <Typography variant="h2">{t("CreateNewRequest.sure")}</Typography>
+              <Typography variant="h4">{t("CreateNewRequest.sure")}</Typography>
               <Stack
                 direction={"row"}
                 mt={3}
@@ -367,7 +367,7 @@ const CreateNewRequest = () => {
               >
                 <Button
                   variant="contained"
-                  color="error"
+                  color="primary"
                   onClick={handleModalClose}
                 >
                   {t("CreateNewRequest.checkAgain")}
