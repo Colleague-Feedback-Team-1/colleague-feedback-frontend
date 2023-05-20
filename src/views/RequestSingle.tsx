@@ -16,12 +16,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Employee, Request, UserContextProps } from "../types/types";
 import Loading from "../components/Loading";
 import UserContext from "../context/UserContext";
-import { getTodayDate } from "../utils/formatDate";
+import { formatDate, getTodayDate } from "../utils/formatDate";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const modalStyle = {
   position: "fixed",
-  backgroundColor: "#9b51e0",
+  backgroundColor: "white",
   boxShadow: 24,
   p: 4,
   color: "white",
@@ -43,17 +44,12 @@ const RequestSingle = () => {
     "reviewee" | "reviewer" | "manager" | null
   >(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const feedbackSubmitted = requestData?.reviewers.filter(
     (reviewer: any) => reviewer.feedbackSubmitted
   );
-
-  const formatDate = (date: string) => {
-    let outputDate = new Date(date).toLocaleString();
-    return outputDate;
-  };
 
   // fix bug, so that everytime params.requestId change, all the state reload.
   const refreshData = () => {
@@ -136,7 +132,7 @@ const RequestSingle = () => {
           notification
         )
         .then((res) => toast.success("Request rejected"));
-    }, 1000);
+    }, 500);
   };
 
   // render feedback received slider
@@ -159,7 +155,7 @@ const RequestSingle = () => {
               color="error"
             />
             <Button variant="outlined" disabled>
-              Not enough feedbacks to generate chart
+              {t("RequestSingle.generateChart")}
             </Button>
           </>
         );
@@ -178,7 +174,9 @@ const RequestSingle = () => {
               color="success"
             />
             <Link to={`/chart/${params.requestId}`}>
-              <Button variant="contained">Generate chart</Button>
+              <Button variant="contained">
+                {t("RequestSingle.generateChart")}
+              </Button>
             </Link>
           </>
         );
@@ -208,7 +206,7 @@ const RequestSingle = () => {
           }
           setIsLoading(false);
         });
-    }, 2000);
+    }, 1000);
   }, [params.requestId]);
 
   // check the confirm status and user priviledge to render the action buttons
@@ -218,27 +216,26 @@ const RequestSingle = () => {
         return (
           <>
             <Typography variant="body1">
-              HR can click the "Confirm this request" to assign an manager and
-              then confirm this request.
+              {t("RequestSingle.assignManager")}
             </Typography>
             <Stack direction={"row"} justifyContent={"space-between"}>
               <Stack spacing={2} direction={"row"}>
                 <Button variant="contained" color="error" onClick={openModal}>
-                  Reject this request
+                  {t("RequestSingle.rejectRequest")}
                 </Button>
                 <Link to={`/requests/${params.requestId}/confirm`}>
                   <Button
                     variant="contained"
                     color="success" /* onClick={handleConfirm} */
                   >
-                    Confirm this request
+                    {t("RequestSingle.confirmRequest")}
                   </Button>
                 </Link>
               </Stack>
 
               <Link to={"/dashboard"}>
                 <Button variant="contained" color="info">
-                  Back to dashboard
+                  {t("RequestSingle.toDashboard")}
                 </Button>
               </Link>
             </Stack>
@@ -254,11 +251,13 @@ const RequestSingle = () => {
           <>
             <Stack direction={"row"} spacing={2}>
               <Link to={"/dashboard"}>
-                <Button variant="contained">Back to dashboard</Button>
+                <Button variant="contained">
+                  {t("RequestSingle.toDashboard")}
+                </Button>
               </Link>
               <Link to={`/submission-form/${params.requestId}`}>
                 <Button variant="contained" color="success">
-                  Self Review
+                  {t("RequestSingle.selfReview")}
                 </Button>
               </Link>
             </Stack>
@@ -271,11 +270,15 @@ const RequestSingle = () => {
         return (
           <Stack direction={"row"} spacing={2}>
             <Link to={"/dashboard"}>
-              <Button variant="contained">Back to dashboard</Button>
+              <Button variant="contained">
+                {t("RequestSingle.toDashboard")}
+              </Button>
             </Link>
             <Link to={`/submission-form/${params.requestId}`}>
               <Button variant="contained" color="success">
-                Give feedback (as {userRoleOnRequest})
+                {t("RequestSingle.giveFeedback", {
+                  userRole: userRoleOnRequest,
+                })}
               </Button>
             </Link>
           </Stack>
@@ -284,7 +287,9 @@ const RequestSingle = () => {
         return (
           <Stack direction={"row"} spacing={2}>
             <Link to={"/dashboard"}>
-              <Button variant="contained">Back to dashboard</Button>
+              <Button variant="contained">
+                {t("RequestSingle.toDashboard")}
+              </Button>
             </Link>
           </Stack>
         );
@@ -298,14 +303,15 @@ const RequestSingle = () => {
         <Card
           sx={{
             padding: "20px",
-            backgroundColor: "#ffdbeb",
+            backgroundColor: "hsl(0deg 5.71% 86.27% / 14.9%)",
+            boxShadow:
+              "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+            borderRadius: "4px",
             overflowX: "auto",
           }}
         >
-          <Stack direction={"row"} spacing={10}>
-            <Box paddingBottom={"50px"} component={"div"}>
-              <Typography variant="h3"></Typography>
-
+          <Stack direction={"row"} spacing={20}>
+            <Box paddingBottom={"50px"} component={"div"} minWidth={"250px"}>
               {requestData?.confirmedByHR ? (
                 <Stack
                   direction={"row"}
@@ -314,8 +320,7 @@ const RequestSingle = () => {
                 >
                   <CheckCircleIcon color="success" />
                   <Typography variant="body2">
-                    This request has been confirmed, reviewers can start giving
-                    feedback now.
+                    {t("RequestSingle.requestConfirmed")}
                   </Typography>
                 </Stack>
               ) : (
@@ -323,54 +328,70 @@ const RequestSingle = () => {
               )}
 
               <Typography variant="body1">
-                <b>Created At: </b>
-                {formatDate(requestData?.createdAt!)}
+                <label style={{ fontSize: "0.8rem" }}>
+                  {t("RequestSingle.created")}
+                </label>
+                <b> {formatDate(requestData?.createdAt!)}</b>
               </Typography>
               <Typography variant="body1">
-                <b>Due date: </b>
-                {formatDate(requestData?.dateRequested!)}
+                <label style={{ fontSize: "0.8rem" }}>
+                  {t("RequestSingle.date")}
+                </label>
+                <b> {formatDate(requestData?.dateRequested!)}</b>
               </Typography>
               <Typography variant="body1">
-                <b>Status: </b>
+                <label style={{ fontSize: "0.8rem" }}>
+                  {t("RequestSingle.status")}{" "}
+                </label>
                 {requestData!.confirmedByHR ? (
-                  <span style={{ color: "green" }}>Confirmed by HR</span>
+                  <b style={{ color: "green" }}>
+                    {t("RequestSingle.confirmed")}
+                  </b>
                 ) : (
-                  <span style={{ color: "red" }}>Not confirmed</span>
+                  <b style={{ color: "red" }}>
+                    {t("RequestSingle.notConfirmed")}
+                  </b>
                 )}
               </Typography>
               <Typography variant="body1">
-                <b>Self review: </b>
+                <label style={{ fontSize: "0.8rem" }}>
+                  {t("RequestSingle.review")}
+                </label>
                 {requestData!.selfReview ? (
-                  <span style={{ color: "green" }}>Yes</span>
+                  <b style={{ color: "green" }}>{t("RequestSingle.yes")}</b>
                 ) : (
-                  <span style={{ color: "red" }}>No</span>
+                  <b style={{ color: "red" }}>{t("RequestSingle.no")}</b>
                 )}
               </Typography>
               <Typography>
-                <b>
-                  Feedbacks received:
-                  {feedbackSubmitted!.length < 4 ? (
-                    <span
-                      style={{ color: "red" }}
-                    >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
-                  ) : (
-                    <span
-                      style={{ color: "green" }}
-                    >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</span>
-                  )}
-                </b>
+                <label style={{ fontSize: "0.8rem" }}>
+                  {t("RequestSingle.feedbacks")}
+                </label>
+                {feedbackSubmitted!.length < 4 ? (
+                  <b
+                    style={{ color: "red" }}
+                  >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</b>
+                ) : (
+                  <b
+                    style={{ color: "green" }}
+                  >{` ${feedbackSubmitted?.length}/${requestData?.reviewers.length}`}</b>
+                )}
               </Typography>
               {renderSliderAndChart()}
             </Box>
 
             <Box paddingBottom={"50px"} component={"div"}>
-              <Stack direction={"row"}>
+              <Stack direction={"row"} paddingBottom={"2rem"}>
                 <Box>
-                  <Typography variant="h4">Reviewee:</Typography>
+                  <Typography variant="h4">
+                    {t("RequestSingle.reviewee")}
+                  </Typography>
                   <EmployeeCard {...requestData!} />
                 </Box>
                 <Box component={"div"}>
-                  <Typography variant="h4">Project Manager:</Typography>
+                  <Typography variant="h4">
+                    {t("RequestSingle.manager")}
+                  </Typography>
                   {managerData ? (
                     <EmployeeCard
                       employeeid={managerData?._id}
@@ -379,12 +400,16 @@ const RequestSingle = () => {
                       selfReview={null}
                     />
                   ) : (
-                    <Typography>No manager assigned yet.</Typography>
+                    <Typography padding={"1rem 0 0 1rem"}>
+                      {t("RequestSingle.noManager")}
+                    </Typography>
                   )}
                 </Box>
               </Stack>
 
-              <Typography variant="h4">Reviewers:</Typography>
+              <Typography variant="h4">
+                {t("RequestSingle.reviewers")}
+              </Typography>
               <Stack direction={"row"} flexWrap={"wrap"}>
                 {requestData!.reviewers.map((reviewer) => {
                   return <ReviewerCard {...reviewer} />;
@@ -401,13 +426,11 @@ const RequestSingle = () => {
             sx={modalStyle}
           >
             <>
-              <Typography variant="h3">
-                Are you sure to delete request "
-                {`...${requestData?._id.slice(-7)}`}"?
+              <Typography variant="h5">
+                {t("RequestSingle.deleteRequest")}
               </Typography>
               <Typography variant="body1">
-                This item will be deleted immediately. You can't undo this
-                action.{" "}
+                {t("RequestSingle.deleteImmediately")}
               </Typography>
               <Stack
                 direction={"row"}
@@ -420,14 +443,14 @@ const RequestSingle = () => {
                   color="success"
                   onClick={handleModalClose}
                 >
-                  Cancel
+                  {t("RequestSingle.cancel")}
                 </Button>
                 <Button
                   variant="contained"
                   color="error"
                   onClick={rejectRequest}
                 >
-                  Delete
+                  {t("RequestSingle.delete")}
                 </Button>
               </Stack>
             </>

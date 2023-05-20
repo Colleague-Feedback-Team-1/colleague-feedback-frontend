@@ -1,0 +1,129 @@
+{
+  "Common": {
+    "search": "Search"
+  },
+  "ConfirmedRequest": {
+    "apManager": "Assigning Project Manager ",
+    "checkAgain": "No, let me check again",
+    "confirmedRequest2": "Confirm this request",
+    "confirmRequest": "Confirm this request",
+    "confirmRequest2": "Yes, confirm this request",
+    "cRequest": "Confirming request #",
+    "reviewee": "Reviewee:",
+    "reviewers": "Reviewers:",
+    "searchEmployee": "Search for an employee:",
+    "selectManager": "Please choose one Project Manager first!",
+    "sure": "Are you sure?"
+  },
+  "CreateNewRequest": {
+    "checkAgain": "No, let me check again",
+    "chooseReviewer": "Choose a reviewer below",
+    "confirmedEveryone": "After you create this request, it needs to be confirmed by HR before everyone can give feedbacks",
+    "createRequest": "Yes, create this request",
+    "createSucc": "Created new request successfully",
+    "dueDate": "Due date:",
+    "dueRequest": "Please choose a due date and 5 reviewers for this request",
+    "maxReached": "Maximum number of reviewers reached",
+    "newRequest": "Create new request",
+    "reviewee": "Reviewee: ",
+    "reviewers": " Reviewers: ",
+    "sure": "Are you sure?",
+    "thisRequest": "Create this request"
+  },
+  "FeedbackForm": {
+    "bad": "Very Bad",
+    "good": "Very Good",
+    "submit": "Submit Feedback"
+  },
+  "language": "english",
+  "Layout": {
+    "cFeedback": "Colleague feedback",
+    "dashboard": "Dashboard",
+    "logout": "Log Out",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "user": "User"
+  },
+  "loading": {
+    "title": "Loading..."
+  },
+  "login": {
+    "no-acc": "Contact the HR to get your account registed, if you do not have one.",
+    "password": "Password",
+    "sign": "Sign in",
+    "title": "Sign in to use the app",
+    "username": "Username"
+  },
+  "RequestCard": {
+    "confirmed": "Confirmed by HR",
+    "feedback": "Feedback",
+    "notConfirmed": "Not yet confirmed by HR",
+    "remind": "Quick Remind",
+    "reviewee": "Reviewee",
+    "view": "View"
+  },
+  "RequestDataGrid": {
+    "cancel": "Cancel",
+    "confirm": "Confirmed",
+    "delete": "Delete",
+    "deleteImmediately": "This item will be deleted immediately. You can't undo this action.",
+    "deleteRequest": "Are you sure to delete this request?",
+    "dueDate": "Due Date",
+    "feedback": "Feedback",
+    "manager": "Manager",
+    "reminderNoti": "A reminder notification will be sent to:",
+    "reviewee": "Reviewee",
+    "reviewer": "Reviewer",
+    "selfReview": "Self review",
+    "sendNoti": "Send notification",
+    "view": "View"
+  },
+  "RequestSingle": {
+    "assignManager": "HR can click the Confirm this request to assign an manager and then confirm this request.",
+    "cancel": "Cancel",
+    "confirmed": "Confirmed by HR",
+    "confirmRequest": "Confirm this request",
+    "created": "Created: ",
+    "date": "Due date: ",
+    "delete": "Delete",
+    "deleteImmediately": "This item will be deleted immediately. You can't undo this action.",
+    "deleteRequest": "Are you sure to delete this request?",
+    "feedbacks": "Feedbacks received:",
+    "generateChart": "Generate Chart",
+    "giveFeedback": "Give feedback (as {{userRole}})",
+    "manager": "Project Manager:",
+    "no": "No",
+    "noManager": "No manager assigned yet.",
+    "notConfirmed": "Not confirmed",
+    "rejectRequest": "Reject this request",
+    "requestConfirmed": "This request has been confirmed, reviewers can start giving feedback now.",
+    "requestID": "Request ID #",
+    "review": "Self Review: ",
+    "reviewee": "Reviewee:",
+    "reviewers": "Reviewers:",
+    "selfReview": "Self review",
+    "status": "Status:",
+    "toDashboard": "Back to dashboard",
+    "yes": "Yes"
+  },
+  "RequestSingleNeedtocheck": {
+    "gChart": "Generate chart",
+    "gfChart": "Not enough feedbacks to generate chart"
+  },
+  "UncomfirmedRequestCard": {
+    "dueDate": "Due Date",
+    "remind": "Quick Remind",
+    "reviewee": "Reviewee",
+    "reviewer": "Reviewer",
+    "view": "View"
+  },
+  "UserDashboard": {
+    "newRequest": "Create New Request",
+    "noRequest": "You have no requests",
+    "noReview": "You have no review requests from your colleagues",
+    "requestFeedback": "Your feedback requests",
+    "simpleView": "Simple view",
+    "title": "Dashboard",
+    "yourFeedback": "Your co-worker needs your feedback"
+  }
+}

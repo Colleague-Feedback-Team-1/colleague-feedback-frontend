@@ -5,9 +5,12 @@ import UserContext from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import ExoveLogo from "../assets/ExoveLogo.png";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
+  const { t } = useTranslation();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -39,7 +42,9 @@ const Login = () => {
       })
       .catch((error) => {
         console.error("Authentication failed:", error);
-        toast.error("Your username or password is incorrect. Please try again.");
+        toast.error(
+          "Your username or password is incorrect. Please try again."
+        );
       });
   };
 
@@ -67,7 +72,7 @@ const Login = () => {
           />
 
           <Typography component="h1" variant="h5">
-            Sign in to use the app
+            {t("login.title")}
           </Typography>
           <Box
             component="form"
@@ -80,7 +85,7 @@ const Login = () => {
               required
               fullWidth
               id="username"
-              label="Username"
+              label={t("login.username")}
               name="username"
               autoComplete="username"
               autoFocus
@@ -90,7 +95,7 @@ const Login = () => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={t("login.password")}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -102,12 +107,9 @@ const Login = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {t("login.sign")}
             </Button>
-            <Typography variant="body2">
-              Contact the HR to get your account registed, if you do not have
-              one.
-            </Typography>
+            <Typography variant="body2">{t("login.no-acc")}</Typography>
           </Box>
         </Box>
       ) : (

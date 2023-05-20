@@ -7,11 +7,6 @@ import {
   ResponsiveContainer,
   Tooltip,
   Legend,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
 } from "recharts";
 
 interface ChartData {
@@ -26,7 +21,7 @@ interface RadarChartProps {
 const RadarChartComponent: React.FC<RadarChartProps> = ({ data }) => {
   return (
     <>
-      <ResponsiveContainer width="100%" height={750}>
+      <ResponsiveContainer width="100%" height={600}>
         <RadarChart
           data={data}
           margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
@@ -76,18 +71,6 @@ const RadarChartComponent: React.FC<RadarChartProps> = ({ data }) => {
           <Tooltip />
           <Legend />
         </RadarChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer width="100%" height={250}>
-        <BarChart data={data}>
-          <CartesianGrid />
-          <XAxis dataKey="sectionName" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="manager" fill="red" />
-          <Bar dataKey="reviewer" fill="blue" />
-          <Bar dataKey="reviewee" fill="green" />
-        </BarChart>
       </ResponsiveContainer>
     </>
   );

@@ -5,14 +5,15 @@ import { UserContextProps, Request } from "../types/types";
 import axios from "axios";
 import RequestCard from "../components/RequestCard";
 import Loading from "../components/Loading";
-import { toast } from 'react-toastify'
-
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const RequestSimpleView = () => {
   const { user } = useContext<UserContextProps>(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [requestList, setRequestList] = useState<Request[] | null>();
   const [asReviewerList, setAsReviewerList] = useState<Request[] | null>();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,8 +44,10 @@ const RequestSimpleView = () => {
         <Loading />
       ) : (
         <>
-          <Box paddingBottom={"50px"}>
-            <Typography variant="h4">Your feedback requests:</Typography>
+          <Box paddingBottom={"1rem"}>
+            <Typography variant="h5">
+              {t("UserDashboard.requestFeedback")}
+            </Typography>
             <Stack
               direction={"row"}
               spacing={"2px"}
@@ -57,14 +60,14 @@ const RequestSimpleView = () => {
                   return <RequestCard {...request} key={request._id} />;
                 })
               ) : (
-                <Typography>You have no requests</Typography>
+                <Typography>{t("UserDashboard.noRequest")}</Typography>
               )}
             </Stack>
           </Box>
 
-          <Box paddingBottom={"50px"}>
-            <Typography variant="h4">
-              Your co-worker needs your feedback:{" "}
+          <Box>
+            <Typography variant="h5">
+              {t("UserDashboard.yourFeedback")}
             </Typography>
             <Stack
               direction={"row"}
@@ -78,9 +81,7 @@ const RequestSimpleView = () => {
                   return <RequestCard {...request} key={request._id} />;
                 })
               ) : (
-                <Typography>
-                  You have no review requests from your colleagues
-                </Typography>
+                <Typography>{t("UserDashboard.noReview")}</Typography>
               )}
             </Stack>
           </Box>

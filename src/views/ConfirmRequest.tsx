@@ -24,8 +24,8 @@ import { getTodayDate } from "../utils/formatDate";
 
 const modalStyle = {
   position: "fixed",
-  backgroundColor: "#9b51e0",
   boxShadow: 24,
+  backgroundColor: "white",
   p: 4,
   color: "white",
   textAlign: "center",
@@ -129,7 +129,7 @@ const ConfirmRequest = () => {
           "http://localhost:4500/api/notifications/insert-notification",
           notification2
         )
-        .then((res) => toast.success("Failed to fetch your requests"));
+        .then((res) => toast.success("Notification posted"));
       axios
         .patch(
           `http://localhost:4500/api/review-requests/update-manager/${params.requestId}`,
@@ -137,7 +137,6 @@ const ConfirmRequest = () => {
         )
         .then((res) => {
           setOpenModal(false);
-          toast.success("Confirm request successfully");
           navigate("/");
         })
         .catch((error) => toast.error(error));
@@ -232,21 +231,22 @@ const ConfirmRequest = () => {
         <Card
           sx={{
             padding: "20px",
-            backgroundColor: "#ffdbeb",
+            backgroundColor: "hsl(0deg 5.71% 86.27% / 14.9%)",
+            boxShadow:
+              "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+            borderRadius: "4px",
+            overflowX: "auto",
             minHeight: "75vh",
           }}
         >
-          <Typography variant="h3" pb={"50px"}>
-            CONFIRMING REQUEST #
-            {`${requestData!._id.slice(0, 5)}...${requestData!._id.slice(-3)}`}
-          </Typography>
-          <Stack direction={"row"} paddingBottom={"50px"} spacing={10}>
+          <Typography variant="h4">Confirm Request</Typography>
+          <Stack direction={"row"} padding={"20px 0 50px 0"} spacing={10}>
             <Stack flexGrow={1}>
-              <Typography variant="h4">Reviewee:</Typography>
+              <Typography variant="h5">Reviewee:</Typography>
               <EmployeeCard {...requestData!} />
             </Stack>
             <Stack flexGrow={4}>
-              <Typography variant="h4">Reviewers:</Typography>
+              <Typography variant="h5">Reviewers:</Typography>
               <Stack direction={"row"} flexWrap={"wrap"}>
                 {requestData!.reviewers.map((reviewer) => {
                   return <ReviewerCard {...reviewer} />;
@@ -257,7 +257,7 @@ const ConfirmRequest = () => {
 
           <Stack paddingBottom={"50px"} direction={"row"}>
             <Stack flexGrow={1} width={"40vw"}>
-              <Typography variant="h4">
+              <Typography variant="h5">
                 Assigning Project Manager ({managerList.length}/1):
               </Typography>
               <Stack
@@ -272,7 +272,7 @@ const ConfirmRequest = () => {
               </Stack>
             </Stack>
             <Stack sx={{ width: "60vw" }}>
-              <Typography variant="h4">Search for an employee:</Typography>
+              <Typography variant="h5">Search for an employee:</Typography>
               <TextField
                 id="search-bar"
                 label="Search"
@@ -316,7 +316,10 @@ const ConfirmRequest = () => {
             sx={modalStyle}
           >
             <>
-              <Typography variant="h2">Are you sure?</Typography>
+              <Typography variant="h4">
+                This request will be confirmed and all the reviewers can start
+                giving feedbacks.
+              </Typography>
               <Stack
                 direction={"row"}
                 mt={3}
@@ -325,7 +328,7 @@ const ConfirmRequest = () => {
               >
                 <Button
                   variant="contained"
-                  color="error"
+                  color="secondary"
                   onClick={handleModalClose}
                 >
                   No, let me check again
